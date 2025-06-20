@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import Loader from '@/components/Loader'
 import Hero from '@/components/sections/Hero'
 import About from '@/components/sections/About'
@@ -13,26 +14,51 @@ export default function Home() {
 
   useEffect(() => {
     // Previne scroll durante o loading
-    if (isLoading) {
-      document.body.style.overflow = 'hidden'
-    } else {
+    document.body.style.overflow = isLoading ? 'hidden' : 'unset'
+    return () => {
       document.body.style.overflow = 'unset'
     }
   }, [isLoading])
 
   return (
     <>
-      {isLoading && (
-        <Loader onLoadComplete={() => setIsLoading(false)} />
-      )}
-      
-      <main className="bg-black text-white">
-        <Hero />
-        <About />
-        <Works />
-        <Team />
-        <Contact />
-      </main>
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <motion.div
+            key="loader"
+            exit={{ 
+              x: "-100%",
+              transition: {
+                duration: 0.8,
+                ease: [0.76, 0, 0.24, 1]
+              }
+            }}
+          >
+            <Loader onLoadComplete={() => setIsLoading(false)} />
+          </motion.div>
+        ) : (
+          <motion.main 
+            key="content"
+            className="bg-black text-white"
+            initial={{ 
+              x: "100%"
+            }}
+            animate={{ 
+              x: 0,
+              transition: {
+                duration: 0.8,
+                ease: [0.76, 0, 0.24, 1]
+              }
+            }}
+          >
+            <Hero />
+            <About />
+            <Works />
+            <Team />
+            <Contact />
+          </motion.main>
+        )}
+      </AnimatePresence>
     </>
   )
 }

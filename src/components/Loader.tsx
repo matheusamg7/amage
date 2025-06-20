@@ -19,12 +19,15 @@ export default function Loader({ onLoadComplete }: LoaderProps) {
 
     const timer = setInterval(() => {
       setPercentage(prev => {
-        const next = prev + increment
-        if (next >= 100) {
-          clearInterval(timer)
-          setTimeout(onLoadComplete, 300)
-          return 100
+        const next = Math.min(prev + increment, 100)
+        
+        // Quando chegar a 100%, aguarda um frame e chama onLoadComplete
+        if (next === 100 && prev < 100) {
+          requestAnimationFrame(() => {
+            onLoadComplete()
+          })
         }
+        
         return next
       })
     }, interval)
