@@ -80,7 +80,6 @@ export default function Team() {
                 contactText="Conectar"
                 showUserInfo={true}
                 enableTilt={true}
-                grainUrl="https://res.cloudinary.com/dr6lvwubh/image/upload/v1736206762/verceu27fdmgqyqnivj3.png"
                 onContactClick={() => console.log(`Contacting ${member.name}`)}
               />
             </motion.div>

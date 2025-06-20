@@ -3,7 +3,7 @@
 */
 
 /* eslint-disable react/no-unknown-property */
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Canvas, useThree, CanvasProps, ThreeEvent } from "@react-three/fiber";
 import { shaderMaterial, useTrailTexture } from "@react-three/drei";
 import * as THREE from "three";
@@ -166,11 +166,49 @@ export default function PixelTrail({
     antialias: false,
     powerPreference: "high-performance",
     alpha: true,
+    preserveDrawingBuffer: false,
+    failIfMajorPerformanceCaveat: false
   },
   gooeyFilter,
   color = "#ffffff",
   className = "",
 }: PixelTrailProps) {
+  const [contextLost, setContextLost] = useState(false);
+
+  useEffect(() => {
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      setContextLost(true);
+      console.warn('WebGL context lost in PixelTrail component');
+    };
+
+    const handleContextRestored = () => {
+      setContextLost(false);
+      console.info('WebGL context restored in PixelTrail component');
+    };
+
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      canvas.addEventListener('webglcontextlost', handleContextLost);
+      canvas.addEventListener('webglcontextrestored', handleContextRestored);
+    }
+
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener('webglcontextlost', handleContextLost);
+        canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+      }
+    };
+  }, []);
+
+  if (contextLost) {
+    return (
+      <div className={`absolute z-1 ${className} flex items-center justify-center`}>
+        <div className="text-white/20 text-sm">Recarregando efeito...</div>
+      </div>
+    );
+  }
+
   return (
     <>
       {gooeyFilter && (
@@ -181,6 +219,15 @@ export default function PixelTrail({
         gl={glProps}
         className={`absolute z-1 ${className}`}
         style={gooeyFilter ? { filter: `url(#${gooeyFilter.id})` } : undefined}
+        onCreated={({ gl }) => {
+          gl.domElement.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            setContextLost(true);
+          });
+          gl.domElement.addEventListener('webglcontextrestored', () => {
+            setContextLost(false);
+          });
+        }}
       >
         <Scene
           gridSize={gridSize}

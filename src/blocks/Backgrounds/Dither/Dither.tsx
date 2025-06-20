@@ -316,12 +316,62 @@ export default function Dither({
   enableMouseInteraction = true,
   mouseRadius = 1,
 }: DitherProps) {
+  const [contextLost, setContextLost] = useState(false);
+
+  useEffect(() => {
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      setContextLost(true);
+      console.warn('WebGL context lost in Dither component');
+    };
+
+    const handleContextRestored = () => {
+      setContextLost(false);
+      console.info('WebGL context restored in Dither component');
+    };
+
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      canvas.addEventListener('webglcontextlost', handleContextLost);
+      canvas.addEventListener('webglcontextrestored', handleContextRestored);
+    }
+
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener('webglcontextlost', handleContextLost);
+        canvas.removeEventListener('webglcontextrestored', handleContextRestored);
+      }
+    };
+  }, []);
+
+  if (contextLost) {
+    return (
+      <div className="w-full h-full relative bg-black/50 flex items-center justify-center">
+        <div className="text-white/50 text-sm">Recarregando visualização...</div>
+      </div>
+    );
+  }
+
   return (
     <Canvas
       className="w-full h-full relative"
       camera={{ position: [0, 0, 6] }}
-      dpr={typeof window !== 'undefined' ? window.devicePixelRatio : 1}
-      gl={{ antialias: true, preserveDrawingBuffer: true }}
+      dpr={typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2) : 1}
+      gl={{ 
+        antialias: false, 
+        preserveDrawingBuffer: false,
+        powerPreference: "high-performance",
+        failIfMajorPerformanceCaveat: false
+      }}
+      onCreated={({ gl }) => {
+        gl.domElement.addEventListener('webglcontextlost', (e) => {
+          e.preventDefault();
+          setContextLost(true);
+        });
+        gl.domElement.addEventListener('webglcontextrestored', () => {
+          setContextLost(false);
+        });
+      }}
     >
       <DitheredWaves
         waveSpeed={waveSpeed}

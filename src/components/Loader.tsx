@@ -49,7 +49,7 @@ export default function Loader({ onLoadComplete }: LoaderProps) {
             waveFrequency={3}
             disableAnimation={false}
             waveSpeed={0.05}
-            enableMouseInteraction={true}
+            enableMouseInteraction={false}
             mouseRadius={0.15}
           />
         </div>
