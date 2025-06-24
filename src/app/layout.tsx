@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LenisScroll from "@/components/LenisScroll";
 import Header from "@/components/Header";
+import Logo from "@/components/Logo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,9 @@ export default function RootLayout({
           <Header />
           {children}
         </LenisScroll>
+        
+        {/* Logo com animação de fuga ao scrollar */}
+        <Logo />
       </body>
     </html>
   );

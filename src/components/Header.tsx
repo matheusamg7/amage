@@ -81,14 +81,14 @@ export default function Header() {
       animate={{ y: 0 }}
     >
       <div className="flex justify-center px-6 py-8">
-        <StarBorder
-          as="nav"
-          color="magenta"
-          speed="4s"
-          thickness={2}
-          className="pointer-events-auto"
-        >
-          <div className="relative">
+          <StarBorder
+            as="nav"
+            color="magenta"
+            speed="4s"
+            thickness={2}
+            className="pointer-events-auto"
+          >
+            <div className="relative">
             {/* Background blur effect */}
             <motion.div
               className="absolute inset-0 backdrop-blur-md bg-black/40 rounded-[20px]"
@@ -186,7 +186,7 @@ export default function Header() {
               }}
             />
           </div>
-        </StarBorder>
+          </StarBorder>
       </div>
       
       {/* Progress bar */}

@@ -38,6 +38,7 @@ export default function Loader({ onLoadComplete }: LoaderProps) {
   return (
     <AnimatePresence>
       <motion.div
+        data-loader
         className="fixed inset-0 z-50 bg-black flex items-center justify-center overflow-hidden"
         initial={{ opacity: 1 }}
         exit={{ opacity: 0 }}
