@@ -80,7 +80,7 @@ export default function Header() {
       initial={{ y: 0 }}
       animate={{ y: 0 }}
     >
-      <div className="flex justify-center px-6 py-8">
+      <div className="flex justify-center px-16 py-12">
           <StarBorder
             as="nav"
             color="magenta"
@@ -98,7 +98,7 @@ export default function Header() {
             />
             
             {/* Navigation items */}
-            <ul className="relative flex items-center gap-2 px-6 py-1">
+            <ul className="relative flex items-center gap-4 px-12 py-4">
               {navItems.map((item, index) => {
                 const isActive = activeSection === item.href.replace('#', '')
                 const isHovered = hoveredIndex === index
@@ -110,7 +110,7 @@ export default function Header() {
                       onClick={(e) => handleNavClick(e, item.href)}
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
-                      className="relative block px-6 py-3 text-base font-medium transition-all duration-300"
+                      className="relative block px-12 py-6 text-xl font-medium transition-all duration-300"
                     >
                       {/* Hover background */}
                       <AnimatePresence>
