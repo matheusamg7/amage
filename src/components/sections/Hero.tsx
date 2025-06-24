@@ -96,7 +96,7 @@ export default function Hero({
       <AnimatePresence>
         {imageLoaded && animationPhase !== 'initial' && (
           <motion.div
-            className="absolute inset-0 z-0 will-change-transform"
+            className="absolute -inset-10 z-0 will-change-transform"
             initial={{ 
               opacity: 0,
               scale: 1.05,
@@ -104,19 +104,42 @@ export default function Hero({
             }}
             animate={{ 
               opacity: ['background', 'noise', 'interactive'].includes(animationPhase) ? 1 : 0,
-              scale: ['background', 'noise', 'interactive'].includes(animationPhase) ? 1 : 1.05,
+              scale: ['background', 'noise', 'interactive'].includes(animationPhase) 
+                ? animationPhase === 'interactive' ? [1, 1.01, 1] : 1 
+                : 1.05,
               filter: ['background', 'noise', 'interactive'].includes(animationPhase) 
                 ? 'blur(0px) brightness(1)' 
                 : 'blur(10px) brightness(0.7)',
+              x: animationPhase === 'interactive' ? [0, 12, 0] : 0,
+              y: animationPhase === 'interactive' ? [0, -8, 0] : 0,
             }}
             transition={{ 
               duration: animationConfig.hero.image.fadeInDuration,
               ease: animationConfig.hero.image.ease,
-              scale: { 
+              scale: animationPhase === 'interactive' ? {
+                duration: 12,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut"
+              } : { 
                 duration: animationConfig.hero.image.scaleDuration, 
                 ease: animationConfig.hero.image.scaleEase 
               },
-              filter: { duration: animationConfig.hero.image.blurDuration }
+              filter: { duration: animationConfig.hero.image.blurDuration },
+              x: {
+                duration: 10,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: [0.4, 0, 0.6, 1],
+                delay: 0.5
+              },
+              y: {
+                duration: 8,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: [0.4, 0, 0.6, 1],
+                delay: 0.8
+              }
             }}
           >
             <Image
