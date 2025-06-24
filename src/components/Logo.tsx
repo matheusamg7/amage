@@ -103,7 +103,7 @@ export default function Logo() {
               viewBox="0 0 1557 385" 
               fill="none" 
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-auto"
+              className="h-8 w-auto opacity-80"
             >
               {/* A */}
               <motion.path 
