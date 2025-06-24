@@ -6,7 +6,6 @@ import Loader from '@/components/Loader'
 import Hero from '@/components/sections/Hero'
 import About from '@/components/sections/About'
 import Works from '@/components/sections/Works'
-import Team from '@/components/sections/Team'
 import Contact from '@/components/sections/Contact'
 
 export default function Home() {
@@ -54,7 +53,6 @@ export default function Home() {
             <Hero />
             <About />
             <Works />
-            <Team />
             <Contact />
           </motion.main>
         )}
