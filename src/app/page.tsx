@@ -13,6 +13,15 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
   const [showContent, setShowContent] = useState(false)
 
+  // Verifica se veio de navegação interna após hidratação
+  useEffect(() => {
+    // Se veio de navegação interna, pula o loading
+    if (document.referrer && document.referrer.includes(window.location.origin)) {
+      setIsLoading(false)
+      setShowContent(true)
+    }
+  }, [])
+
   useEffect(() => {
     // Previne scroll durante o loading
     document.body.style.overflow = isLoading ? 'hidden' : 'unset'

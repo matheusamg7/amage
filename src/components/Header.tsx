@@ -57,12 +57,18 @@ export default function Header() {
     e.preventDefault()
     
     // Se for link externo (blog), navega normalmente
-    if (href.startsWith('/')) {
+    if (href.startsWith('/') && !href.startsWith('/#')) {
       window.location.href = href
       return
     }
     
-    // Se for âncora, faz scroll suave
+    // Se estiver em outra página e for uma âncora, volta para home com a âncora
+    if (window.location.pathname !== '/' && href.startsWith('#')) {
+      window.location.href = '/' + href
+      return
+    }
+    
+    // Se for âncora e estiver na home, faz scroll suave
     const targetId = href.replace('#', '')
     const element = document.getElementById(targetId)
     
@@ -76,29 +82,14 @@ export default function Header() {
 
   return (
     <motion.header
-      className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
-      initial={{ y: 0 }}
-      animate={{ y: 0 }}
+      className="fixed top-8 right-8 z-50"
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
     >
-      <div className="flex justify-center px-16 py-12">
-          <StarBorder
-            as="nav"
-            color="magenta"
-            speed="4s"
-            thickness={2}
-            className="pointer-events-auto"
-          >
-            <div className="relative">
-            {/* Background blur effect */}
-            <motion.div
-              className="absolute inset-0 backdrop-blur-md bg-black/40 rounded-[20px]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isScrolled ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-            />
-            
-            {/* Navigation items */}
-            <ul className="relative flex items-center gap-4 px-12 py-4">
+      <nav className="pointer-events-auto">
+        {/* Navigation items */}
+        <ul className="flex flex-col items-end gap-2">
               {navItems.map((item, index) => {
                 const isActive = activeSection === item.href.replace('#', '')
                 const isHovered = hoveredIndex === index
@@ -110,26 +101,26 @@ export default function Header() {
                       onClick={(e) => handleNavClick(e, item.href)}
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
-                      className="relative block px-12 py-6 text-xl font-medium transition-all duration-300"
+                      className="relative block px-4 py-2 text-lg font-medium transition-all duration-300"
                     >
-                      {/* Hover background */}
+                      {/* Hover underline effect */}
                       <AnimatePresence>
                         {isHovered && (
                           <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-lg backdrop-blur-sm"
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            transition={{ duration: 0.2 }}
-                            layoutId="hoverBackground"
+                            className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-purple-600 to-pink-600"
+                            initial={{ scaleX: 0, opacity: 0 }}
+                            animate={{ scaleX: 1, opacity: 1 }}
+                            exit={{ scaleX: 0, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            style={{ transformOrigin: 'right' }}
                           />
                         )}
                       </AnimatePresence>
                       
-                      {/* Active indicator */}
+                      {/* Active indicator - small dot on the right */}
                       {isActive && (
                         <motion.div
-                          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full"
+                          className="absolute right-[-12px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full"
                           style={{ backgroundColor: 'magenta' }}
                           layoutId="activeIndicator"
                           transition={{ type: "spring", stiffness: 380, damping: 30 }}
@@ -148,55 +139,12 @@ export default function Header() {
                         {item.label}
                       </motion.span>
                       
-                      {/* Glow effect on hover */}
-                      <AnimatePresence>
-                        {isHovered && (
-                          <motion.div
-                            className="absolute inset-0 opacity-50"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            style={{
-                              background: 'radial-gradient(circle at center, magenta 0%, transparent 70%)',
-                              filter: 'blur(20px)',
-                            }}
-                          />
-                        )}
-                      </AnimatePresence>
                     </Link>
                   </li>
                 )
               })}
             </ul>
-            
-            {/* Ambient glow */}
-            <motion.div
-              className="absolute -inset-4 opacity-30 pointer-events-none"
-              animate={{
-                opacity: [0.2, 0.3, 0.2],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              style={{
-                background: 'radial-gradient(circle at center, magenta 0%, transparent 50%)',
-                filter: 'blur(40px)',
-              }}
-            />
-          </div>
-          </StarBorder>
-      </div>
-      
-      {/* Progress bar */}
-      <motion.div
-        className="absolute bottom-0 left-0 h-[1px] bg-gradient-to-r from-transparent via-magenta to-transparent"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: isScrolled ? 1 : 0 }}
-        transition={{ duration: 0.5 }}
-        style={{ transformOrigin: 'left' }}
-      />
+      </nav>
     </motion.header>
   )
 }

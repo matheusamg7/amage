@@ -202,11 +202,7 @@ export default function PixelTrail({
   }, []);
 
   if (contextLost) {
-    return (
-      <div className={`absolute z-1 ${className} flex items-center justify-center`}>
-        <div className="text-white/20 text-sm">Recarregando efeito...</div>
-      </div>
-    );
+    return null;
   }
 
   return (
