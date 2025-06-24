@@ -10,7 +10,7 @@ export default function About() {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
-    <section ref={ref} className="min-h-screen flex items-center justify-center px-8 py-20">
+    <section id="about" ref={ref} className="min-h-screen flex items-center justify-center px-8 py-20">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         {/* Left side - Text */}
         <motion.div

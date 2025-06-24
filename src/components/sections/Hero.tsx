@@ -69,7 +69,7 @@ export default function Hero({
   }, [imageLoaded])
 
   return (
-    <section className="relative min-h-screen h-[100dvh] overflow-hidden bg-black">
+    <section id="home" className="relative min-h-screen h-[100dvh] overflow-hidden bg-black pt-32">
       {/* Background elegante para loading */}
       <motion.div
         className="absolute inset-0 z-0"

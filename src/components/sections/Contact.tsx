@@ -19,7 +19,7 @@ export default function Contact() {
   }
 
   return (
-    <section ref={ref} className="min-h-screen px-8 py-20 flex items-center">
+    <section id="contact" ref={ref} className="min-h-screen px-8 py-20 flex items-center">
       <div className="max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Left side - Contact info */}

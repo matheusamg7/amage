@@ -57,7 +57,7 @@ export default function Works() {
   }, [])
 
   return (
-    <section ref={ref} className="min-h-screen px-8 py-20">
+    <section id="works" ref={ref} className="min-h-screen px-8 py-20">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div

@@ -6,6 +6,7 @@ import Loader from '@/components/Loader'
 import Hero from '@/components/sections/Hero'
 import About from '@/components/sections/About'
 import Works from '@/components/sections/Works'
+import TeamPlaceholder from '@/components/sections/TeamPlaceholder'
 import Contact from '@/components/sections/Contact'
 
 export default function Home() {
@@ -89,6 +90,7 @@ export default function Home() {
             <Hero />
             <About />
             <Works />
+            <TeamPlaceholder />
             <Contact />
           </motion.main>
         )}
