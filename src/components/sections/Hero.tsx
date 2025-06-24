@@ -97,6 +97,7 @@ export default function Hero({
         {imageLoaded && animationPhase !== 'initial' && (
           <motion.div
             className="absolute -inset-10 z-0 will-change-transform"
+            style={{ top: '-20%' }}
             initial={{ 
               opacity: 0,
               scale: 1.05,

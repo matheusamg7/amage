@@ -33,9 +33,16 @@ export default function Header() {
 
   // Detecta seção ativa
   useEffect(() => {
+    // Se estiver no blog, marca blog como ativo
+    if (window.location.pathname === '/blog') {
+      setActiveSection('blog')
+      return
+    }
+    
     const handleScroll = () => {
       const sections = navItems.map(item => item.href.replace('#', ''))
       const currentSection = sections.find(section => {
+        if (section === 'blog') return false
         const element = document.getElementById(section)
         if (element) {
           const rect = element.getBoundingClientRect()
@@ -50,6 +57,7 @@ export default function Header() {
     }
 
     window.addEventListener('scroll', handleScroll)
+    handleScroll() // Chama imediatamente
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -62,9 +70,14 @@ export default function Header() {
       return
     }
     
-    // Se estiver em outra página e for uma âncora, volta para home com a âncora
+    // Se estiver em outra página e for uma âncora, volta para home
     if (window.location.pathname !== '/' && href.startsWith('#')) {
-      window.location.href = '/' + href
+      // Se for #home, vai para a raiz limpa
+      if (href === '#home') {
+        window.location.href = '/'
+      } else {
+        window.location.href = '/' + href
+      }
       return
     }
     
@@ -91,7 +104,9 @@ export default function Header() {
         {/* Navigation items */}
         <ul className="flex flex-col items-end gap-2">
               {navItems.map((item, index) => {
-                const isActive = activeSection === item.href.replace('#', '')
+                const isActive = item.href === '/blog' 
+                  ? activeSection === 'blog' 
+                  : activeSection === item.href.replace('#', '')
                 const isHovered = hoveredIndex === index
                 
                 return (
