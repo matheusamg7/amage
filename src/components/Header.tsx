@@ -102,7 +102,7 @@ export default function Header() {
     >
       <nav className="pointer-events-auto">
         {/* Navigation items */}
-        <ul className="flex flex-col items-end gap-2">
+        <ul className="flex flex-row items-center gap-6 font-mono tracking-wider">
               {navItems.map((item, index) => {
                 const isActive = item.href === '/blog' 
                   ? activeSection === 'blog' 
@@ -116,7 +116,7 @@ export default function Header() {
                       onClick={(e) => handleNavClick(e, item.href)}
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
-                      className="relative block px-4 py-2 text-lg font-medium transition-all duration-300"
+                      className="relative block px-3 py-2 text-sm font-medium transition-all duration-300 uppercase"
                     >
                       {/* Hover underline effect */}
                       <AnimatePresence>
@@ -132,10 +132,10 @@ export default function Header() {
                         )}
                       </AnimatePresence>
                       
-                      {/* Active indicator - small dot on the right */}
+                      {/* Active indicator - small dot below */}
                       {isActive && (
                         <motion.div
-                          className="absolute right-[-12px] top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full"
+                          className="absolute bottom-[-8px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full"
                           style={{ backgroundColor: 'magenta' }}
                           layoutId="activeIndicator"
                           transition={{ type: "spring", stiffness: 380, damping: 30 }}
