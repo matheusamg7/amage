@@ -13,18 +13,28 @@ declare global {
 
 export default function Hero() {
   useEffect(() => {
-    // Implementação exata do embed code do Unicorn Studio
-    if (!window.UnicornStudio) {
-      window.UnicornStudio = { isInitialized: false } as any
+    // Adicionar preload da imagem
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'image'
+    link.href = 'https://firebasestorage.googleapis.com/v0/b/unicorn-studio.appspot.com/o/OcNScnJlMIfjhkZmDSOMtiDDMo83%2FamageBack%20(1).png?alt=media&token=0c62cccd-56ac-4f79-99a4-a4f7bc4f1cf2'
+    document.head.appendChild(link)
+    
+    // Inicializar Unicorn Studio imediatamente
+    if (!window.UnicornStudio || !window.UnicornStudio.isInitialized) {
       const script = document.createElement("script")
       script.src = "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.26/dist/unicornStudio.umd.js"
+      script.async = true
       script.onload = function() {
-        if (!window.UnicornStudio!.isInitialized) {
-          (window as any).UnicornStudio.init()
-          window.UnicornStudio!.isInitialized = true
+        // Inicializar imediatamente após o carregamento do script
+        (window as any).UnicornStudio.init()
+        if (!window.UnicornStudio) {
+          window.UnicornStudio = { isInitialized: true } as any
+        } else {
+          window.UnicornStudio.isInitialized = true
         }
       }
-      ;(document.head || document.body).appendChild(script)
+      document.head.appendChild(script)
     }
   }, [])
 
@@ -32,7 +42,8 @@ export default function Hero() {
     <section id="home" className="relative min-h-screen h-[100dvh] overflow-hidden pt-32">
       {/* Container do Unicorn Studio cobrindo toda a tela */}
       <div 
-        data-us-project="mzU38O7zcRH3LBVeuupU" 
+        data-us-project="mzU38O7zcRH3LBVeuupU?update=1.0.1" 
+        data-us-production="true"
         className="absolute inset-0"
         style={{ width: '100%', height: '100%' }}
       />
