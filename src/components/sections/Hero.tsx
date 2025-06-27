@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import PixelTrail from '@/blocks/Animations/PixelTrail/PixelTrail'
 
 declare global {
   interface Window {
@@ -14,6 +15,7 @@ declare global {
 
 export default function Hero() {
   const [showText, setShowText] = useState(false)
+  const [showPixelTrail, setShowPixelTrail] = useState(false)
 
   useEffect(() => {
     // Mostrar texto após 1.5 segundos (depois do Unicorn Studio carregar)
@@ -38,8 +40,18 @@ export default function Hero() {
         } else {
           window.UnicornStudio.isInitialized = true
         }
+        
+        // Aguardar um pouco após o Unicorn Studio carregar para evitar conflito
+        setTimeout(() => {
+          setShowPixelTrail(true)
+        }, 2000)
       }
       document.head.appendChild(script)
+    } else {
+      // Se já estava carregado, mostrar PixelTrail após delay
+      setTimeout(() => {
+        setShowPixelTrail(true)
+      }, 2000)
     }
   }, [])
 
@@ -50,9 +62,28 @@ export default function Hero() {
         data-us-project="mzU38O7zcRH3LBVeuupU?update=1.0.1" 
         data-us-production="true"
         data-us-lazyload="true"
-        className="absolute inset-0"
+        className="absolute inset-0 z-0"
         style={{ width: '100%', height: '100%' }}
       />
+      
+      {/* PixelTrail animation - renderizado após Unicorn Studio */}
+      {showPixelTrail && (
+        <motion.div 
+          className="absolute inset-0 z-5 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <PixelTrail 
+            gridSize={60}
+            trailSize={0.03}
+            maxAge={150}
+            interpolate={3}
+            color="#ffffff"
+            className="opacity-20 pointer-events-auto"
+          />
+        </motion.div>
+      )}
       
       {/* Container para conteúdo adicional sobre o Unicorn Studio */}
       <div className="absolute inset-x-0 top-1/4 z-10 flex justify-center">
