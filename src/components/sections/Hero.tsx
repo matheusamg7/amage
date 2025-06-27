@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 declare global {
   interface Window {
@@ -12,6 +13,17 @@ declare global {
 }
 
 export default function Hero() {
+  const [showText, setShowText] = useState(false)
+
+  useEffect(() => {
+    // Mostrar texto após 1.5 segundos (depois do Unicorn Studio carregar)
+    const timer = setTimeout(() => {
+      setShowText(true)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   useEffect(() => {
     // Inicializar Unicorn Studio imediatamente
     if (!window.UnicornStudio || !window.UnicornStudio.isInitialized) {
@@ -43,8 +55,31 @@ export default function Hero() {
       />
       
       {/* Container para conteúdo adicional sobre o Unicorn Studio */}
-      <div className="relative z-10 h-full flex items-center justify-center pointer-events-none">
-        {/* Conteúdo adicional pode ser adicionado aqui */}
+      <div className="absolute inset-x-0 top-1/4 z-10 flex justify-center">
+        {showText && (
+          <motion.h1 
+            className="text-5xl md:text-6xl lg:text-7xl font-semibold text-white font-hubot uppercase tracking-wider text-center"
+            initial={{ 
+              opacity: 0,
+              y: 20,
+              scale: 0.95,
+              filter: "blur(10px)"
+            }}
+            animate={{ 
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              filter: "blur(0px)"
+            }}
+            transition={{
+              duration: 0.8,
+              ease: [0.25, 0.46, 0.45, 0.94],
+              filter: { duration: 0.6 }
+            }}
+          >
+            DESENVOLVEMOS<br />SITES QUE
+          </motion.h1>
+        )}
       </div>
     </section>
   )
