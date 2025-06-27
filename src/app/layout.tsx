@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Hubot_Sans } from "next/font/google";
+import { Geist, Geist_Mono, Hubot_Sans, Inter } from "next/font/google";
 import "./globals.css";
 import LenisScroll from "@/components/LenisScroll";
 import Header from "@/components/Header";
@@ -22,6 +22,12 @@ const hubotSans = Hubot_Sans({
   style: ["normal", "italic"],
 });
 
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["700", "800", "900"],
+});
+
 export const metadata: Metadata = {
   title: "AMAGE - Agência Web",
   description: "Transformamos ideias em experiências digitais memoráveis",
@@ -42,7 +48,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${hubotSans.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${hubotSans.variable} ${inter.variable} antialiased`}
       >
         <LenisScroll>
           <Header />

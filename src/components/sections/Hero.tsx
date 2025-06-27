@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import PixelTrail from '@/blocks/Animations/PixelTrail/PixelTrail'
 
 declare global {
@@ -13,9 +13,12 @@ declare global {
   }
 }
 
+const words = ["CONVERTEM", "VENDEM", "PERFORMAM", "CRESCEM", "ENTREGAM", "IMPACTAM"]
+
 export default function Hero() {
   const [showText, setShowText] = useState(false)
   const [showPixelTrail, setShowPixelTrail] = useState(false)
+  const [currentWordIndex, setCurrentWordIndex] = useState(0)
 
   useEffect(() => {
     // Mostrar texto após 1.5 segundos (depois do Unicorn Studio carregar)
@@ -25,6 +28,17 @@ export default function Hero() {
 
     return () => clearTimeout(timer)
   }, [])
+
+  useEffect(() => {
+    // Trocar palavras a cada 2.5 segundos após o texto aparecer
+    if (showText) {
+      const interval = setInterval(() => {
+        setCurrentWordIndex((prevIndex) => (prevIndex + 1) % words.length)
+      }, 2500)
+
+      return () => clearInterval(interval)
+    }
+  }, [showText])
 
   useEffect(() => {
     // Inicializar Unicorn Studio imediatamente
@@ -86,7 +100,7 @@ export default function Hero() {
       )}
       
       {/* Container para conteúdo adicional sobre o Unicorn Studio */}
-      <div className="absolute inset-x-0 top-1/4 z-10 flex justify-center">
+      <div className="absolute inset-x-0 top-1/4 z-10 flex flex-col items-center justify-center">
         {showText && (
           <motion.h1 
             className="text-5xl md:text-6xl lg:text-7xl font-semibold text-white font-hubot uppercase tracking-wider text-center"
@@ -110,6 +124,58 @@ export default function Hero() {
           >
             DESENVOLVEMOS<br />SITES QUE
           </motion.h1>
+        )}
+        
+        {/* Palavras animadas com gradiente */}
+        {showText && (
+          <motion.div 
+            className="mt-6 h-20 flex items-center justify-center" 
+            style={{ perspective: '1000px' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={currentWordIndex}
+                className="text-5xl md:text-7xl lg:text-8xl font-inter font-black uppercase tracking-wider"
+                style={{
+                  background: 'linear-gradient(135deg, #9333EA 0%, #EC4899 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  textFillColor: 'transparent',
+                }}
+                initial={{ 
+                  opacity: 0,
+                  y: 50,
+                  scale: 0.8,
+                  rotateX: -90,
+                  filter: "blur(10px)"
+                }}
+                animate={{ 
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  rotateX: 0,
+                  filter: "blur(0px)"
+                }}
+                exit={{ 
+                  opacity: 0,
+                  y: -50,
+                  scale: 0.8,
+                  rotateX: 90,
+                  filter: "blur(10px)"
+                }}
+                transition={{
+                  duration: 0.6,
+                  ease: [0.645, 0.045, 0.355, 1.0],
+                }}
+              >
+                {words[currentWordIndex]}
+              </motion.span>
+            </AnimatePresence>
+          </motion.div>
         )}
       </div>
     </section>
