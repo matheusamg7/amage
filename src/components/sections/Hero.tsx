@@ -13,13 +13,6 @@ declare global {
 
 export default function Hero() {
   useEffect(() => {
-    // Adicionar preload da imagem
-    const link = document.createElement('link')
-    link.rel = 'preload'
-    link.as = 'image'
-    link.href = 'https://firebasestorage.googleapis.com/v0/b/unicorn-studio.appspot.com/o/OcNScnJlMIfjhkZmDSOMtiDDMo83%2FamageBack%20(1).png?alt=media&token=0c62cccd-56ac-4f79-99a4-a4f7bc4f1cf2'
-    document.head.appendChild(link)
-    
     // Inicializar Unicorn Studio imediatamente
     if (!window.UnicornStudio || !window.UnicornStudio.isInitialized) {
       const script = document.createElement("script")
@@ -44,6 +37,7 @@ export default function Hero() {
       <div 
         data-us-project="mzU38O7zcRH3LBVeuupU?update=1.0.1" 
         data-us-production="true"
+        data-us-lazyload="true"
         className="absolute inset-0"
         style={{ width: '100%', height: '100%' }}
       />

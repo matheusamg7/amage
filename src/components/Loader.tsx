@@ -13,6 +13,14 @@ export default function Loader({ onLoadComplete }: LoaderProps) {
   const [percentage, setPercentage] = useState(0)
 
   useEffect(() => {
+    // Adicionar preload da imagem do Hero
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'image'
+    link.href = 'https://firebasestorage.googleapis.com/v0/b/unicorn-studio.appspot.com/o/OcNScnJlMIfjhkZmDSOMtiDDMo83%2FamageBack%20(1).png?alt=media&token=0c62cccd-56ac-4f79-99a4-a4f7bc4f1cf2'
+    link.crossOrigin = 'anonymous'
+    document.head.appendChild(link)
+    
     const duration = 3500 // 3.5 seconds
     const interval = 20 // Update every 20ms
     const increment = 100 / (duration / interval)
