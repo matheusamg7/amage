@@ -4,6 +4,7 @@ import "./globals.css";
 import LenisScroll from "@/components/LenisScroll";
 import Header from "@/components/Header";
 import Logo from "@/components/Logo";
+import { PageTransitionProvider } from "@/contexts/PageTransitionContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,13 +51,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${hubotSans.variable} ${inter.variable} antialiased`}
       >
-        <LenisScroll>
-          <Header />
-          {children}
-        </LenisScroll>
-        
-        {/* Logo com animação de fuga ao scrollar */}
-        <Logo />
+        <PageTransitionProvider>
+          <LenisScroll>
+            <Header />
+            {children}
+          </LenisScroll>
+          
+          {/* Logo com animação de fuga ao scrollar */}
+          <Logo />
+        </PageTransitionProvider>
       </body>
     </html>
   );

@@ -3,36 +3,23 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import { usePageTransition } from '@/contexts/PageTransitionContext'
 
 export default function Logo() {
   const [isVisible, setIsVisible] = useState(false)
-  const [hasLoadingFinished, setHasLoadingFinished] = useState(false)
+  const { isTransitionComplete } = usePageTransition()
   const { scrollY } = useScroll()
 
-  // Verifica se o loading acabou observando mudanças no DOM
+  // Mostra o logo quando a transição completar
   useEffect(() => {
-    const checkLoading = () => {
-      // Verifica se o loader não está mais presente
-      const loader = document.querySelector('[data-loader]')
-      if (!loader && !hasLoadingFinished) {
-        setHasLoadingFinished(true)
-        setIsVisible(true)
-      }
+    if (isTransitionComplete) {
+      setIsVisible(true)
     }
-
-    // Verifica inicialmente
-    checkLoading()
-
-    // Observa mudanças no DOM
-    const observer = new MutationObserver(checkLoading)
-    observer.observe(document.body, { childList: true, subtree: true })
-
-    return () => observer.disconnect()
-  }, [hasLoadingFinished])
+  }, [isTransitionComplete])
 
   // Detecta scroll e controla visibilidade do logo
   useMotionValueEvent(scrollY, "change", (latest) => {
-    if (hasLoadingFinished) {
+    if (isTransitionComplete) {
       // Adiciona um pequeno threshold para evitar piscar
       if (latest > 60) {
         setIsVisible(false)
@@ -50,8 +37,8 @@ export default function Logo() {
         type: "spring",
         stiffness: 100,
         damping: 20,
-        staggerChildren: 0.12,
-        delayChildren: 0.1
+        staggerChildren: 0.06,
+        delayChildren: 0
       }
     },
     exit: {
@@ -85,6 +72,8 @@ export default function Logo() {
       }
     }
   }
+
+  if (!isTransitionComplete) return null
 
   return (
     <AnimatePresence>

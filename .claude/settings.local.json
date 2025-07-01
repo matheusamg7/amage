@@ -10,7 +10,8 @@
       "Bash(mv:*)",
       "WebFetch(domain:www.unicorn.studio)",
       "WebFetch(domain:github.com)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "WebFetch(domain:codesandbox.io)"
     ],
     "deny": []
   }
