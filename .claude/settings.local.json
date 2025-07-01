@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(rg:*)",
+      "WebFetch(domain:res.cloudinary.com)",
+      "mcp__context7__get-library-docs",
+      "mcp__context7__resolve-library-id",
+      "WebFetch(domain:context7.com)",
+      "Bash(mv:*)",
+      "WebFetch(domain:www.unicorn.studio)",
+      "WebFetch(domain:github.com)",
+      "Bash(rm:*)"
+    ],
+    "deny": []
+  }
+}
