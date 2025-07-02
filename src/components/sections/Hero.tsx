@@ -54,6 +54,15 @@ const Hero = memo(function Hero() {
           {...(isTransitionComplete ? fadeInUp : { initial: { opacity: 0 } })}
           className="text-center max-w-5xl mx-auto -translate-y-28"
         >
+          {/* Badge Alta Performance */}
+          <div 
+            className="group inline-flex items-center gap-3 bg-zinc-800/80 backdrop-blur-sm border border-white/50 text-white rounded-full mb-8 cursor-pointer transition-all duration-300 hover:bg-zinc-700/80 hover:border-white/70 hover:scale-105 hover:shadow-lg hover:shadow-white/20" 
+            style={{ padding: '6px 28px' }}
+          >
+            <span className="text-base grayscale brightness-200 contrast-200 transition-transform duration-300 group-hover:rotate-12">🚀</span>
+            <span className="text-sm font-normal tracking-wide">Alta Performance</span>
+          </div>
+          
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white font-hubot uppercase tracking-wider leading-tight">
             DESENVOLVEMOS
             <br />
