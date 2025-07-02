@@ -73,7 +73,7 @@ const Hero = memo(function Hero() {
       <div className="relative z-20 h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
         <motion.div
           {...(isTransitionComplete ? fadeInUp : { initial: { opacity: 0 } })}
-          className="text-center max-w-5xl mx-auto -translate-y-28"
+          className="text-center max-w-7xl mx-auto -translate-y-28"
         >
           {/* Badge Alta Performance */}
           <div className="relative -translate-y-4">
@@ -155,19 +155,18 @@ const Hero = memo(function Hero() {
           )}
         </div>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white font-hubot uppercase tracking-wider leading-tight select-none">
-            DESENVOLVEMOS
-            <br />
-            SITES QUE
+          <h1 className="bg-gradient-to-br from-white to-purple-200/20 bg-clip-text text-transparent py-8 px-4 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium leading-none tracking-tighter">
+            <span className="block">Desenvolvemos</span>
+            <span className="block">sites que</span>
           </h1>
           
           {/* Palavras animadas */}
           <div className="mt-12 h-20 flex items-center justify-center">
             <RotatingText
-              texts={['CONVERTEM', 'VENDEM', 'PERFORMAM', 'CRESCEM', 'ENTREGAM', 'IMPACTAM']}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium font-mono uppercase tracking-wider select-none"
-              mainClassName="justify-center select-none"
-              elementLevelClassName="text-white select-none"
+              texts={['convertem', 'vendem', 'performam', 'crescem', 'entregam', 'impactam']}
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium font-mono tracking-wider"
+              mainClassName="justify-center"
+              elementLevelClassName="text-white"
               rotationInterval={2500}
               splitBy="characters"
               staggerDuration={0.05}
