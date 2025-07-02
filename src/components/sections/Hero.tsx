@@ -4,6 +4,7 @@ import { memo, useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import PageTransition from '@/components/PageTransition'
+import Noise from '@/blocks/Animations/Noise/Noise'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -15,19 +16,32 @@ const Hero = memo(function Hero() {
   const [showContent, setShowContent] = useState(false)
   return (
     <section id="home" className="relative min-h-screen h-[100dvh] overflow-hidden">
-      {/* Imagem de fundo otimizada */}
-      <Image
-        src="/assets/backgrounds/background.png"
-        alt="Background futurista"
-        fill
-        priority
-        quality={85}
-        sizes="100vw"
-        className="object-cover object-center"
-      />
+      {/* Container da imagem */}
+      <div className="absolute inset-0">
+        <Image
+          src="/assets/backgrounds/background.png"
+          alt="Background futurista"
+          fill
+          priority
+          quality={85}
+          sizes="100vw"
+          className="object-cover object-center blur-sm"
+        />
+      </div>
       
       {/* Overlay escuro para melhor contraste com texto */}
       <div className="absolute inset-0 bg-black/30 z-10" />
+      
+      {/* Noise overlay */}
+      <div className="absolute inset-0 z-10 pointer-events-none mix-blend-overlay">
+        <Noise 
+          patternSize={200}
+          patternScaleX={1}
+          patternScaleY={1}
+          patternRefreshInterval={3}
+          patternAlpha={25}
+        />
+      </div>
       
       {/* Transição de entrada com blocos sobre o conteúdo */}
       <PageTransition onComplete={() => setShowContent(true)} />
