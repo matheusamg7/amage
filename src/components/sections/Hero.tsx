@@ -1,6 +1,6 @@
 'use client'
 
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import PageTransition from '@/components/PageTransition'
@@ -17,6 +17,25 @@ const fadeInUp = {
 
 const Hero = memo(function Hero() {
   const { isTransitionComplete } = usePageTransition()
+  const [clickCount, setClickCount] = useState(0)
+  const [isBlocked, setIsBlocked] = useState(false)
+  const [showMessage, setShowMessage] = useState(false)
+  
+  const handleConfettiClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (isBlocked) {
+      event.preventDefault()
+      return
+    }
+    
+    const newCount = clickCount + 1
+    setClickCount(newCount)
+    
+    if (newCount >= 3) {
+      setIsBlocked(true)
+      setShowMessage(true)
+      // Não desbloqueia mais! Só com F5
+    }
+  }
   
   return (
     <section id="home" className="relative min-h-screen h-[100dvh] overflow-hidden">
@@ -57,19 +76,26 @@ const Hero = memo(function Hero() {
           className="text-center max-w-5xl mx-auto -translate-y-28"
         >
           {/* Badge Alta Performance */}
-          <ConfettiButton 
-            className="group inline-flex items-center gap-3 bg-zinc-800/80 backdrop-blur-sm border border-white/50 text-white rounded-full mb-8 cursor-pointer transition-all duration-300 hover:bg-zinc-700/80 hover:border-white/70 hover:scale-105 hover:shadow-lg hover:shadow-white/20 h-auto" 
-            style={{ padding: '6px 28px' }}
-            variant="ghost"
-            options={{
-              particleCount: 100,
-              spread: 70,
-              colors: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B'],
-              startVelocity: 30,
-              gravity: 0.5,
-              scalar: 0.8,
-            }}
-          >
+          <div className="relative -translate-y-4">
+            <ConfettiButton 
+              className={`group inline-flex items-center gap-3 bg-zinc-800/80 backdrop-blur-sm border border-white/50 text-white rounded-full mb-12 transition-all duration-300 h-auto ${
+                isBlocked 
+                  ? 'cursor-not-allowed opacity-50' 
+                  : 'cursor-pointer hover:bg-zinc-700/80 hover:border-white/70 hover:scale-105 hover:shadow-lg hover:shadow-white/20'
+              }`} 
+              style={{ padding: '6px 28px' }}
+              variant="ghost"
+              onClickCapture={handleConfettiClick}
+              disabled={isBlocked}
+              options={{
+                particleCount: 100,
+                spread: 70,
+                colors: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B'],
+                startVelocity: 30,
+                gravity: 0.5,
+                scalar: 0.8,
+              }}
+            >
             <motion.span 
               className="text-base grayscale brightness-200 contrast-200 transition-transform duration-300 group-hover:rotate-12"
               initial={{ opacity: 0 }}
@@ -79,7 +105,7 @@ const Hero = memo(function Hero() {
               🚀
             </motion.span>
             <span className="text-sm font-normal tracking-wide flex">
-              {'Alta Performance'.split('').map((char, index) => (
+              {'Sites Mágicos'.split('').map((char, index) => (
                 <motion.span
                   key={index}
                   className="inline-block"
@@ -105,7 +131,31 @@ const Hero = memo(function Hero() {
             </span>
           </ConfettiButton>
           
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white font-hubot uppercase tracking-wider leading-tight">
+          {/* Mensagem engraçada */}
+          {showMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.8 }}
+              animate={{ opacity: 1, y: -40, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-zinc-900/90 border border-zinc-700/50 text-zinc-300 text-xs px-6 py-3 rounded-lg backdrop-blur-sm select-none pointer-events-none shadow-lg whitespace-nowrap"
+              style={{ userSelect: 'none', padding: '16px 32px' }}
+            >
+              <span className="inline-flex items-center gap-1.5">
+                <span>🎉</span>
+                <span>Confete acabou, mas a mágica dos nossos sites é real!</span>
+                <a 
+                  href="#contato" 
+                  className="underline hover:text-white transition-colors pointer-events-auto"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Vamos conversar?
+                </a>
+              </span>
+            </motion.div>
+          )}
+        </div>
+          
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-white font-hubot uppercase tracking-wider leading-tight select-none">
             DESENVOLVEMOS
             <br />
             SITES QUE
@@ -115,9 +165,9 @@ const Hero = memo(function Hero() {
           <div className="mt-12 h-20 flex items-center justify-center">
             <RotatingText
               texts={['CONVERTEM', 'VENDEM', 'PERFORMAM', 'CRESCEM', 'ENTREGAM', 'IMPACTAM']}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium font-mono uppercase tracking-wider"
-              mainClassName="justify-center"
-              elementLevelClassName="text-white"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium font-mono uppercase tracking-wider select-none"
+              mainClassName="justify-center select-none"
+              elementLevelClassName="text-white select-none"
               rotationInterval={2500}
               splitBy="characters"
               staggerDuration={0.05}
