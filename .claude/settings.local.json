@@ -12,7 +12,8 @@
       "WebFetch(domain:github.com)",
       "Bash(rm:*)",
       "WebFetch(domain:codesandbox.io)",
-      "Bash(git worktree:*)"
+      "Bash(git worktree:*)",
+      "Bash(find:*)"
     ],
     "deny": []
   }

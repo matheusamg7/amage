@@ -155,8 +155,8 @@ const Hero = memo(function Hero() {
           )}
         </div>
           
-          <h1 className="bg-gradient-to-br from-white to-purple-200/20 bg-clip-text text-transparent py-8 px-4 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium leading-none tracking-tighter">
-            <span className="block">Desenvolvemos</span>
+          <h1 className="bg-gradient-to-br from-white to-purple-300/40 bg-clip-text text-transparent py-8 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium leading-none tracking-tight">
+            <span className="block pr-4">Desenvolvemos</span>
             <span className="block">sites que</span>
           </h1>
           
