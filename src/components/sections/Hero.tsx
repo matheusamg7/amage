@@ -158,47 +158,49 @@ const Hero = memo(function Hero() {
           )}
         </div>
           
-          <h1 className="bg-gradient-to-br from-white to-purple-300/40 bg-clip-text text-transparent py-8 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium leading-none tracking-tight">
-            <span className="block pr-4">Desenvolvemos</span>
-            <span className="block">sites que</span>
-          </h1>
-          
-          {/* Palavras animadas */}
-          <div className="mt-12 h-20 flex items-center justify-center">
-            <RotatingText
-              texts={['convertem', 'vendem', 'performam', 'crescem', 'entregam', 'impactam']}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium font-mono tracking-wider"
-              mainClassName="justify-center"
-              elementLevelClassName="text-white"
-              rotationInterval={2500}
-              splitBy="characters"
-              staggerDuration={0.05}
-              staggerFrom="first"
-              transition={{
-                type: "spring",
-                damping: 25,
-                stiffness: 300,
-                mass: 0.5
-              }}
-              initial={{ 
-                y: 50, 
-                opacity: 0,
-                rotateX: -90,
-                filter: "blur(10px)"
-              }}
-              animate={{ 
-                y: 0, 
-                opacity: 1,
-                rotateX: 0,
-                filter: "blur(0px)"
-              }}
-              exit={{ 
-                y: -50, 
-                opacity: 0,
-                rotateX: 90,
-                filter: "blur(10px)"
-              }}
-            />
+          <div className="py-8 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium leading-none tracking-tight">
+            <h1 className="bg-gradient-to-br from-white to-purple-300/40 bg-clip-text text-transparent">
+              <span className="block pr-4">Desenvolvemos</span>
+              <span className="block">
+                sites que{' '}
+                <span className="inline-block relative" style={{ minHeight: '1.2em', verticalAlign: 'baseline' }}>
+                  <RotatingText
+                    texts={['convertem', 'vendem', 'performam', 'crescem', 'entregam', 'impactam']}
+                    className=""
+                    mainClassName="inline-block"
+                    elementLevelClassName="text-inherit"
+                    rotationInterval={2500}
+                    splitBy="characters"
+                    staggerDuration={0.05}
+                    staggerFrom="first"
+                    transition={{
+                      type: "spring",
+                      damping: 25,
+                      stiffness: 300,
+                      mass: 0.5
+                    }}
+                    initial={{ 
+                      y: 50, 
+                      opacity: 0,
+                      rotateX: -90,
+                      filter: "blur(10px)"
+                    }}
+                    animate={{ 
+                      y: 0, 
+                      opacity: 1,
+                      rotateX: 0,
+                      filter: "blur(0px)"
+                    }}
+                    exit={{ 
+                      y: -50, 
+                      opacity: 0,
+                      rotateX: 90,
+                      filter: "blur(10px)"
+                    }}
+                  />
+                </span>
+              </span>
+            </h1>
           </div>
         </motion.div>
       </div>
