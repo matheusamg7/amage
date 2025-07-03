@@ -107,22 +107,25 @@ const Hero = memo(function Hero() {
             <span className="text-sm font-normal tracking-wide flex">
               {'Sites Mágicos'.split('').map((char, index) => (
                 <motion.span
-                  key={index}
-                  className="inline-block"
+                  key={`${char}-${index}`}
+                  className="inline-block text-white"
                   initial={{ 
-                    opacity: 0.1, 
-                    color: 'rgb(82, 82, 91)',
+                    opacity: 0.4, 
+                    filter: 'brightness(0.5)',
                     textShadow: '0 0 0px rgba(255, 255, 255, 0)'
                   }}
                   animate={{ 
                     opacity: 1, 
-                    color: 'rgb(255, 255, 255)',
+                    filter: 'brightness(1)',
                     textShadow: '0 0 8px rgba(255, 255, 255, 0.5)'
                   }}
                   transition={{
                     duration: 0.6,
                     delay: 1.6 + (index * 0.06),
                     ease: [0.25, 0.1, 0.25, 1]
+                  }}
+                  style={{
+                    color: 'white'
                   }}
                 >
                   {char === ' ' ? '\u00A0' : char}
