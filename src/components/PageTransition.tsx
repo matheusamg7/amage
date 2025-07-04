@@ -31,7 +31,7 @@ const PageTransition = memo(function PageTransition({ onComplete }: PageTransiti
     <AnimatePresence>
       {isVisible && (
         <div className="fixed inset-0 z-[100] pointer-events-none">
-          <div className="absolute inset-0 flex">
+          <div className="absolute inset-0 flex" style={{ marginLeft: '-1px', marginRight: '-1px' }}>
             {Array.from({ length: numBlocks }).map((_, i) => {
               // Alterna a origem da animação para criar um efeito mais dinâmico
               const isEven = i % 2 === 0
@@ -50,8 +50,9 @@ const PageTransition = memo(function PageTransition({ onComplete }: PageTransiti
                   }}
                   style={{ 
                     originY: isEven ? 1 : 0, // Alterna origem (bottom/top)
-                    width: `${100 / numBlocks}%`, // Width exato ao invés de flex-1
-                    marginRight: '-1px', // Pequena sobreposição para evitar gaps
+                    width: `calc(${100 / numBlocks}% + 2px)`, // Width + margem extra para cobrir gaps
+                    marginLeft: i === 0 ? '1px' : '0', // Ajusta o primeiro bloco
+                    marginRight: '-1px', // Sobreposição para evitar gaps
                   }}
                 >
                   {/* Gradiente nos blocos para um visual mais interessante */}
