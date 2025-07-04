@@ -160,45 +160,20 @@ const Hero = memo(function Hero() {
           
           <div className="py-8 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium leading-none tracking-tight">
             <h1 className="bg-gradient-to-br from-white to-purple-300/40 bg-clip-text text-transparent">
-              <span className="block pr-4">Desenvolvemos</span>
-              <span className="block">
-                sites que{' '}
-                <span className="inline-block relative" style={{ minHeight: '1.2em', verticalAlign: 'baseline' }}>
-                  <RotatingText
-                    texts={['convertem', 'vendem', 'performam', 'crescem', 'entregam', 'impactam']}
-                    className=""
-                    mainClassName="inline-block"
-                    elementLevelClassName="text-inherit"
-                    rotationInterval={2500}
-                    splitBy="characters"
-                    staggerDuration={0.05}
-                    staggerFrom="first"
-                    transition={{
-                      type: "spring",
-                      damping: 25,
-                      stiffness: 300,
-                      mass: 0.5
-                    }}
-                    initial={{ 
-                      y: 50, 
-                      opacity: 0,
-                      rotateX: -90,
-                      filter: "blur(10px)"
-                    }}
-                    animate={{ 
-                      y: 0, 
-                      opacity: 1,
-                      rotateX: 0,
-                      filter: "blur(0px)"
-                    }}
-                    exit={{ 
-                      y: -50, 
-                      opacity: 0,
-                      rotateX: 90,
-                      filter: "blur(10px)"
-                    }}
-                  />
-                </span>
+              <span className="block">Desenvolvemos sites</span>
+              <span className="block -mt-4 sm:-mt-6 md:-mt-8 lg:-mt-12">
+                <RotatingText
+                  texts={['que convertem', 'que vendem', 'que performam', 'que crescem', 'que entregam', 'que impactam']}
+                  mainClassName="inline-block overflow-hidden py-2"
+                  splitLevelClassName="overflow-hidden pb-1"
+                  staggerFrom="last"
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  exit={{ y: "-120%" }}
+                  staggerDuration={0.025}
+                  transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                  rotationInterval={2500}
+                />
               </span>
             </h1>
           </div>
