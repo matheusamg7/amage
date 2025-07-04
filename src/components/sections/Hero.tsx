@@ -1,12 +1,11 @@
 'use client'
 
-import { memo, useState } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import PageTransition from '@/components/PageTransition'
 import Noise from '@/blocks/Animations/Noise/Noise'
 import { usePageTransition } from '@/contexts/PageTransitionContext'
-import RotatingText from '@/blocks/TextAnimations/RotatingText/RotatingText'
 import { ConfettiButton } from '@/components/magicui/confetti'
 
 const fadeInUp = {
@@ -20,8 +19,19 @@ const Hero = memo(function Hero() {
   const [clickCount, setClickCount] = useState(0)
   const [isBlocked, setIsBlocked] = useState(false)
   const [showMessage, setShowMessage] = useState(false)
+  const [currentTextIndex, setCurrentTextIndex] = useState(0)
   
-  const handleConfettiClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const rotatingTexts = ['que convertem', 'que vendem', 'que performam', 'que crescem', 'que entregam', 'que impactam']
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length)
+    }, 2500)
+    
+    return () => clearInterval(interval)
+  }, [])
+  
+  const handleConfettiClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isBlocked) {
       event.preventDefault()
       return
@@ -53,7 +63,7 @@ const Hero = memo(function Hero() {
       </div>
       
       {/* Overlay escuro para melhor contraste com texto */}
-      <div className="absolute inset-0 bg-black/30 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60 z-10" />
       
       {/* Noise overlay */}
       <div className="absolute inset-0 z-10 pointer-events-none mix-blend-overlay">
@@ -158,22 +168,31 @@ const Hero = memo(function Hero() {
           )}
         </div>
           
-          <div className="py-8 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium leading-none tracking-tight">
-            <h1 className="bg-gradient-to-br from-white to-purple-300/40 bg-clip-text text-transparent">
+          <div className="py-4 sm:py-6 md:py-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-medium leading-[1.1] tracking-tight">
+            <h1 className="bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
+                aria-label={`Desenvolvemos sites ${rotatingTexts[currentTextIndex]}`}
+                style={{ textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)' }}>
               <span className="block">Desenvolvemos sites</span>
-              <span className="block -mt-4 sm:-mt-6 md:-mt-8 lg:-mt-12">
-                <RotatingText
-                  texts={['que convertem', 'que vendem', 'que performam', 'que crescem', 'que entregam', 'que impactam']}
-                  mainClassName="inline-block overflow-hidden py-2"
-                  splitLevelClassName="overflow-hidden pb-1"
-                  staggerFrom="last"
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  exit={{ y: "-120%" }}
-                  staggerDuration={0.025}
-                  transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                  rotationInterval={2500}
-                />
+              <span className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6">
+                <span className="relative inline-block min-h-[1.4em] overflow-visible">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={currentTextIndex}
+                      className="block bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
+                      style={{ textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)' }}
+                      aria-live="polite"
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -30 }}
+                      transition={{ 
+                        duration: 0.5, 
+                        ease: [0.25, 0.1, 0.25, 1]
+                      }}
+                    >
+                      {rotatingTexts[currentTextIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
               </span>
             </h1>
           </div>
