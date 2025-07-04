@@ -273,7 +273,7 @@ export default function Header() {
                   duration: 3,
                   ease: "easeInOut",
                   repeat: Infinity,
-                  repeatDelay: 1,
+                  repeatDelay: 0.3,
                 }}
               />
               <div className="flex flex-col items-center justify-center h-full space-y-8">
