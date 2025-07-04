@@ -14,22 +14,100 @@ const fadeInUp = {
   transition: { duration: 0.8, ease: "easeOut", delay: 0.8 }
 }
 
+// Variants para animação elegante e profissional
+const titleVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.04,
+      delayChildren: 0.3 // Mais rápido ainda
+    }
+  }
+}
+
+const letterVariants = {
+  hidden: { 
+    opacity: 0,
+    y: 24,
+    scale: 0.94
+  },
+  visible: { 
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      damping: 25,
+      stiffness: 300,
+      mass: 0.8
+    }
+  }
+}
+
+const rotatingTextVariants = {
+  initial: { 
+    opacity: 0,
+    y: 20,
+    scale: 0.96
+  },
+  enter: { 
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      damping: 30,
+      stiffness: 400,
+      mass: 0.7,
+      delay: 1.6 // Aguarda "Desenvolvemos sites" terminar completamente
+    }
+  },
+  exit: { 
+    opacity: 0,
+    y: -16,
+    scale: 0.98,
+    transition: {
+      duration: 0.35,
+      ease: [0.4, 0.0, 0.2, 1]
+    }
+  }
+}
+
 const Hero = memo(function Hero() {
   const { isTransitionComplete } = usePageTransition()
   const [clickCount, setClickCount] = useState(0)
   const [isBlocked, setIsBlocked] = useState(false)
   const [showMessage, setShowMessage] = useState(false)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
+  const [hasInitialAnimationPlayed, setHasInitialAnimationPlayed] = useState(false)
   
   const rotatingTexts = ['que convertem', 'que vendem', 'que performam', 'que crescem', 'que entregam', 'que impactam']
   
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length)
-    }, 2500)
+    if (!isTransitionComplete) return
     
-    return () => clearInterval(interval)
-  }, [])
+    let interval: NodeJS.Timeout
+    let rotationDelay: NodeJS.Timeout
+    
+    // Delay inicial para a primeira animação
+    const initialDelay = setTimeout(() => {
+      setHasInitialAnimationPlayed(true)
+      
+      // Inicia a rotação após o primeiro texto rotativo aparecer
+      rotationDelay = setTimeout(() => {
+        interval = setInterval(() => {
+          setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length)
+        }, 2500)
+      }, 2000) // Após primeira animação completa
+    }, 800) // Mais rápido
+    
+    return () => {
+      clearTimeout(initialDelay)
+      clearTimeout(rotationDelay)
+      if (interval) clearInterval(interval)
+    }
+  }, [isTransitionComplete, rotatingTexts.length])
   
   const handleConfettiClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isBlocked) {
@@ -169,24 +247,54 @@ const Hero = memo(function Hero() {
         </div>
           
           <div className="py-4 sm:py-6 md:py-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-medium leading-[1.1] tracking-tight">
-            <h1 className="bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
-                aria-label={`Desenvolvemos sites ${rotatingTexts[currentTextIndex]}`}
-                style={{ textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)' }}>
-              <span className="block">Desenvolvemos sites</span>
+            <motion.h1 
+              className="bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
+              aria-label={`Desenvolvemos sites ${rotatingTexts[currentTextIndex]}`}
+              style={{ textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)' }}
+              variants={titleVariants}
+              initial="hidden"
+              animate={isTransitionComplete ? "visible" : "hidden"}
+            >
+              {/* Primeira linha com animação suave e elegante */}
+              <motion.span className="block" variants={titleVariants}>
+                {"Desenvolvemos sites".split("").map((char, index) => (
+                  <motion.span
+                    key={`char-${index}`}
+                    className="inline-block"
+                    variants={letterVariants}
+                    style={{
+                      display: char === " " ? "inline" : "inline-block",
+                      width: char === " " ? "0.3em" : "auto"
+                    }}
+                  >
+                    {char === " " ? "\u00A0" : char}
+                  </motion.span>
+                ))}
+              </motion.span>
+              
+              {/* Segunda linha com texto rotativo */}
               <span className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6">
                 <span className="relative inline-block min-h-[1.4em] overflow-visible">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={currentTextIndex}
                       className="block bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
-                      style={{ textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)' }}
+                      style={{ 
+                        textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)'
+                      }}
                       aria-live="polite"
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -30 }}
-                      transition={{ 
+                      initial={hasInitialAnimationPlayed ? { opacity: 0, y: 30 } : { opacity: 0, y: 20, scale: 0.96 }}
+                      animate={hasInitialAnimationPlayed ? { opacity: 1, y: 0 } : (isTransitionComplete ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.96 })}
+                      exit={{ opacity: 0, y: -16, scale: 0.98 }}
+                      transition={hasInitialAnimationPlayed ? { 
                         duration: 0.5, 
                         ease: [0.25, 0.1, 0.25, 1]
+                      } : {
+                        type: "spring",
+                        damping: 30,
+                        stiffness: 400,
+                        mass: 0.7,
+                        delay: 2.1 // Aguarda "Desenvolvemos sites" terminar completamente
                       }}
                     >
                       {rotatingTexts[currentTextIndex]}
@@ -194,7 +302,7 @@ const Hero = memo(function Hero() {
                   </AnimatePresence>
                 </span>
               </span>
-            </h1>
+            </motion.h1>
           </div>
         </motion.div>
       </div>
