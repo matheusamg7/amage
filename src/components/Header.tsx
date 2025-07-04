@@ -253,7 +253,7 @@ export default function Header() {
             
             {/* Menu Content */}
             <motion.div
-              className="absolute top-0 right-0 h-full w-80 bg-black/95 backdrop-blur-md border-l border-white/10"
+              className="absolute top-0 right-0 h-full w-72 bg-black/95 backdrop-blur-md border-l border-white/10 overflow-hidden"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -263,6 +263,19 @@ export default function Header() {
                 damping: 30 
               }}
             >
+              {/* Animated Border Light */}
+              <motion.div
+                className="absolute left-0 top-0 w-0.5 h-20 bg-gradient-to-b from-transparent via-purple-400 to-transparent"
+                animate={{
+                  y: [0, 'calc(100vh - 80px)', 0],
+                }}
+                transition={{
+                  duration: 3,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatDelay: 1,
+                }}
+              />
               <div className="flex flex-col items-center justify-center h-full space-y-8">
                 {navItems.map((item, index) => {
                   const isActive = item.href === '/blog' 
