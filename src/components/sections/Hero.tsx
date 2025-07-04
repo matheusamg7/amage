@@ -7,6 +7,7 @@ import PageTransition from '@/components/PageTransition'
 import Noise from '@/blocks/Animations/Noise/Noise'
 import { usePageTransition } from '@/contexts/PageTransitionContext'
 import { ConfettiButton } from '@/components/magicui/confetti'
+import { InteractiveHoverButton } from '@/components/magicui/interactive-hover-button'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -45,31 +46,30 @@ const letterVariants = {
   }
 }
 
-const rotatingTextVariants = {
-  initial: { 
-    opacity: 0,
-    y: 20,
-    scale: 0.96
-  },
-  enter: { 
+// Variants para os botões CTA
+const ctaButtonsVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     transition: {
       type: "spring",
-      damping: 30,
-      stiffness: 400,
-      mass: 0.7,
-      delay: 1.6 // Aguarda "Desenvolvemos sites" terminar completamente
+      damping: 25,
+      stiffness: 300,
+      mass: 0.8,
+      delay: 2.8 // Aparece após o texto rotativo
     }
-  },
-  exit: { 
-    opacity: 0,
-    y: -16,
-    scale: 0.98,
+  }
+}
+
+const ctaContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
     transition: {
-      duration: 0.35,
-      ease: [0.4, 0.0, 0.2, 1]
+      staggerChildren: 0.15,
+      delayChildren: 2.8
     }
   }
 }
@@ -303,6 +303,44 @@ const Hero = memo(function Hero() {
                 </span>
               </span>
             </motion.h1>
+            
+            {/* Botões CTA */}
+            <motion.div 
+              className="mt-8 sm:mt-12 md:mt-16 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center"
+              variants={ctaContainerVariants}
+              initial="hidden"
+              animate={isTransitionComplete ? "visible" : "hidden"}
+            >
+              <motion.div
+                variants={ctaButtonsVariants}
+                className="inline-flex"
+              >
+                <InteractiveHoverButton
+                  onClick={() => window.location.href = '#contato'}
+                  className="bg-gradient-to-r from-purple-600 to-purple-700 border-purple-500/50 text-white hover:shadow-xl hover:shadow-purple-500/30 text-base font-medium tracking-wide [&>div>div]:bg-white [&>div:last-child]:text-purple-600"
+                  style={{ padding: '10px 40px' }}
+                >
+                  Começar Projeto
+                </InteractiveHoverButton>
+              </motion.div>
+              
+              <motion.a
+                href="#projetos"
+                variants={ctaButtonsVariants}
+                className="group relative inline-flex items-center gap-3 bg-transparent border border-purple-500/50 text-purple-300 rounded-full transition-all duration-300 hover:border-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/20 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black"
+                style={{ padding: '10px 40px' }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-purple-700/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></span>
+                <span className="relative z-10 text-base font-medium tracking-wide flex items-center gap-3">
+                  Ver Nossos Projetos
+                  <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0l-4-4m4 4l-4 4" />
+                  </svg>
+                </span>
+              </motion.a>
+            </motion.div>
           </div>
         </motion.div>
       </div>
