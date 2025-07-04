@@ -161,7 +161,7 @@ const Hero = memo(function Hero() {
       <div className="relative z-20 h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
         <motion.div
           {...(isTransitionComplete ? fadeInUp : { initial: { opacity: 0 } })}
-          className="text-center max-w-7xl mx-auto -translate-y-28"
+          className="text-center max-w-7xl mx-auto -translate-y-16"
         >
           {/* Badge Alta Performance */}
           <div className="relative -translate-y-4">
@@ -304,9 +304,12 @@ const Hero = memo(function Hero() {
               </span>
             </motion.h1>
             
+            {/* Espaçador */}
+            <div className="h-4 sm:h-6 md:h-8" />
+            
             {/* Botões CTA */}
             <motion.div 
-              className="mt-8 sm:mt-12 md:mt-16 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center"
               variants={ctaContainerVariants}
               initial="hidden"
               animate={isTransitionComplete ? "visible" : "hidden"}
