@@ -40,13 +40,13 @@ body {
   min-width: 100%;
 }
 
-/* Safe area for modern devices */
-@supports (padding: max(0px)) {
+/* Safe area for modern devices - Removido pois estava causando problemas de alinhamento */
+/* @supports (padding: max(0px)) {
   body {
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
   }
-}
+} */
 
 /* Font utility classes */
 .font-hubot {
