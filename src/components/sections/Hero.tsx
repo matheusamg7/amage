@@ -311,9 +311,22 @@ const Hero = memo(function Hero() {
             {/* Espaçador */}
             <div className="h-4 sm:h-6 md:h-8" />
             
+            {/* Subtítulo */}
+            <motion.p
+              className="text-lg sm:text-xl md:text-2xl text-gray-300 font-normal"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isTransitionComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 2.4 }}
+            >
+              Seu negócio merece estar bem representado na internet.
+            </motion.p>
+            
+            {/* Espaçador */}
+            <div className="h-4 sm:h-6 md:h-8" />
+            
             {/* Botões CTA */}
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center -translate-y-3 sm:-translate-y-4 md:-translate-y-5"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center"
               variants={ctaContainerVariants}
               initial="hidden"
               animate={isTransitionComplete ? "visible" : "hidden"}
