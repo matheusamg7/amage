@@ -276,7 +276,7 @@ const Hero = memo(function Hero() {
               </motion.span>
               
               {/* Segunda linha com texto rotativo */}
-              <span className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6">
+              <span className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6" style={{ transform: 'translateY(-20px)' }}>
                 <span className="relative inline-block min-h-[1.4em] overflow-visible">
                   <AnimatePresence mode="wait">
                     <motion.span
@@ -314,6 +314,7 @@ const Hero = memo(function Hero() {
             {/* Botões CTA */}
             <motion.div 
               className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center"
+              style={{ transform: 'translateY(-20px)' }}
               variants={ctaContainerVariants}
               initial="hidden"
               animate={isTransitionComplete ? "visible" : "hidden"}
