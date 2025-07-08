@@ -8,6 +8,7 @@ import Noise from '@/blocks/Animations/Noise/Noise'
 import { usePageTransition } from '@/contexts/PageTransitionContext'
 import { ConfettiButton } from '@/components/magicui/confetti'
 import { InteractiveHoverButton } from '@/components/magicui/interactive-hover-button'
+import TypewriterText from '@/components/TypewriterText'
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -81,6 +82,7 @@ const Hero = memo(function Hero() {
   const [showMessage, setShowMessage] = useState(false)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
   const [hasInitialAnimationPlayed, setHasInitialAnimationPlayed] = useState(false)
+  const [isTextExiting, setIsTextExiting] = useState(false)
   
   const rotatingTexts = ['convertem', 'vendem', 'performam', 'crescem', 'entregam', 'impactam']
   
@@ -95,26 +97,27 @@ const Hero = memo(function Hero() {
     if (!isTransitionComplete) return
     
     let interval: NodeJS.Timeout
-    let rotationDelay: NodeJS.Timeout
     
     // Delay inicial para a primeira animação
     const initialDelay = setTimeout(() => {
+      // Ativa o typewriter com a primeira palavra
       setHasInitialAnimationPlayed(true)
       
-      // Inicia a rotação após o primeiro texto rotativo aparecer
-      rotationDelay = setTimeout(() => {
-        interval = setInterval(() => {
+      // Inicia o ciclo de rotação
+      interval = setInterval(() => {
+        setIsTextExiting(true)
+        setTimeout(() => {
           setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length)
-        }, 2500)
-      }, 2000) // Após primeira animação completa
-    }, 800) // Mais rápido
+          setIsTextExiting(false)
+        }, rotatingTexts[currentTextIndex].length * 40 + 100)
+      }, 1000) // Ciclo de 1 segundo como solicitado
+    }, 2600) // Aguarda "que" aparecer e começa logo depois
     
     return () => {
       clearTimeout(initialDelay)
-      clearTimeout(rotationDelay)
       if (interval) clearInterval(interval)
     }
-  }, [isTransitionComplete, rotatingTexts.length])
+  }, [isTransitionComplete, rotatingTexts.length, currentTextIndex, rotatingTexts])
   
   const handleConfettiClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isBlocked) {
@@ -280,50 +283,28 @@ const Hero = memo(function Hero() {
               </motion.span>
               
               {/* Segunda linha com texto rotativo */}
-              <span className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6 -translate-y-3 sm:-translate-y-4 md:-translate-y-5">
-                <span className="relative inline-flex items-baseline">
-                  {/* "que" estático */}
-                  <motion.span
-                    className="font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
-                    style={titleTextStyle}
-                    initial={{ opacity: 0 }}
-                    animate={isTransitionComplete ? { opacity: 1 } : { opacity: 0 }}
-                    transition={{ duration: 0.8, delay: 2.1 }}
-                  >
-                    que
-                  </motion.span>
-                  
-                  {/* Espaço entre "que" e palavras */}
-                  <span className="inline-block" style={{ width: '0.3em' }}>&nbsp;</span>
-                  
-                  {/* Palavras rotativas */}
-                  <span className="relative inline-block min-h-[1.4em] overflow-visible">
-                    <AnimatePresence mode="wait">
-                      <motion.span
-                        key={currentTextIndex}
-                        className="inline-block font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
-                        style={titleTextStyle}
-                        aria-live="polite"
-                        initial={hasInitialAnimationPlayed ? { opacity: 0, y: 30 } : { opacity: 0, y: 20, scale: 0.96 }}
-                        animate={hasInitialAnimationPlayed ? { opacity: 1, y: 0 } : (isTransitionComplete ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.96 })}
-                        exit={{ opacity: 0, y: -16, scale: 0.98 }}
-                        transition={hasInitialAnimationPlayed ? { 
-                          duration: 0.5, 
-                          ease: [0.25, 0.1, 0.25, 1]
-                        } : {
-                          type: "spring",
-                          damping: 30,
-                          stiffness: 400,
-                          mass: 0.7,
-                          delay: 2.1 // Aguarda "Desenvolvemos sites" terminar completamente
-                        }}
-                      >
-                        {rotatingTexts[currentTextIndex]}
-                      </motion.span>
-                    </AnimatePresence>
+              <motion.span 
+                className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6 -translate-y-3 sm:-translate-y-4 md:-translate-y-5 font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
+                style={titleTextStyle}
+              >
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  animate={isTransitionComplete ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.6, delay: 2.0 }}
+                >
+                  que{' '}
+                  <span className="inline-block" style={{ minWidth: '9ch', textAlign: 'left' }}>
+                    {hasInitialAnimationPlayed ? (
+                      <TypewriterText
+                        text={rotatingTexts[currentTextIndex]}
+                        isExiting={isTextExiting}
+                        className=""
+                        style={{}}
+                      />
+                    ) : null}
                   </span>
-                </span>
-              </span>
+                </motion.span>
+              </motion.span>
             </motion.h1>
             
             {/* Espaçador */}
