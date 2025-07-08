@@ -37,7 +37,7 @@ export default function Logo() {
         type: "spring",
         stiffness: 100,
         damping: 20,
-        staggerChildren: 0.06,
+        staggerChildren: 0.12,
         delayChildren: 0
       }
     },
@@ -65,10 +65,10 @@ export default function Logo() {
       filter: "blur(0px)",
       transition: {
         type: "spring",
-        stiffness: 60,
-        damping: 15,
-        mass: 1.5,
-        velocity: 2
+        stiffness: 30,
+        damping: 10,
+        mass: 3,
+        velocity: 0.5
       }
     }
   }
