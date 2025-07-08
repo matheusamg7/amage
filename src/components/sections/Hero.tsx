@@ -82,7 +82,14 @@ const Hero = memo(function Hero() {
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
   const [hasInitialAnimationPlayed, setHasInitialAnimationPlayed] = useState(false)
   
-  const rotatingTexts = ['que convertem', 'que vendem', 'que performam', 'que crescem', 'que entregam', 'que impactam']
+  const rotatingTexts = ['convertem', 'vendem', 'performam', 'crescem', 'entregam', 'impactam']
+  
+  // Estilos comuns para o título
+  const titleTextStyle = {
+    textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)',
+    letterSpacing: 'calc(-0.03em)',
+    fontWeight: 500
+  }
   
   useEffect(() => {
     if (!isTransitionComplete) return
@@ -248,12 +255,9 @@ const Hero = memo(function Hero() {
           
           <div className="py-4 sm:py-6 md:py-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-medium leading-[1.1] tracking-tight">
             <motion.h1 
-              className="font-figtree font-medium bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
-              aria-label={`Desenvolvemos sites ${rotatingTexts[currentTextIndex]}`}
-              style={{ 
-                textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)',
-                letterSpacing: '-3px'
-              }}
+              className="font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
+              aria-label={`Desenvolvemos sites que ${rotatingTexts[currentTextIndex]}`}
+              style={titleTextStyle}
               variants={titleVariants}
               initial="hidden"
               animate={isTransitionComplete ? "visible" : "hidden"}
@@ -276,34 +280,48 @@ const Hero = memo(function Hero() {
               </motion.span>
               
               {/* Segunda linha com texto rotativo */}
-              <span className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6" style={{ transform: 'translateY(-20px)' }}>
-                <span className="relative inline-block min-h-[1.4em] overflow-visible">
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={currentTextIndex}
-                      className="block font-figtree font-medium bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
-                      style={{ 
-                        textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)',
-                        letterSpacing: '-3px'
-                      }}
-                      aria-live="polite"
-                      initial={hasInitialAnimationPlayed ? { opacity: 0, y: 30 } : { opacity: 0, y: 20, scale: 0.96 }}
-                      animate={hasInitialAnimationPlayed ? { opacity: 1, y: 0 } : (isTransitionComplete ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.96 })}
-                      exit={{ opacity: 0, y: -16, scale: 0.98 }}
-                      transition={hasInitialAnimationPlayed ? { 
-                        duration: 0.5, 
-                        ease: [0.25, 0.1, 0.25, 1]
-                      } : {
-                        type: "spring",
-                        damping: 30,
-                        stiffness: 400,
-                        mass: 0.7,
-                        delay: 2.1 // Aguarda "Desenvolvemos sites" terminar completamente
-                      }}
-                    >
-                      {rotatingTexts[currentTextIndex]}
-                    </motion.span>
-                  </AnimatePresence>
+              <span className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6 -translate-y-3 sm:-translate-y-4 md:-translate-y-5">
+                <span className="relative inline-flex items-baseline">
+                  {/* "que" estático */}
+                  <motion.span
+                    className="font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
+                    style={titleTextStyle}
+                    initial={{ opacity: 0 }}
+                    animate={isTransitionComplete ? { opacity: 1 } : { opacity: 0 }}
+                    transition={{ duration: 0.8, delay: 2.1 }}
+                  >
+                    que
+                  </motion.span>
+                  
+                  {/* Espaço entre "que" e palavras */}
+                  <span className="inline-block" style={{ width: '0.3em' }}>&nbsp;</span>
+                  
+                  {/* Palavras rotativas */}
+                  <span className="relative inline-block min-h-[1.4em] overflow-visible">
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={currentTextIndex}
+                        className="inline-block font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
+                        style={titleTextStyle}
+                        aria-live="polite"
+                        initial={hasInitialAnimationPlayed ? { opacity: 0, y: 30 } : { opacity: 0, y: 20, scale: 0.96 }}
+                        animate={hasInitialAnimationPlayed ? { opacity: 1, y: 0 } : (isTransitionComplete ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.96 })}
+                        exit={{ opacity: 0, y: -16, scale: 0.98 }}
+                        transition={hasInitialAnimationPlayed ? { 
+                          duration: 0.5, 
+                          ease: [0.25, 0.1, 0.25, 1]
+                        } : {
+                          type: "spring",
+                          damping: 30,
+                          stiffness: 400,
+                          mass: 0.7,
+                          delay: 2.1 // Aguarda "Desenvolvemos sites" terminar completamente
+                        }}
+                      >
+                        {rotatingTexts[currentTextIndex]}
+                      </motion.span>
+                    </AnimatePresence>
+                  </span>
                 </span>
               </span>
             </motion.h1>
@@ -313,8 +331,7 @@ const Hero = memo(function Hero() {
             
             {/* Botões CTA */}
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center"
-              style={{ transform: 'translateY(-20px)' }}
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center -translate-y-3 sm:-translate-y-4 md:-translate-y-5"
               variants={ctaContainerVariants}
               initial="hidden"
               animate={isTransitionComplete ? "visible" : "hidden"}

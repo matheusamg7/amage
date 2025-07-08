@@ -32,7 +32,9 @@ const inter = Inter({
 const figtree = Figtree({
   variable: "--font-figtree",
   subsets: ["latin"],
-  weight: ["500"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  fallback: ["Inter", "system-ui", "sans-serif"],
 });
 
 export const metadata: Metadata = {
