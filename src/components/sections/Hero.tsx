@@ -152,7 +152,6 @@ const Hero = memo(function Hero() {
     if (!isTransitionComplete) return
     
     let interval: NodeJS.Timeout
-    let rotationDelay: NodeJS.Timeout
     
     // Delay inicial para começar a rotação após a primeira palavra aparecer
     const initialDelay = setTimeout(() => {
@@ -171,7 +170,6 @@ const Hero = memo(function Hero() {
     
     return () => {
       clearTimeout(initialDelay)
-      clearTimeout(rotationDelay)
       if (interval) clearInterval(interval)
     }
   }, [isTransitionComplete, rotatingTexts.length])

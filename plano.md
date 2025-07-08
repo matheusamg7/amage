@@ -11,6 +11,7 @@
   - Espaçamentos ajustados
   - Cores e fontes definidas
   - Botões CTA configurados
+<<<<<<< HEAD
   - Badge com confete implementado
 
 ### 🚧 Expertise Section
@@ -25,3 +26,6 @@
     - Removido padding lateral do body no CSS global
     - Adicionadas classes de centralização (flex items-center justify-center)
     - Alinhamento corrigido
+=======
+  - Badge com confete implementado
+>>>>>>> f3dbdfd (Hero concluída 1)
