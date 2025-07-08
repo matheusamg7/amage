@@ -81,7 +81,6 @@ const Hero = memo(function Hero() {
   const [isBlocked, setIsBlocked] = useState(false)
   const [showMessage, setShowMessage] = useState(false)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
-  const [hasInitialAnimationPlayed, setHasInitialAnimationPlayed] = useState(false)
   const [isTextExiting, setIsTextExiting] = useState(false)
   
   const rotatingTexts = ['convertem', 'vendem', 'performam', 'crescem', 'entregam', 'impactam']
@@ -98,20 +97,20 @@ const Hero = memo(function Hero() {
     
     let interval: NodeJS.Timeout
     
-    // Delay inicial para a primeira animação
+    // Delay inicial para começar a rotação após a primeira palavra aparecer
     const initialDelay = setTimeout(() => {
-      // Ativa o typewriter com a primeira palavra
-      setHasInitialAnimationPlayed(true)
-      
-      // Inicia o ciclo de rotação
-      interval = setInterval(() => {
-        setIsTextExiting(true)
-        setTimeout(() => {
-          setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length)
-          setIsTextExiting(false)
-        }, rotatingTexts[currentTextIndex].length * 40 + 100)
-      }, 1000) // Ciclo de 1 segundo como solicitado
-    }, 2600) // Aguarda "que" aparecer e começa logo depois
+      // Aguarda a primeira palavra ser digitada (convertem = 9 chars * 40ms = 360ms + margem)
+      setTimeout(() => {
+        // Inicia o ciclo de rotação
+        interval = setInterval(() => {
+          setIsTextExiting(true)
+          setTimeout(() => {
+            setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length)
+            setIsTextExiting(false)
+          }, rotatingTexts[currentTextIndex].length * 40 + 100)
+        }, 1000) // Ciclo de 1 segundo
+      }, 500) // Aguarda a primeira palavra ser digitada
+    }, 2000) // Sincronizado com o aparecimento do "que"
     
     return () => {
       clearTimeout(initialDelay)
@@ -293,16 +292,12 @@ const Hero = memo(function Hero() {
                   transition={{ duration: 0.6, delay: 2.0 }}
                 >
                   que{' '}
-                  {hasInitialAnimationPlayed ? (
-                    <TypewriterText
-                      text={rotatingTexts[currentTextIndex]}
-                      isExiting={isTextExiting}
-                      className=""
-                      style={{}}
-                    />
-                  ) : (
-                    <span style={{ display: 'inline-block', width: '9ch' }}>&nbsp;</span>
-                  )}
+                  <TypewriterText
+                    text={rotatingTexts[currentTextIndex]}
+                    isExiting={isTextExiting}
+                    className=""
+                    style={{}}
+                  />
                 </motion.span>
               </motion.span>
             </motion.h1>
