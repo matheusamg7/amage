@@ -136,7 +136,7 @@ const Hero = memo(function Hero() {
           priority
           quality={85}
           sizes="100vw"
-          className="object-cover object-center blur-sm"
+          className="object-cover object-center blur-[2.8px]"
         />
       </div>
       
@@ -246,11 +246,14 @@ const Hero = memo(function Hero() {
           )}
         </div>
           
-          <div className="py-4 sm:py-6 md:py-8 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-medium leading-[1.1] tracking-tight">
+          <div className="py-4 sm:py-6 md:py-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-medium leading-[1.1] tracking-tight">
             <motion.h1 
-              className="bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
+              className="font-figtree font-medium bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
               aria-label={`Desenvolvemos sites ${rotatingTexts[currentTextIndex]}`}
-              style={{ textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)' }}
+              style={{ 
+                textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)',
+                letterSpacing: '-3px'
+              }}
               variants={titleVariants}
               initial="hidden"
               animate={isTransitionComplete ? "visible" : "hidden"}
@@ -278,9 +281,10 @@ const Hero = memo(function Hero() {
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={currentTextIndex}
-                      className="block bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
+                      className="block font-figtree font-medium bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
                       style={{ 
-                        textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)'
+                        textShadow: '0 2px 30px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)',
+                        letterSpacing: '-3px'
                       }}
                       aria-live="polite"
                       initial={hasInitialAnimationPlayed ? { opacity: 0, y: 30 } : { opacity: 0, y: 20, scale: 0.96 }}

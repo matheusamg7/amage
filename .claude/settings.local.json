@@ -17,7 +17,8 @@
       "mcp__ide__executeCode",
       "mcp__ide__getDiagnostics",
       "Bash(grep:*)",
-      "WebFetch(domain:magicui.design)"
+      "WebFetch(domain:magicui.design)",
+      "WebFetch(domain:chakra-ui.com)"
     ],
     "deny": []
   }
