@@ -284,25 +284,26 @@ const Hero = memo(function Hero() {
               
               {/* Segunda linha com texto rotativo */}
               <motion.span 
-                className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6 -translate-y-3 sm:-translate-y-4 md:-translate-y-5 font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
+                className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6 -translate-y-3 sm:-translate-y-4 md:-translate-y-5 text-center font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
                 style={titleTextStyle}
               >
                 <motion.span
+                  className="inline-block"
                   initial={{ opacity: 0 }}
                   animate={isTransitionComplete ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.6, delay: 2.0 }}
                 >
                   que{' '}
-                  <span className="inline-block" style={{ minWidth: '9ch', textAlign: 'left' }}>
-                    {hasInitialAnimationPlayed ? (
-                      <TypewriterText
-                        text={rotatingTexts[currentTextIndex]}
-                        isExiting={isTextExiting}
-                        className=""
-                        style={{}}
-                      />
-                    ) : null}
-                  </span>
+                  {hasInitialAnimationPlayed ? (
+                    <TypewriterText
+                      text={rotatingTexts[currentTextIndex]}
+                      isExiting={isTextExiting}
+                      className=""
+                      style={{}}
+                    />
+                  ) : (
+                    <span style={{ display: 'inline-block', width: '9ch' }}>&nbsp;</span>
+                  )}
                 </motion.span>
               </motion.span>
             </motion.h1>
