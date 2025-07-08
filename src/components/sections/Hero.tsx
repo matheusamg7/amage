@@ -256,15 +256,14 @@ const Hero = memo(function Hero() {
           )}
         </div>
           
-          <div className="py-4 sm:py-6 md:py-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-medium leading-[1.1] tracking-tight">
-            <motion.h1 
-              className="font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
-              aria-label={`Desenvolvemos sites que ${rotatingTexts[currentTextIndex]}`}
-              style={titleTextStyle}
-              variants={titleVariants}
-              initial="hidden"
-              animate={isTransitionComplete ? "visible" : "hidden"}
-            >
+          <motion.h1 
+            className="py-4 sm:py-6 md:py-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-medium leading-[1.1] tracking-tight font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
+            aria-label={`Desenvolvemos sites que ${rotatingTexts[currentTextIndex]}`}
+            style={titleTextStyle}
+            variants={titleVariants}
+            initial="hidden"
+            animate={isTransitionComplete ? "visible" : "hidden"}
+          >
               {/* Primeira linha com animação suave e elegante */}
               <motion.span className="block" variants={titleVariants}>
                 {"Desenvolvemos sites".split("").map((char, index) => (
@@ -308,12 +307,9 @@ const Hero = memo(function Hero() {
               </motion.span>
             </motion.h1>
             
-            {/* Espaçador */}
-            <div className="h-4 sm:h-6 md:h-8" />
-            
             {/* Subtítulo */}
             <motion.p
-              className="text-lg sm:text-xl md:text-2xl text-gray-300 font-normal"
+              className="text-lg sm:text-xl md:text-2xl text-gray-300 font-normal tracking-wide font-figtree"
               initial={{ opacity: 0, y: 20 }}
               animate={isTransitionComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 2.4 }}
@@ -365,7 +361,6 @@ const Hero = memo(function Hero() {
                 </motion.a>
               </motion.div>
             </motion.div>
-          </div>
         </motion.div>
       </div>
     </section>
