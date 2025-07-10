@@ -3,11 +3,49 @@
 :root {
   --background: #000000;
   --foreground: #ffffff;
+  
+  /* Primary colors - Purple theme */
+  --primary: #6F278B;
+  --primary-foreground: #ffffff;
+  
+  /* Muted colors */
+  --muted: #1a1a1a;
+  --muted-foreground: #a1a1aa;
+  
+  /* Card colors */
+  --card: #0a0a0a;
+  --card-foreground: #ffffff;
+  
+  /* Border colors */
+  --border: #27272a;
+  
+  /* Accent colors */
+  --accent: #6F278B;
+  --accent-foreground: #ffffff;
+  
+  /* Destructive colors */
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  
+  /* Ring color for focus states */
+  --ring: #6F278B;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-hubot: var(--font-hubot-sans);
@@ -108,4 +146,45 @@ body {
 
 .animate-star-movement-top {
   animation: star-movement-top linear infinite alternate;
+}
+
+/* Gradient animation for service cards */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Utility classes for Tailwind v4 compatibility */
+@layer utilities {
+  .text-primary {
+    color: var(--primary);
+  }
+  .bg-primary {
+    background-color: var(--primary);
+  }
+  .border-primary {
+    border-color: var(--primary);
+  }
+  .text-muted-foreground {
+    color: var(--muted-foreground);
+  }
+  .bg-muted {
+    background-color: var(--muted);
+  }
+  .text-card-foreground {
+    color: var(--card-foreground);
+  }
+  .bg-card {
+    background-color: var(--card);
+  }
+  .border-border {
+    border-color: var(--border);
+  }
 }
