@@ -58,8 +58,10 @@ export default function Expertise() {
   ]
 
   return (
-    <section id="expertise" ref={ref} className="min-h-screen flex items-center justify-center px-8 py-20">
+    <section id="expertise" ref={ref} className="min-h-screen flex flex-col items-center justify-start px-8 pt-8 pb-20">
       <div className="w-full max-w-7xl mx-auto">
+        {/* Top Spacer */}
+        <div className="h-8 md:h-12" />
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -74,6 +76,9 @@ export default function Expertise() {
             />
           </h2>
         </motion.div>
+
+        {/* Spacer */}
+        <div className="h-8 md:h-12" />
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
