@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 const services = [
   {
@@ -58,6 +58,19 @@ const benefits = [
 export default function Services() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [isDesktop, setIsDesktop] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkSize = () => {
+      setIsDesktop(window.innerWidth > 1024)
+      setIsMobile(window.innerWidth <= 640)
+    }
+    
+    checkSize()
+    window.addEventListener('resize', checkSize)
+    return () => window.removeEventListener('resize', checkSize)
+  }, [])
 
   return (
     <>
@@ -234,7 +247,7 @@ export default function Services() {
               display: 'block', 
               position: 'relative',
               fontWeight: 500,
-              color: '#6F278B'
+              color: '#fff'
             }}>
               Criação de:
               <motion.span
@@ -261,7 +274,7 @@ export default function Services() {
             transition={{ duration: 1, delay: 0.3 }}
             style={{
               display: 'grid',
-              gridTemplateColumns: window.innerWidth <= 1024 ? '1fr' : 'repeat(3, 1fr)',
+              gridTemplateColumns: isDesktop ? 'repeat(3, 1fr)' : '1fr',
               gap: 0,
               marginBottom: '160px'
             }}
@@ -272,9 +285,9 @@ export default function Services() {
                 key={service.number}
                 className="service-item"
                 style={{
-                  padding: window.innerWidth <= 640 ? '40px 20px' : window.innerWidth <= 1024 ? '60px 40px' : '80px 60px',
-                  borderRight: window.innerWidth > 1024 && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
-                  borderBottom: window.innerWidth <= 1024 && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
+                  padding: isMobile ? '40px 20px' : !isDesktop ? '60px 40px' : '80px 60px',
+                  borderRight: isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
+                  borderBottom: !isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
                   position: 'relative',
                   cursor: 'pointer',
                   transition: 'all 0.6s cubic-bezier(0.23, 1, 0.320, 1)'
@@ -419,7 +432,7 @@ export default function Services() {
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
                   style={{
-                    flex: window.innerWidth <= 640 ? '0 0 100%' : '0 0 calc(50% - 15px)',
+                    flex: isMobile ? '0 0 100%' : '0 0 calc(50% - 15px)',
                     textAlign: 'left',
                     padding: '30px',
                     border: '1px solid rgba(111, 39, 139, 0.1)',
