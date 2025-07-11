@@ -1,7 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useInView } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
 
 const services = [
@@ -56,10 +55,40 @@ const benefits = [
 ]
 
 export default function Services() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const containerRef = useRef(null)
+  const stickyRef = useRef(null)
   const [isDesktop, setIsDesktop] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
+
+  // Scroll progress da seção inteira
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  })
+
+  // Transforms baseados no scroll progress
+  // Título - aparece antes do sticky começar
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.05], [0, 1])
+  const titleY = useTransform(scrollYProgress, [0, 0.05], [100, 0])
+  
+  // Cards de serviços - aparecem durante o sticky (25% a 60% do scroll)
+  const card1Opacity = useTransform(scrollYProgress, [0.25, 0.35], [0, 1])
+  const card1Y = useTransform(scrollYProgress, [0.25, 0.35], [100, 0])
+  
+  const card2Opacity = useTransform(scrollYProgress, [0.35, 0.45], [0, 1])
+  const card2Y = useTransform(scrollYProgress, [0.35, 0.45], [100, 0])
+  
+  const card3Opacity = useTransform(scrollYProgress, [0.45, 0.55], [0, 1])
+  const card3Y = useTransform(scrollYProgress, [0.45, 0.55], [100, 0])
+  
+  // Seção de benefícios - aparece após o sticky (70% a 80%)
+  const benefitsOpacity = useTransform(scrollYProgress, [0.7, 0.8], [0, 1])
+  const benefitsY = useTransform(scrollYProgress, [0.7, 0.8], [100, 0])
+  
+  // Background effects
+  const bgRotate = useTransform(scrollYProgress, [0.2, 0.6], [0, 180])
+  const bgScale = useTransform(scrollYProgress, [0.2, 0.4, 0.6], [1, 1.2, 1])
+  
 
   useEffect(() => {
     const checkSize = () => {
@@ -71,6 +100,12 @@ export default function Services() {
     window.addEventListener('resize', checkSize)
     return () => window.removeEventListener('resize', checkSize)
   }, [])
+
+  const cardTransforms = [
+    { opacity: card1Opacity, y: card1Y },
+    { opacity: card2Opacity, y: card2Y },
+    { opacity: card3Opacity, y: card3Y }
+  ]
 
   return (
     <>
@@ -84,6 +119,7 @@ export default function Services() {
         .services-section {
           font-family: 'Outfit', var(--font-outfit), sans-serif !important;
         }
+        
         
         /* Reset para elementos específicos */
         .services-section h1,
@@ -116,11 +152,6 @@ export default function Services() {
           }
         }
         
-        /* Expand width animation */
-        @keyframes expandWidth {
-          to { transform: scaleX(1); }
-        }
-        
         /* Responsive styles */
         @media (max-width: 1024px) {
           .services-grid {
@@ -140,7 +171,7 @@ export default function Services() {
         
         @media (max-width: 640px) {
           .services-section h1 {
-            font-size: 3rem !important;
+            font-size: 2rem !important;
             margin-bottom: 80px !important;
           }
           
@@ -154,92 +185,39 @@ export default function Services() {
         }
       `}</style>
 
+      {/* Container que define a altura do scroll */}
       <section 
-        id="services" 
-        ref={ref} 
+        ref={containerRef}
         className="services-section"
         style={{
           position: 'relative',
-          minHeight: '100vh',
-          padding: '160px 20px',
-          overflow: 'hidden',
-          background: '#000',
-          color: '#fff'
+          height: '400vh',
+          background: '#000'
         }}
       >
-        {/* Animated Background Gradient */}
-        <motion.div
-          style={{
-            position: 'fixed',
-            top: '-50%',
-            left: '-50%',
-            width: '200%',
-            height: '200%',
-            pointerEvents: 'none',
-            zIndex: 0
-          }}
-          animate={{
-            rotate: [0, 120, 240, 360],
-            x: ['0%', '10%', '-5%', '0%'],
-            y: ['0%', '-10%', '5%', '0%']
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        >
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              background: 'radial-gradient(circle at 30% 50%, rgba(111, 39, 139, 0.08) 0%, transparent 50%)'
-            }}
-          />
-        </motion.div>
-
-        {/* Floating Dots */}
-        <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }}>
-          {[...Array(18)].map((_, i) => (
-            <motion.div
-              key={i}
-              style={{
-                position: 'absolute',
-                width: '2px',
-                height: '2px',
-                borderRadius: '50%',
-                background: i % 2 === 0 ? 'rgba(111, 39, 139, 0.5)' : 'rgba(0, 180, 216, 0.3)',
-                left: `${(i * 5) + 10}%`
-              }}
-              animate={{
-                y: ['100vh', '-100vh'],
-                x: [0, 100],
-                opacity: [0, 1, 1, 0]
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                delay: i * 1,
-                ease: "linear"
-              }}
-            />
-          ))}
-        </div>
-
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1400px', margin: '0 auto' }}>
-          {/* Main Title */}
+        {/* Título - aparece antes do sticky */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2
+        }}>
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1 }}
             style={{
               fontSize: 'clamp(2rem, 5vw, 4rem)',
               fontWeight: 200,
               letterSpacing: '0.05em',
               lineHeight: 1,
-              marginBottom: '120px',
               fontFamily: 'var(--font-geist-mono), monospace',
-              textTransform: 'uppercase'
+              textTransform: 'uppercase',
+              textAlign: 'center',
+              opacity: titleOpacity,
+              y: titleY
             }}
           >
             <span style={{ display: 'block', marginBottom: '10px' }}>
@@ -253,9 +231,6 @@ export default function Services() {
               <span style={{ position: 'relative', display: 'inline-block' }}>
                 Criação
                 <motion.span
-                  initial={{ scaleX: 0 }}
-                  animate={isInView ? { scaleX: 1 } : {}}
-                  transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
                   style={{
                     position: 'absolute',
                     bottom: '-10px',
@@ -263,151 +238,253 @@ export default function Services() {
                     right: 0,
                     height: '4px',
                     background: 'linear-gradient(90deg, #6F278B 0%, #00B4D8 100%)',
-                    transformOrigin: 'left'
+                    transformOrigin: 'left',
+                    scaleX: titleOpacity
                   }}
                 />
               </span>
               {' de:'}
             </span>
           </motion.h1>
+        </div>
 
-          {/* Services Grid */}
+        {/* Container sticky que fica fixo durante o scroll dos cards */}
+        <div 
+          ref={stickyRef}
+          className="sticky-container"
+          style={{
+            position: 'absolute',
+            top: '100vh', // Começa após o título
+            left: 0,
+            right: 0,
+            height: '200vh' // Altura para o sticky dos cards
+          }}
+        >
+          <div style={{
+            position: 'sticky',
+            top: 0,
+            height: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden'
+          }}>
+          {/* Background animado */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.3 }}
             style={{
-              display: 'grid',
-              gridTemplateColumns: isDesktop ? 'repeat(3, 1fr)' : '1fr',
-              gap: 0,
-              marginBottom: '160px'
+              position: 'absolute',
+              top: '-50%',
+              left: '-50%',
+              width: '200%',
+              height: '200%',
+              pointerEvents: 'none',
+              rotate: bgRotate,
+              scale: bgScale
             }}
-            className="services-grid"
           >
-            {services.map((service, index) => (
-              <motion.div
-                key={service.number}
-                className="service-item"
-                style={{
-                  padding: isMobile ? '40px 20px' : !isDesktop ? '60px 40px' : '80px 60px',
-                  borderRight: isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
-                  borderBottom: !isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
-                  position: 'relative',
-                  cursor: 'pointer',
-                  transition: 'all 0.6s cubic-bezier(0.23, 1, 0.320, 1)'
-                }}
-                whileHover={{ y: -10 }}
-              >
-                {/* Hover Background */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background: 'linear-gradient(135deg, transparent 0%, rgba(111, 39, 139, 0.05) 100%)',
-                    pointerEvents: 'none'
-                  }}
-                />
-                
-                {/* Content */}
-                <div style={{ position: 'relative' }}>
-                  <motion.div 
-                    style={{
-                      fontSize: '0.875rem',
-                      fontWeight: 300,
-                      color: '#00B4D8',
-                      marginBottom: '30px',
-                      letterSpacing: '0.1em',
-                      opacity: 0.6
-                    }}
-                    whileHover={{ opacity: 1 }}
-                  >
-                    {service.number}
-                  </motion.div>
-                  
-                  <motion.h3
-                    style={{
-                      fontSize: '2rem',
-                      fontWeight: 400,
-                      marginBottom: '15px',
-                      letterSpacing: '-0.02em'
-                    }}
-                    whileHover={{ color: '#6F278B' }}
-                  >
-                    {service.title}
-                  </motion.h3>
-                  
-                  <p style={{
-                    fontSize: '0.875rem',
-                    fontWeight: 300,
-                    color: 'rgba(255, 255, 255, 0.4)',
-                    marginBottom: '30px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em'
-                  }}>
-                    {service.subtitle}
-                  </p>
-                  
-                  <p style={{
-                    fontSize: '1rem',
-                    lineHeight: 1.8,
-                    color: 'rgba(255, 255, 255, 0.6)',
-                    marginBottom: '40px',
-                    fontWeight: 300
-                  }}>
-                    {service.description}
-                  </p>
-                  
-                  <ul style={{ listStyle: 'none' }}>
-                    {service.features.map((feature) => (
-                      <motion.li 
-                        key={feature}
-                        style={{
-                          padding: '12px 0',
-                          fontSize: '0.95rem',
-                          color: 'rgba(255, 255, 255, 0.7)',
-                          fontWeight: 300,
-                          position: 'relative',
-                          paddingLeft: '20px'
-                        }}
-                        whileHover={{ paddingLeft: '30px' }}
-                      >
-                        <motion.span
-                          style={{
-                            position: 'absolute',
-                            left: 0,
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            width: '4px',
-                            height: '4px',
-                            background: '#6F278B',
-                            borderRadius: '50%'
-                          }}
-                          whileHover={{
-                            width: '12px',
-                            background: 'linear-gradient(90deg, #6F278B, #00B4D8)',
-                            borderRadius: '2px'
-                          }}
-                        />
-                        {feature}
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-              </motion.div>
-            ))}
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                background: 'radial-gradient(circle at 30% 50%, rgba(111, 39, 139, 0.08) 0%, transparent 50%)',
+              }}
+            />
           </motion.div>
 
-          {/* Benefits Section */}
+          {/* Floating Dots */}
+          <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+            {[...Array(18)].map((_, i) => (
+              <motion.div
+                key={i}
+                style={{
+                  position: 'absolute',
+                  width: '2px',
+                  height: '2px',
+                  borderRadius: '50%',
+                  background: i % 2 === 0 ? 'rgba(111, 39, 139, 0.5)' : 'rgba(0, 180, 216, 0.3)',
+                  left: `${(i * 5) + 10}%`
+                }}
+                animate={{
+                  y: ['100vh', '-100vh'],
+                  x: [0, 100],
+                  opacity: [0, 1, 1, 0]
+                }}
+                transition={{
+                  duration: 20 + (i * 0.5),
+                  repeat: Infinity,
+                  delay: i * 1,
+                  ease: "linear"
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Conteúdo dos cards */}
+          <div style={{ 
+            position: 'relative', 
+            zIndex: 1, 
+            maxWidth: '1400px', 
+            margin: '0 auto',
+            padding: '0 20px',
+            width: '100%'
+          }}>
+
+            {/* Grid de serviços */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: isDesktop ? 'repeat(3, 1fr)' : '1fr',
+                gap: 0,
+                marginBottom: '80px'
+              }}
+              className="services-grid"
+            >
+              {services.map((service, index) => (
+                <motion.div
+                  key={service.number}
+                  className="service-item"
+                  style={{
+                    padding: isMobile ? '40px 20px' : !isDesktop ? '60px 40px' : '80px 60px',
+                    borderRight: isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
+                    borderBottom: !isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
+                    position: 'relative',
+                    cursor: 'pointer',
+                    opacity: cardTransforms[index].opacity,
+                    y: cardTransforms[index].y
+                  }}
+                  whileHover={{ 
+                    scale: 1.02,
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  {/* Hover Background */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'linear-gradient(135deg, transparent 0%, rgba(111, 39, 139, 0.05) 100%)',
+                      pointerEvents: 'none',
+                      borderRadius: '24px'
+                    }}
+                  />
+                  
+                  {/* Content */}
+                  <div style={{ position: 'relative' }}>
+                    <div 
+                      style={{
+                        fontSize: '0.875rem',
+                        fontWeight: 300,
+                        color: '#00B4D8',
+                        marginBottom: '30px',
+                        letterSpacing: '0.1em',
+                        opacity: 0.6
+                      }}
+                    >
+                      {service.number}
+                    </div>
+                    
+                    <h3
+                      style={{
+                        fontSize: '2rem',
+                        fontWeight: 400,
+                        marginBottom: '15px',
+                        letterSpacing: '-0.02em'
+                      }}
+                    >
+                      {service.title}
+                    </h3>
+                    
+                    <p style={{
+                      fontSize: '0.875rem',
+                      fontWeight: 300,
+                      color: 'rgba(255, 255, 255, 0.4)',
+                      marginBottom: '30px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em'
+                    }}>
+                      {service.subtitle}
+                    </p>
+                    
+                    <p style={{
+                      fontSize: '1rem',
+                      lineHeight: 1.8,
+                      color: 'rgba(255, 255, 255, 0.6)',
+                      marginBottom: '40px',
+                      fontWeight: 300
+                    }}>
+                      {service.description}
+                    </p>
+                    
+                    <ul style={{ listStyle: 'none' }}>
+                      {service.features.map((feature) => (
+                        <motion.li 
+                          key={feature}
+                          style={{
+                            padding: '12px 0',
+                            fontSize: '0.95rem',
+                            color: 'rgba(255, 255, 255, 0.7)',
+                            fontWeight: 300,
+                            position: 'relative',
+                            paddingLeft: '20px'
+                          }}
+                          whileHover={{ paddingLeft: '30px' }}
+                        >
+                          <motion.span
+                            style={{
+                              position: 'absolute',
+                              left: 0,
+                              top: '50%',
+                              transform: 'translateY(-50%)',
+                              width: '4px',
+                              height: '4px',
+                              background: '#6F278B',
+                              borderRadius: '50%'
+                            }}
+                            whileHover={{
+                              width: '12px',
+                              background: 'linear-gradient(90deg, #6F278B, #00B4D8)',
+                              borderRadius: '2px'
+                            }}
+                          />
+                          {feature}
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+          </div>
+          </div>
+        </div>
+
+        {/* Seção de benefícios - fora do sticky */}
+        <div style={{
+          position: 'absolute',
+          top: '300vh', // Após o sticky dos cards
+          left: 0,
+          right: 0,
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '80px 20px'
+        }}>
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.6 }}
-            style={{ textAlign: 'center' }}
+            style={{ 
+              textAlign: 'center',
+              maxWidth: '1400px',
+              margin: '0 auto',
+              width: '100%',
+              opacity: benefitsOpacity,
+              y: benefitsY
+            }}
           >
             <h3 style={{
               fontSize: '1rem',
@@ -432,20 +509,30 @@ export default function Services() {
                 <motion.div
                   key={benefit.title}
                   className="benefit-item"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.7 + index * 0.1 }}
                   style={{
                     flex: isMobile ? '0 0 100%' : '0 0 calc(50% - 15px)',
                     textAlign: 'left',
                     padding: '30px',
                     border: '1px solid rgba(111, 39, 139, 0.1)',
                     position: 'relative',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    borderRadius: '16px'
                   }}
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ 
+                    opacity: 1, 
+                    x: 0,
+                    transition: {
+                      delay: index * 0.1,
+                      duration: 0.6
+                    }
+                  }}
+                  viewport={{ once: true }}
                   whileHover={{
                     x: 10,
-                    borderColor: 'rgba(111, 39, 139, 0.3)'
+                    borderColor: 'rgba(111, 39, 139, 0.3)',
+                    scale: 1.02,
+                    transition: { duration: 0.3 }
                   }}
                 >
                   <motion.span
