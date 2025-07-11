@@ -242,7 +242,7 @@ export default function Services() {
               textTransform: 'uppercase'
             }}
           >
-            <span style={{ display: 'block', marginBottom: '20px' }}>
+            <span style={{ display: 'block', marginBottom: '10px' }}>
               Especialistas na
             </span>
             <span style={{ 
