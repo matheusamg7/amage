@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seção de Especialidades - Ultra Minimalista</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .ultra-minimal {
+            min-height: 100vh;
+            padding: 160px 20px;
+            position: relative;
+        }
+
+        /* Animated Background Gradient */
+        .ultra-minimal::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                circle at 30% 50%,
+                rgba(111, 39, 139, 0.08) 0%,
+                transparent 50%
+            );
+            animation: drift 30s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(50px, -50px) rotate(120deg); }
+            66% { transform: translate(-30px, 30px) rotate(240deg); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Typography */
+        .main-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 200;
+            letter-spacing: -0.05em;
+            line-height: 1;
+            margin-bottom: 120px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+        }
+
+        .main-title .line-1 {
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .main-title .line-2 {
+            display: block;
+            position: relative;
+            font-weight: 500;
+            color: #6F278B;
+        }
+
+        .main-title .line-2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, #6F278B 0%, #00B4D8 100%);
+            animation: expandWidth 2s ease forwards;
+            animation-delay: 0.5s;
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+
+        @keyframes expandWidth {
+            to { transform: scaleX(1); }
+        }
+
+        /* Cards Container */
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            margin-bottom: 160px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .service-item {
+            padding: 80px 60px;
+            border-right: 1px solid rgba(111, 39, 139, 0.1);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        .service-item:last-child {
+            border-right: none;
+        }
+
+        .service-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                135deg,
+                transparent 0%,
+                rgba(111, 39, 139, 0.05) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .service-item:hover::before {
+            opacity: 1;
+        }
+
+        .service-item:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Service Number */
+        .service-number {
+            font-size: 0.875rem;
+            font-weight: 300;
+            color: #00B4D8;
+            margin-bottom: 30px;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-item:hover .service-number {
+            opacity: 1;
+        }
+
+        /* Service Title */
+        .service-title {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 15px;
+            letter-spacing: -0.02em;
+            transition: color 0.3s ease;
+        }
+
+        .service-item:hover .service-title {
+            color: #6F278B;
+        }
+
+        /* Service Subtitle */
+        .service-subtitle {
+            font-size: 0.875rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* Service Description */
+        .service-description {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        /* Features */
+        .service-features {
+            list-style: none;
+        }
+
+        .service-features li {
+            padding: 12px 0;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            position: relative;
+            padding-left: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .service-features li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 4px;
+            background: #6F278B;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover .service-features li {
+            padding-left: 30px;
+        }
+
+        .service-item:hover .service-features li::before {
+            width: 12px;
+            background: linear-gradient(90deg, #6F278B, #00B4D8);
+            border-radius: 2px;
+        }
+
+        /* Benefits Section */
+        .benefits-wrapper {
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 0.6s;
+        }
+
+        .benefits-title {
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 60px;
+        }
+
+        .benefits-list {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .benefit-item {
+            flex: 0 0 calc(50% - 15px);
+            text-align: left;
+            padding: 30px;
+            border: 1px solid rgba(111, 39, 139, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .benefit-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: #00B4D8;
+            transition: left 0.4s ease;
+        }
+
+        .benefit-item:hover::before {
+            left: 0;
+        }
+
+        .benefit-item:hover {
+            border-color: rgba(111, 39, 139, 0.3);
+            transform: translateX(10px);
+        }
+
+        .benefit-title {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #6F278B;
+            margin-bottom: 10px;
+        }
+
+        .benefit-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 300;
+        }
+
+        /* Floating Dots */
+        .floating-dots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .dot {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(111, 39, 139, 0.5);
+            border-radius: 50%;
+            animation: float-dot 20s infinite linear;
+        }
+
+        .dot:nth-child(even) {
+            background: rgba(0, 180, 216, 0.3);
+        }
+
+        @keyframes float-dot {
+            from {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .services-container {
+                grid-template-columns: 1fr;
+            }
+
+            .service-item {
+                border-right: none;
+                border-bottom: 1px solid rgba(111, 39, 139, 0.1);
+                padding: 60px 40px;
+            }
+
+            .service-item:last-child {
+                border-bottom: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-title {
+                font-size: 3rem;
+                margin-bottom: 80px;
+            }
+
+            .service-item {
+                padding: 40px 20px;
+            }
+
+            .benefit-item {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-dots">
+        <div class="dot" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="dot" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="dot" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="dot" style="left: 40%; animation-delay: 6s;"></div>
+        <div class="dot" style="left: 50%; animation-delay: 8s;"></div>
+        <div class="dot" style="left: 60%; animation-delay: 10s;"></div>
+        <div class="dot" style="left: 70%; animation-delay: 12s;"></div>
+        <div class="dot" style="left: 80%; animation-delay: 14s;"></div>
+        <div class="dot" style="left: 90%; animation-delay: 16s;"></div>
+        <div class="dot" style="left: 15%; animation-delay: 1s;"></div>
+        <div class="dot" style="left: 25%; animation-delay: 3s;"></div>
+        <div class="dot" style="left: 35%; animation-delay: 5s;"></div>
+        <div class="dot" style="left: 45%; animation-delay: 7s;"></div>
+        <div class="dot" style="left: 55%; animation-delay: 9s;"></div>
+        <div class="dot" style="left: 65%; animation-delay: 11s;"></div>
+        <div class="dot" style="left: 75%; animation-delay: 13s;"></div>
+        <div class="dot" style="left: 85%; animation-delay: 15s;"></div>
+        <div class="dot" style="left: 95%; animation-delay: 17s;"></div>
+    </div>
+
+    <section class="ultra-minimal">
+        <div class="container">
+            <h1 class="main-title">
+                <span class="line-1">Especialistas na</span>
+                <span class="line-2">Criação de:</span>
+            </h1>
+
+            <div class="services-container">
+                <div class="service-item">
+                    <div class="service-number">001</div>
+                    <h3 class="service-title">E-commerces</h3>
+                    <p class="service-subtitle">Lojas Virtuais que Vendem</p>
+                    <p class="service-description">Plataforma completa para você vender online com segurança e escalar seu faturamento.</p>
+                    <ul class="service-features">
+                        <li>Checkout otimizado</li>
+                        <li>Gestão de produtos fácil</li>
+                    </ul>
+                </div>
+
+                <div class="service-item">
+                    <div class="service-number">002</div>
+                    <h3 class="service-title">Sites Institucionais</h3>
+                    <p class="service-subtitle">Sites Institucionais Profissionais</p>
+                    <p class="service-description">Sua empresa bem representada com um site que transmite credibilidade e gera negócios.</p>
+                    <ul class="service-features">
+                        <li>Design sob medida</li>
+                        <li>Conteúdo gerenciável</li>
+                        <li>Formulários inteligentes</li>
+                    </ul>
+                </div>
+
+                <div class="service-item">
+                    <div class="service-number">003</div>
+                    <h3 class="service-title">Landing Pages</h3>
+                    <p class="service-subtitle">Landing Pages de Alta Conversão</p>
+                    <p class="service-description">Páginas estratégicas para suas campanhas gerarem resultados extraordinários.</p>
+                    <ul class="service-features">
+                        <li>Foco total em conversão</li>
+                        <li>Integração com anúncios</li>
+                        <li>Testes A/B inclusos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="benefits-wrapper">
+                <h3 class="benefits-title">Todos os nossos sites incluem</h3>
+                
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <h4 class="benefit-title">Design Exclusivo</h4>
+                        <p class="benefit-text">Nada de templates. Seu site único como seu negócio.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <h4 class="benefit-title">Performance Superior</h4>
+                        <p class="benefit-text">Carregamento ultra-rápido para não perder clientes.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <h4 class="benefit-title">100% Responsivo</h4>
+                        <p class="benefit-text">Perfeito em qualquer tela: celular, tablet ou desktop.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <h4 class="benefit-title">Otimizado para SEO</h4>
+                        <p class="benefit-text">Preparado para ranquear no Google desde o dia 1.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <h4 class="benefit-title">Painel Administrativo</h4>
+                        <p class="benefit-text">Você no controle: altere textos e imagens facilmente.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <h4 class="benefit-title">Suporte Humanizado</h4>
+                        <p class="benefit-text">Time sempre próximo, não é robô nem terceirizado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

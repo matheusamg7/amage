@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Hubot_Sans, Inter, Figtree } from "next/font/google";
+import { Geist, Geist_Mono, Hubot_Sans, Inter, Figtree, Outfit } from "next/font/google";
 import "./globals.css";
 import LenisScroll from "@/components/LenisScroll";
 import Header from "@/components/Header";
@@ -37,6 +37,13 @@ const figtree = Figtree({
   fallback: ["Inter", "system-ui", "sans-serif"],
 });
 
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "AMAGE - Agência Web",
   description: "Transformamos ideias em experiências digitais memoráveis",
@@ -57,7 +64,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${hubotSans.variable} ${inter.variable} ${figtree.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${hubotSans.variable} ${inter.variable} ${figtree.variable} ${outfit.variable} antialiased`}
       >
         <PageTransitionProvider>
           <LenisScroll>

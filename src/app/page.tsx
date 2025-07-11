@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Loader from '@/components/Loader'
 import Hero from '@/components/sections/Hero'
+import Services from '@/components/sections/Services'
 import About from '@/components/sections/About'
 import Works from '@/components/sections/Works'
 import TeamPlaceholder from '@/components/sections/TeamPlaceholder'
@@ -62,6 +63,7 @@ export default function Home() {
           }}
         >
           <Hero />
+          <Services />
           <About />
           <Works />
           <TeamPlaceholder />
