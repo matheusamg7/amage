@@ -233,37 +233,41 @@ export default function Services() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 1 }}
             style={{
-              fontSize: 'clamp(3rem, 8vw, 6rem)',
+              fontSize: 'clamp(2rem, 5vw, 4rem)',
               fontWeight: 200,
-              letterSpacing: '-0.05em',
+              letterSpacing: '0.05em',
               lineHeight: 1,
-              marginBottom: '120px'
+              marginBottom: '120px',
+              fontFamily: 'var(--font-geist-mono), monospace',
+              textTransform: 'uppercase'
             }}
           >
             <span style={{ display: 'block', marginBottom: '20px' }}>
               Especialistas na
             </span>
             <span style={{ 
-              display: 'block', 
-              position: 'relative',
+              display: 'block',
               fontWeight: 500,
               color: '#fff'
             }}>
-              Criação de:
-              <motion.span
-                initial={{ scaleX: 0 }}
-                animate={isInView ? { scaleX: 1 } : {}}
-                transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
-                style={{
-                  position: 'absolute',
-                  bottom: '-10px',
-                  left: 0,
-                  width: '120px',
-                  height: '3px',
-                  background: 'linear-gradient(90deg, #6F278B 0%, #00B4D8 100%)',
-                  transformOrigin: 'left'
-                }}
-              />
+              <span style={{ position: 'relative', display: 'inline-block' }}>
+                Criação
+                <motion.span
+                  initial={{ scaleX: 0 }}
+                  animate={isInView ? { scaleX: 1 } : {}}
+                  transition={{ duration: 2, delay: 0.5, ease: "easeOut" }}
+                  style={{
+                    position: 'absolute',
+                    bottom: '-10px',
+                    left: 0,
+                    right: 0,
+                    height: '4px',
+                    background: 'linear-gradient(90deg, #6F278B 0%, #00B4D8 100%)',
+                    transformOrigin: 'left'
+                  }}
+                />
+              </span>
+              {' de:'}
             </span>
           </motion.h1>
 
