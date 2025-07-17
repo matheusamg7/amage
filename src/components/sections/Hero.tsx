@@ -75,6 +75,8 @@ const ctaContainerVariants = {
   }
 }
 
+const rotatingTexts = ['convertem', 'vendem', 'performam', 'crescem', 'entregam', 'impactam']
+
 const Hero = memo(function Hero() {
   const { isTransitionComplete } = usePageTransition()
   const [clickCount, setClickCount] = useState(0)
@@ -82,8 +84,6 @@ const Hero = memo(function Hero() {
   const [showMessage, setShowMessage] = useState(false)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)
   const [isTextExiting, setIsTextExiting] = useState(false)
-  
-  const rotatingTexts = ['convertem', 'vendem', 'performam', 'crescem', 'entregam', 'impactam']
   
   // Estilos comuns para o título
   const titleTextStyle = {
@@ -104,11 +104,13 @@ const Hero = memo(function Hero() {
         // Inicia o ciclo de rotação
         interval = setInterval(() => {
           setIsTextExiting(true)
+          
+          // Tempo para apagar a palavra atual
           setTimeout(() => {
             setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length)
             setIsTextExiting(false)
-          }, rotatingTexts[currentTextIndex].length * 40 + 100)
-        }, 1000) // Ciclo de 1 segundo
+          }, 600) // Tempo suficiente para apagar (15 chars max * 40ms = 600ms)
+        }, 3000) // Ciclo de 3 segundos - mais tempo para ler
       }, 500) // Aguarda a primeira palavra ser digitada
     }, 2000) // Sincronizado com o aparecimento do "que"
     
@@ -116,7 +118,7 @@ const Hero = memo(function Hero() {
       clearTimeout(initialDelay)
       if (interval) clearInterval(interval)
     }
-  }, [isTransitionComplete, rotatingTexts.length, currentTextIndex, rotatingTexts])
+  }, [isTransitionComplete])
   
   const handleConfettiClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isBlocked) {
@@ -170,7 +172,7 @@ const Hero = memo(function Hero() {
       <div className="relative z-20 h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
         <motion.div
           {...(isTransitionComplete ? fadeInUp : { initial: { opacity: 0 } })}
-          className="text-center max-w-7xl mx-auto -translate-y-16"
+          className="text-center max-w-7xl mx-auto -translate-y-8"
         >
           {/* Badge Alta Performance */}
           <div className="relative -translate-y-4">
@@ -256,7 +258,7 @@ const Hero = memo(function Hero() {
         </div>
           
           <motion.h1 
-            className="py-4 sm:py-6 md:py-8 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-medium leading-[1.1] tracking-tight font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
+            className="py-4 sm:py-6 md:py-8 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-medium leading-[1.1] tracking-tight font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
             aria-label={`Desenvolvemos sites que ${rotatingTexts[currentTextIndex]}`}
             style={titleTextStyle}
             variants={titleVariants}
@@ -328,7 +330,7 @@ const Hero = memo(function Hero() {
               >
                 <InteractiveHoverButton
                   onClick={() => window.location.href = '#contato'}
-                  className="bg-gradient-to-r from-purple-600 to-purple-700 border-purple-500/50 text-white hover:shadow-xl hover:shadow-purple-500/30 text-base font-medium tracking-wide [&>div>div]:bg-white [&>div:last-child]:text-purple-600"
+                  className="bg-gradient-to-r from-purple-600 to-purple-700 border-purple-500/50 text-white text-base font-medium tracking-wide [&>div>div]:bg-white [&>div:last-child]:text-purple-600"
                   style={{ padding: '10px 40px' }}
                 >
                   Começar Projeto
@@ -342,8 +344,6 @@ const Hero = memo(function Hero() {
                 <motion.a
                   href="#projetos"
                   className="group relative inline-flex items-center gap-2 text-white transition-all duration-300 hover:text-purple-300"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                 >
                   <span className="text-base font-medium tracking-wide underline underline-offset-8 decoration-1">
                     Ver Nossos Projetos
