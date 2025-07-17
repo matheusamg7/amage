@@ -153,7 +153,7 @@ const Hero = memo(function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60 z-10" />
       
       {/* Noise overlay */}
-      <div className="absolute inset-0 z-10 pointer-events-none mix-blend-overlay">
+      <div className="absolute inset-0 z-10 pointer-events-none mix-blend-overlay" style={{ isolation: 'isolate' }}>
         <Noise 
           patternSize={200}
           patternScaleX={1}
@@ -341,18 +341,16 @@ const Hero = memo(function Hero() {
               >
                 <motion.a
                   href="#projetos"
-                  className="group relative inline-flex items-center gap-3 bg-transparent border border-purple-500/50 text-purple-300 rounded-full transition-all duration-300 hover:border-purple-400 hover:text-white hover:shadow-lg hover:shadow-purple-500/20 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-black"
-                  style={{ padding: '10px 40px' }}
-                  whileHover={{ scale: 1.05 }}
+                  className="group relative inline-flex items-center gap-2 text-white transition-all duration-300 hover:text-purple-300"
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <span className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-purple-700/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></span>
-                  <span className="relative z-10 text-base font-medium tracking-wide flex items-center gap-3">
+                  <span className="text-base font-medium tracking-wide underline underline-offset-8 decoration-1">
                     Ver Nossos Projetos
-                    <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0l-4-4m4 4l-4 4" />
-                    </svg>
                   </span>
+                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </motion.a>
               </motion.div>
             </motion.div>
