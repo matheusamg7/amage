@@ -21,7 +21,8 @@
       "WebFetch(domain:chakra-ui.com)",
       "Bash(npx tailwindcss:*)",
       "Bash(ls:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": []
   }

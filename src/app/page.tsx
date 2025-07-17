@@ -4,10 +4,10 @@ import { AnimatePresence, motion } from 'framer-motion'
 import Loader from '@/components/Loader'
 import Hero from '@/components/sections/Hero'
 import Services from '@/components/sections/Services'
+import ServicesBenefits from '@/components/sections/ServicesBenefits'
 import About from '@/components/sections/About'
-import Works from '@/components/sections/Works'
-import TeamPlaceholder from '@/components/sections/TeamPlaceholder'
 import Contact from '@/components/sections/Contact'
+import Footer from '@/components/sections/Footer'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -64,10 +64,10 @@ export default function Home() {
         >
           <Hero />
           <Services />
+          <ServicesBenefits />
           <About />
-          <Works />
-          <TeamPlaceholder />
           <Contact />
+          <Footer />
         </motion.main>
       )}
     </AnimatePresence>

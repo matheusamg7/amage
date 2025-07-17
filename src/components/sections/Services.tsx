@@ -45,32 +45,6 @@ const services = [
   }
 ]
 
-const benefits = [
-  {
-    title: 'Design Exclusivo',
-    text: 'Nada de templates. Seu site único como seu negócio.'
-  },
-  {
-    title: 'Performance Superior',
-    text: 'Carregamento ultra-rápido para não perder clientes.'
-  },
-  {
-    title: '100% Responsivo',
-    text: 'Perfeito em qualquer tela: celular, tablet ou desktop.'
-  },
-  {
-    title: 'Otimizado para SEO',
-    text: 'Preparado para ranquear no Google desde o dia 1.'
-  },
-  {
-    title: 'Painel Administrativo',
-    text: 'Você no controle: altere textos e imagens facilmente.'
-  },
-  {
-    title: 'Suporte Humanizado',
-    text: 'Time sempre próximo, não é robô nem terceirizado.'
-  }
-]
 
 export default function Services() {
   const containerRef = useRef(null)
@@ -85,24 +59,19 @@ export default function Services() {
     offset: ["start start", "end end"]
   })
 
-  // Transforms baseados no scroll progress
-  // Cards de serviços - aparecem mais cedo (10% a 40% do scroll)
-  const card1Opacity = useTransform(scrollYProgress, [0.1, 0.2], [0, 1])
-  const card1Y = useTransform(scrollYProgress, [0.1, 0.2], [30, 0])
+  // Cards aparecem progressivamente com o scroll (imediatamente após o sticky)
+  const card1Opacity = useTransform(scrollYProgress, [0.05, 0.25], [0, 1])
+  const card1Y = useTransform(scrollYProgress, [0.05, 0.25], [60, 0])
   
-  const card2Opacity = useTransform(scrollYProgress, [0.2, 0.3], [0, 1])
-  const card2Y = useTransform(scrollYProgress, [0.2, 0.3], [30, 0])
+  const card2Opacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1])
+  const card2Y = useTransform(scrollYProgress, [0.1, 0.3], [60, 0])
   
-  const card3Opacity = useTransform(scrollYProgress, [0.3, 0.4], [0, 1])
-  const card3Y = useTransform(scrollYProgress, [0.3, 0.4], [30, 0])
+  const card3Opacity = useTransform(scrollYProgress, [0.15, 0.35], [0, 1])
+  const card3Y = useTransform(scrollYProgress, [0.15, 0.35], [60, 0])
   
-  // Seção de benefícios - aparece mais cedo (50% a 70%)
-  const benefitsOpacity = useTransform(scrollYProgress, [0.5, 0.7], [0, 1])
-  const benefitsY = useTransform(scrollYProgress, [0.5, 0.7], [50, 0])
-  
-  // Background effects
-  const bgRotate = useTransform(scrollYProgress, [0.1, 0.5], [0, 180])
-  const bgScale = useTransform(scrollYProgress, [0.1, 0.3, 0.5], [1, 1.2, 1])
+  // Background effects - ajustados para nova timeline
+  const bgRotate = useTransform(scrollYProgress, [0.05, 0.5], [0, 180])
+  const bgScale = useTransform(scrollYProgress, [0.05, 0.25, 0.5], [1, 1.2, 1])
   
 
   useEffect(() => {
@@ -119,44 +88,34 @@ export default function Services() {
   // Pausa o scroll quando todos os cards estiverem visíveis
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      // Quando o terceiro card estiver totalmente visível e alinhado (após 40% do scroll)
-      if (latest >= 0.42 && latest <= 0.45 && !hasTriggeredPause) {
+      // Quando o terceiro card estiver completamente visível (35%)
+      if (latest >= 0.35 && latest <= 0.38 && !hasTriggeredPause) {
         setHasTriggeredPause(true)
         
-        // Pequeno delay para garantir que a animação termine
         setTimeout(() => {
-          // Salva a posição atual do scroll
           const currentScrollY = window.scrollY
           
-          // Função para travar o scroll
           const preventScroll = (e) => {
             e.preventDefault()
             window.scrollTo(0, currentScrollY)
           }
           
-          // Trava o scroll
           window.addEventListener('wheel', preventScroll, { passive: false })
           window.addEventListener('touchmove', preventScroll, { passive: false })
           window.addEventListener('keydown', preventScroll, { passive: false })
           
-          // Libera o scroll após 1 segundo
           setTimeout(() => {
             window.removeEventListener('wheel', preventScroll)
             window.removeEventListener('touchmove', preventScroll)
             window.removeEventListener('keydown', preventScroll)
-          }, 1000)
-        }, 200) // Aguarda 200ms para garantir que os cards estejam posicionados
+          }, 1500)
+        }, 200)
       }
     })
     
     return () => unsubscribe()
   }, [scrollYProgress, hasTriggeredPause])
 
-  const cardTransforms = [
-    { opacity: card1Opacity, y: card1Y },
-    { opacity: card2Opacity, y: card2Y },
-    { opacity: card3Opacity, y: card3Y }
-  ]
 
   return (
     <>
@@ -243,32 +202,18 @@ export default function Services() {
         className="services-section"
         style={{
           position: 'relative',
-          height: '250vh', // Reduzido de 400vh
+          height: '250vh',
           background: '#000'
         }}
       >
-        {/* Container sticky que fica fixo durante o scroll dos cards */}
-        <div 
-          ref={stickyRef}
-          className="sticky-container"
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '150vh' // Altura para o sticky dos cards
-          }}
-        >
-          <div style={{
-            position: 'sticky',
-            top: 0,
-            height: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
-            paddingTop: '60px'
-          }}>
+        <div style={{
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
           {/* Background animado */}
           <motion.div
             style={{
@@ -322,17 +267,22 @@ export default function Services() {
           {/* Conteúdo dos cards */}
           <div style={{ 
             position: 'relative', 
-            zIndex: 1, 
+            zIndex: 10, 
             maxWidth: '1400px', 
             margin: '0 auto',
             padding: '0 20px',
             width: '100%'
           }}>
             {/* Título sempre visível */}
-            <div style={{ 
-              textAlign: 'center', 
-              marginBottom: '40px'
-            }}>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              style={{ 
+                textAlign: 'center', 
+                marginBottom: '40px'
+              }}
+            >
               <h1
                 style={{
                   fontSize: 'clamp(2rem, 4vw, 3rem)',
@@ -346,21 +296,18 @@ export default function Services() {
               >
                 <span style={{ 
                   display: 'inline-block',
-                  position: 'relative'
+                  position: 'relative',
+                  color: '#fff'
                 }}>
                   Nossos Serviços
-                  <motion.span
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                  <span
                     style={{
                       position: 'absolute',
                       bottom: '-10px',
                       left: '20%',
                       right: '20%',
                       height: '2px',
-                      background: 'linear-gradient(90deg, rgba(111, 39, 139, 0.3) 0%, rgba(111, 39, 139, 0.8) 50%, rgba(111, 39, 139, 0.3) 100%)',
-                      transformOrigin: 'center'
+                      background: 'linear-gradient(90deg, rgba(111, 39, 139, 0.3) 0%, rgba(111, 39, 139, 0.8) 50%, rgba(111, 39, 139, 0.3) 100%)'
                     }}
                   />
                 </span>
@@ -374,7 +321,7 @@ export default function Services() {
               }}>
                 Soluções digitais que transformam negócios
               </p>
-            </div>
+            </motion.div>
 
             {/* Grid de serviços */}
             <div
@@ -395,8 +342,8 @@ export default function Services() {
                     borderBottom: !isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
                     position: 'relative',
                     cursor: 'pointer',
-                    opacity: cardTransforms[index].opacity,
-                    y: cardTransforms[index].y
+                    opacity: index === 0 ? card1Opacity : index === 1 ? card2Opacity : card3Opacity,
+                    y: index === 0 ? card1Y : index === 1 ? card2Y : card3Y
                   }}
                   whileHover={{ 
                     scale: 1.02,
@@ -507,115 +454,8 @@ export default function Services() {
             </div>
 
           </div>
-          </div>
         </div>
 
-        {/* Seção de benefícios - fora do sticky */}
-        <div style={{
-          position: 'absolute',
-          top: '150vh', // Após o sticky dos cards
-          left: 0,
-          right: 0,
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '80px 20px'
-        }}>
-          <motion.div
-            style={{ 
-              textAlign: 'center',
-              maxWidth: '1400px',
-              margin: '0 auto',
-              width: '100%',
-              opacity: benefitsOpacity,
-              y: benefitsY
-            }}
-          >
-            <h3 style={{
-              fontSize: '1rem',
-              fontWeight: 300,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'rgba(255, 255, 255, 0.5)',
-              marginBottom: '60px'
-            }}>
-              Todos os nossos sites incluem
-            </h3>
-            
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '30px',
-              maxWidth: '1000px',
-              margin: '0 auto'
-            }}>
-              {benefits.map((benefit, index) => (
-                <motion.div
-                  key={benefit.title}
-                  className="benefit-item"
-                  style={{
-                    flex: isMobile ? '0 0 100%' : '0 0 calc(50% - 15px)',
-                    textAlign: 'left',
-                    padding: '30px',
-                    border: '1px solid rgba(111, 39, 139, 0.1)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    borderRadius: '16px'
-                  }}
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ 
-                    opacity: 1, 
-                    x: 0,
-                    transition: {
-                      delay: index * 0.1,
-                      duration: 0.6
-                    }
-                  }}
-                  viewport={{ once: true }}
-                  whileHover={{
-                    x: 10,
-                    borderColor: 'rgba(111, 39, 139, 0.3)',
-                    scale: 1.02,
-                    transition: { duration: 0.3 }
-                  }}
-                >
-                  <motion.span
-                    initial={{ x: '-100%' }}
-                    whileHover={{ x: 0 }}
-                    transition={{ duration: 0.4 }}
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '2px',
-                      background: '#00B4D8'
-                    }}
-                  />
-                  
-                  <h4 style={{
-                    fontSize: '1.1rem',
-                    fontWeight: 400,
-                    color: '#6F278B',
-                    marginBottom: '10px'
-                  }}>
-                    {benefit.title}
-                  </h4>
-                  <p style={{
-                    fontSize: '0.9rem',
-                    lineHeight: 1.6,
-                    color: 'rgba(255, 255, 255, 0.5)',
-                    fontWeight: 300
-                  }}>
-                    {benefit.text}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
       </section>
     </>
   )
