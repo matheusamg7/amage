@@ -1,4 +1,4 @@
-'use client'
+nbb'use client'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
