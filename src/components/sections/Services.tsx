@@ -1,4 +1,4 @@
-nbb'use client'
+'use client'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
@@ -59,19 +59,19 @@ export default function Services() {
     offset: ["start start", "end end"]
   })
 
-  // Cards aparecem progressivamente com o scroll (imediatamente após o sticky)
-  const card1Opacity = useTransform(scrollYProgress, [0.05, 0.25], [0, 1])
-  const card1Y = useTransform(scrollYProgress, [0.05, 0.25], [60, 0])
+  // Cards aparecem progressivamente com o scroll (mais devagar)
+  const card1Opacity = useTransform(scrollYProgress, [0.15, 0.35], [0, 1])
+  const card1Y = useTransform(scrollYProgress, [0.15, 0.35], [60, 0])
   
-  const card2Opacity = useTransform(scrollYProgress, [0.1, 0.3], [0, 1])
-  const card2Y = useTransform(scrollYProgress, [0.1, 0.3], [60, 0])
+  const card2Opacity = useTransform(scrollYProgress, [0.25, 0.45], [0, 1])
+  const card2Y = useTransform(scrollYProgress, [0.25, 0.45], [60, 0])
   
-  const card3Opacity = useTransform(scrollYProgress, [0.15, 0.35], [0, 1])
-  const card3Y = useTransform(scrollYProgress, [0.15, 0.35], [60, 0])
+  const card3Opacity = useTransform(scrollYProgress, [0.35, 0.55], [0, 1])
+  const card3Y = useTransform(scrollYProgress, [0.35, 0.55], [60, 0])
   
   // Background effects - ajustados para nova timeline
-  const bgRotate = useTransform(scrollYProgress, [0.05, 0.5], [0, 180])
-  const bgScale = useTransform(scrollYProgress, [0.05, 0.25, 0.5], [1, 1.2, 1])
+  const bgRotate = useTransform(scrollYProgress, [0.15, 0.6], [0, 180])
+  const bgScale = useTransform(scrollYProgress, [0.15, 0.35, 0.6], [1, 1.2, 1])
   
 
   useEffect(() => {
@@ -88,8 +88,8 @@ export default function Services() {
   // Pausa o scroll quando todos os cards estiverem visíveis
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      // Quando o terceiro card estiver completamente visível (35%)
-      if (latest >= 0.35 && latest <= 0.38 && !hasTriggeredPause) {
+      // Quando o terceiro card estiver completamente visível (55%)
+      if (latest >= 0.55 && latest <= 0.58 && !hasTriggeredPause) {
         setHasTriggeredPause(true)
         
         setTimeout(() => {
@@ -182,7 +182,6 @@ export default function Services() {
         @media (max-width: 640px) {
           .services-section h1 {
             font-size: 2rem !important;
-            margin-bottom: 80px !important;
           }
           
           .service-item {
@@ -280,7 +279,8 @@ export default function Services() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               style={{ 
                 textAlign: 'center', 
-                marginBottom: '40px'
+                marginBottom: '80px',
+                marginTop: isMobile ? '60px' : '120px'
               }}
             >
               <h1
@@ -289,7 +289,7 @@ export default function Services() {
                   fontWeight: 500,
                   letterSpacing: '-0.03em',
                   lineHeight: 1.1,
-                  fontFamily: 'Figtree, sans-serif',
+                  fontFamily: 'Nugros, sans-serif',
                   color: '#fff',
                   marginBottom: '20px'
                 }}
@@ -317,7 +317,7 @@ export default function Services() {
                 fontWeight: 300,
                 color: 'rgba(255, 255, 255, 0.6)',
                 letterSpacing: '0.02em',
-                fontFamily: 'Figtree, sans-serif'
+                fontFamily: 'Nugros, sans-serif'
               }}>
                 Soluções digitais que transformam negócios
               </p>

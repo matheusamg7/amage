@@ -60,7 +60,7 @@ export default function ServicesBenefits() {
         background: '#000',
         padding: '100px 20px',
         position: 'relative',
-        fontFamily: 'Outfit, var(--font-outfit), sans-serif'
+        fontFamily: 'Nugros, sans-serif'
       }}
     >
       <motion.div
@@ -78,7 +78,7 @@ export default function ServicesBenefits() {
           fontWeight: 500,
           letterSpacing: '-0.03em',
           lineHeight: 1.1,
-          fontFamily: 'Figtree, sans-serif',
+          fontFamily: 'Nugros, sans-serif',
           color: '#fff',
           marginBottom: '60px'
         }}>
