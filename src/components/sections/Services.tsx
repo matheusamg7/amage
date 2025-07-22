@@ -59,15 +59,15 @@ export default function Services() {
     offset: ["start start", "end end"]
   })
 
-  // Cards aparecem progressivamente com o scroll (mais devagar)
-  const card1Opacity = useTransform(scrollYProgress, [0.15, 0.35], [0, 1])
-  const card1Y = useTransform(scrollYProgress, [0.15, 0.35], [60, 0])
+  // Cards aparecem progressivamente com o scroll (mais cedo)
+  const card1Opacity = useTransform(scrollYProgress, [0.05, 0.25], [0, 1])
+  const card1Y = useTransform(scrollYProgress, [0.05, 0.25], [60, 0])
   
-  const card2Opacity = useTransform(scrollYProgress, [0.25, 0.45], [0, 1])
-  const card2Y = useTransform(scrollYProgress, [0.25, 0.45], [60, 0])
+  const card2Opacity = useTransform(scrollYProgress, [0.15, 0.35], [0, 1])
+  const card2Y = useTransform(scrollYProgress, [0.15, 0.35], [60, 0])
   
-  const card3Opacity = useTransform(scrollYProgress, [0.35, 0.55], [0, 1])
-  const card3Y = useTransform(scrollYProgress, [0.35, 0.55], [60, 0])
+  const card3Opacity = useTransform(scrollYProgress, [0.25, 0.45], [0, 1])
+  const card3Y = useTransform(scrollYProgress, [0.25, 0.45], [60, 0])
   
   
 
@@ -85,8 +85,8 @@ export default function Services() {
   // Pausa o scroll quando todos os cards estiverem visíveis
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      // Quando o terceiro card estiver completamente visível (55%)
-      if (latest >= 0.55 && latest <= 0.58 && !hasTriggeredPause) {
+      // Quando o terceiro card estiver completamente visível (45%)
+      if (latest >= 0.45 && latest <= 0.48 && !hasTriggeredPause) {
         setHasTriggeredPause(true)
         
         setTimeout(() => {
@@ -105,8 +105,8 @@ export default function Services() {
             window.removeEventListener('wheel', preventScroll)
             window.removeEventListener('touchmove', preventScroll)
             window.removeEventListener('keydown', preventScroll)
-          }, 1500)
-        }, 200)
+          }, 200)
+        }, 50)
       }
     })
     
