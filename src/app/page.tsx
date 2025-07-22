@@ -6,8 +6,7 @@ import Hero from '@/components/sections/Hero'
 import Services from '@/components/sections/Services'
 import ServicesBenefits from '@/components/sections/ServicesBenefits'
 import About from '@/components/sections/About'
-import Contact from '@/components/sections/Contact'
-import Footer from '@/components/sections/Footer'
+import Process from '@/components/sections/Process'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -66,8 +65,7 @@ export default function Home() {
           <Services />
           <ServicesBenefits />
           <About />
-          <Contact />
-          <Footer />
+          <Process />
         </motion.main>
       )}
     </AnimatePresence>
