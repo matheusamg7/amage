@@ -58,54 +58,56 @@ export default function ServicesBenefits() {
       className="services-benefits-section"
       style={{
         background: '#000',
-        padding: '100px 20px',
+        padding: '80px 40px',
         position: 'relative',
         fontFamily: 'Nugros, sans-serif'
       }}
     >
+
+      {/* Floating Dots */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            style={{
+              position: 'absolute',
+              width: '3px',
+              height: '3px',
+              borderRadius: '50%',
+              background: i % 2 === 0 ? 'rgba(111, 39, 139, 0.4)' : 'rgba(0, 180, 216, 0.3)',
+              left: `${(i * 12) + 5}%`
+            }}
+            animate={{
+              y: ['100vh', '-100vh'],
+              x: [0, 50],
+              opacity: [0, 0.8, 0.8, 0]
+            }}
+            transition={{
+              duration: 25 + (i * 1),
+              repeat: Infinity,
+              delay: i * 2,
+              ease: "linear"
+            }}
+          />
+        ))}
+      </div>
+
       <motion.div
         style={{ 
           textAlign: 'center',
-          maxWidth: '1400px',
+          maxWidth: '1200px',
           margin: '0 auto',
           width: '100%',
           opacity,
-          y
+          y,
+          position: 'relative'
         }}
       >
-        <h1 style={{
-          fontSize: 'clamp(2rem, 4vw, 3rem)',
-          fontWeight: 500,
-          letterSpacing: '-0.03em',
-          lineHeight: 1.1,
-          fontFamily: 'Nugros, sans-serif',
-          color: '#fff',
-          marginBottom: '60px'
-        }}>
-          <span style={{ 
-            display: 'inline-block',
-            position: 'relative'
-          }}>
-            Todos os nossos sites incluem
-            <span
-              style={{
-                position: 'absolute',
-                bottom: '-10px',
-                left: '20%',
-                right: '20%',
-                height: '2px',
-                background: 'linear-gradient(90deg, rgba(111, 39, 139, 0.3) 0%, rgba(111, 39, 139, 0.8) 50%, rgba(111, 39, 139, 0.3) 100%)'
-              }}
-            />
-          </span>
-        </h1>
-        
         <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '30px',
-          maxWidth: '1000px',
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
+          gap: '60px',
+          maxWidth: '1400px',
           margin: '0 auto'
         }}>
           {benefits.map((benefit, index) => (
@@ -113,9 +115,8 @@ export default function ServicesBenefits() {
               key={benefit.title}
               className="benefit-item"
               style={{
-                flex: isMobile ? '0 0 100%' : '0 0 calc(50% - 15px)',
                 textAlign: 'left',
-                padding: '30px',
+                padding: '25px',
                 border: '1px solid rgba(111, 39, 139, 0.1)',
                 position: 'relative',
                 overflow: 'hidden',
@@ -155,7 +156,7 @@ export default function ServicesBenefits() {
               <h4 style={{
                 fontSize: '1.1rem',
                 fontWeight: 400,
-                color: '#6F278B',
+                color: '#ffffff',
                 marginBottom: '10px'
               }}>
                 {benefit.title}

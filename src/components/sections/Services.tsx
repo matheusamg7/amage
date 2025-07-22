@@ -69,9 +69,6 @@ export default function Services() {
   const card3Opacity = useTransform(scrollYProgress, [0.35, 0.55], [0, 1])
   const card3Y = useTransform(scrollYProgress, [0.35, 0.55], [60, 0])
   
-  // Background effects - ajustados para nova timeline
-  const bgRotate = useTransform(scrollYProgress, [0.15, 0.6], [0, 180])
-  const bgScale = useTransform(scrollYProgress, [0.15, 0.35, 0.6], [1, 1.2, 1])
   
 
   useEffect(() => {
@@ -126,6 +123,11 @@ export default function Services() {
           box-sizing: border-box;
         }
         
+        .services-grid {
+          grid-gap: 0 !important;
+          gap: 0 !important;
+        }
+        
         .services-section {
           font-family: 'Outfit', var(--font-outfit), sans-serif !important;
         }
@@ -169,14 +171,9 @@ export default function Services() {
           }
           
           .service-item {
-            border-right: none !important;
-            border-bottom: 1px solid rgba(111, 39, 139, 0.1);
             padding: 60px 40px !important;
           }
           
-          .service-item:last-child {
-            border-bottom: none;
-          }
         }
         
         @media (max-width: 640px) {
@@ -188,9 +185,6 @@ export default function Services() {
             padding: 40px 20px !important;
           }
           
-          .benefit-item {
-            flex: 0 0 100% !important;
-          }
         }
       `}</style>
 
@@ -213,27 +207,6 @@ export default function Services() {
           alignItems: 'center',
           justifyContent: 'center'
         }}>
-          {/* Background animado */}
-          <motion.div
-            style={{
-              position: 'absolute',
-              top: '-50%',
-              left: '-50%',
-              width: '200%',
-              height: '200%',
-              pointerEvents: 'none',
-              rotate: bgRotate,
-              scale: bgScale
-            }}
-          >
-            <div
-              style={{
-                width: '100%',
-                height: '100%',
-                background: 'radial-gradient(circle at 30% 50%, rgba(111, 39, 139, 0.08) 0%, transparent 50%)',
-              }}
-            />
-          </motion.div>
 
           {/* Floating Dots - Reduzido para melhor performance */}
           <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
@@ -338,7 +311,7 @@ export default function Services() {
                   className="service-item"
                   style={{
                     padding: isMobile ? '40px 20px' : !isDesktop ? '60px 40px' : '80px 60px',
-                    borderRight: isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
+                    borderRight: isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.2)' : 'none',
                     borderBottom: !isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
                     position: 'relative',
                     cursor: 'pointer',
