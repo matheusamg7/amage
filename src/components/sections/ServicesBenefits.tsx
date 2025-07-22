@@ -58,7 +58,7 @@ export default function ServicesBenefits() {
       className="services-benefits-section"
       style={{
         background: '#000',
-        padding: '80px 40px',
+        padding: '80px 40px 140px 40px',
         position: 'relative',
         fontFamily: 'Nugros, sans-serif'
       }}

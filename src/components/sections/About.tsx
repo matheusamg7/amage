@@ -1,12 +1,24 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
+import Image from 'next/image'
 
 export default function About() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  
+  // Animação baseada no scroll
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  })
+  
+  const opacity = useTransform(scrollYProgress, [0.15, 0.3], [0, 1])
+  const y = useTransform(scrollYProgress, [0.15, 0.3], [50, 0])
+  const scale = useTransform(scrollYProgress, [0.15, 0.3], [0.9, 1])
+  const rotate = useTransform(scrollYProgress, [0.15, 0.3], [-5, 0])
 
   const differentials = [
     {
@@ -51,11 +63,14 @@ export default function About() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
           gap: '100px',
           alignItems: 'center',
-          marginBottom: '40px'
+          marginBottom: '40px',
+          marginTop: '-80px'
         }}>
           {/* Text Content */}
           <motion.div
-            style={{ maxWidth: '600px' }}
+            style={{ 
+              maxWidth: '600px'
+            }}
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8 }}
@@ -101,8 +116,32 @@ export default function About() {
             </p>
           </motion.div>
           
-          {/* Espaço vazio onde seria o mockup */}
-          <div></div>
+          {/* SVG Background Animado */}
+          <motion.div
+            style={{
+              opacity,
+              y,
+              scale,
+              rotate,
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Image
+              src="/assets/backgrounds/2.svg"
+              alt="Background Pattern"
+              width={700}
+              height={600}
+              style={{
+                opacity: 1,
+                pointerEvents: 'none',
+                userSelect: 'none',
+                marginTop: '-170px'
+              }}
+            />
+          </motion.div>
         </div>
         
         {/* Divider */}
@@ -110,7 +149,7 @@ export default function About() {
           style={{
             height: '1px',
             background: 'linear-gradient(to right, transparent, rgba(111, 39, 139, 0.2), transparent)',
-            margin: '40px 0 40px 0'
+            margin: '-80px 0 40px 0'
           }}
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
