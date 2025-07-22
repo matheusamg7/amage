@@ -8,44 +8,8 @@ import Noise from '@/blocks/Animations/Noise/Noise'
 import { usePageTransition } from '@/contexts/PageTransitionContext'
 import { ConfettiButton } from '@/components/magicui/confetti'
 import { InteractiveHoverButton } from '@/components/magicui/interactive-hover-button'
-import TypewriterText from '@/components/TypewriterText'
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.8, ease: "easeOut", delay: 0.8 }
-}
 
-// Variants para animação elegante e profissional
-const titleVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.04,
-      delayChildren: 0.3 // Mais rápido ainda
-    }
-  }
-}
-
-const letterVariants = {
-  hidden: { 
-    opacity: 0,
-    y: 24,
-    scale: 0.94
-  },
-  visible: { 
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: "spring",
-      damping: 25,
-      stiffness: 300,
-      mass: 0.8
-    }
-  }
-}
 
 // Variants para os botões CTA
 const ctaButtonsVariants = {
@@ -70,20 +34,17 @@ const ctaContainerVariants = {
     opacity: 1,
     transition: {
       staggerChildren: 0.0,
-      delayChildren: 2.2
+      delayChildren: 1.3
     }
   }
 }
 
-const rotatingTexts = ['convertem', 'vendem', 'performam', 'crescem', 'entregam', 'impactam']
 
 const Hero = memo(function Hero() {
   const { isTransitionComplete } = usePageTransition()
   const [clickCount, setClickCount] = useState(0)
   const [isBlocked, setIsBlocked] = useState(false)
   const [showMessage, setShowMessage] = useState(false)
-  const [currentTextIndex, setCurrentTextIndex] = useState(0)
-  const [isTextExiting, setIsTextExiting] = useState(false)
   
   // Estilos comuns para o título
   const titleTextStyle = {
@@ -92,33 +53,6 @@ const Hero = memo(function Hero() {
     fontWeight: 500
   }
   
-  useEffect(() => {
-    if (!isTransitionComplete) return
-    
-    let interval: NodeJS.Timeout
-    
-    // Delay inicial para começar a rotação após a primeira palavra aparecer
-    const initialDelay = setTimeout(() => {
-      // Aguarda a primeira palavra ser digitada (convertem = 9 chars * 40ms = 360ms + margem)
-      setTimeout(() => {
-        // Inicia o ciclo de rotação
-        interval = setInterval(() => {
-          setIsTextExiting(true)
-          
-          // Tempo para apagar a palavra atual
-          setTimeout(() => {
-            setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length)
-            setIsTextExiting(false)
-          }, 600) // Tempo suficiente para apagar (15 chars max * 40ms = 600ms)
-        }, 3000) // Ciclo de 3 segundos - mais tempo para ler
-      }, 500) // Aguarda a primeira palavra ser digitada
-    }, 2000) // Sincronizado com o aparecimento do "que"
-    
-    return () => {
-      clearTimeout(initialDelay)
-      if (interval) clearInterval(interval)
-    }
-  }, [isTransitionComplete])
   
   const handleConfettiClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isBlocked) {
@@ -171,155 +105,83 @@ const Hero = memo(function Hero() {
       {/* Container do conteúdo */}
       <div className="relative z-20 h-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
         <motion.div
-          {...(isTransitionComplete ? fadeInUp : { initial: { opacity: 0 } })}
-          className="text-center max-w-7xl mx-auto -translate-y-8"
+          initial={{ opacity: 0, y: 40, scale: 0.9 }}
+          animate={isTransitionComplete ? { 
+            opacity: 1, 
+            y: 0,
+            scale: 1,
+            transition: {
+              duration: 1.2,
+              ease: [0.25, 0.4, 0.25, 1],
+              delay: 0.4,
+              opacity: { duration: 0.8 },
+              y: { 
+                type: "spring",
+                damping: 25,
+                stiffness: 100,
+                mass: 1
+              },
+              scale: {
+                type: "spring",
+                damping: 20,
+                stiffness: 150
+              }
+            }
+          } : { opacity: 0, y: 40, scale: 0.9 }}
+          className="text-center max-w-7xl mx-auto -translate-y-14"
         >
-          {/* Badge Alta Performance */}
-          <div className="relative -translate-y-4">
-            <ConfettiButton 
-              className={`group inline-flex items-center gap-3 bg-zinc-800/80 backdrop-blur-sm border border-white/50 text-white rounded-full mb-12 transition-all duration-300 h-auto ${
-                isBlocked 
-                  ? 'cursor-not-allowed opacity-50' 
-                  : 'cursor-pointer hover:bg-zinc-700/80 hover:border-white/70 hover:scale-105 hover:shadow-lg hover:shadow-white/20'
-              }`} 
-              style={{ padding: '6px 28px' }}
-              variant="ghost"
-              onClickCapture={handleConfettiClick}
-              disabled={isBlocked}
-              options={{
-                particleCount: 100,
-                spread: 70,
-                colors: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B'],
-                startVelocity: 30,
-                gravity: 0.5,
-                scalar: 0.8,
-              }}
-            >
-            <motion.span 
-              className="text-base grayscale brightness-200 contrast-200 transition-transform duration-300 group-hover:rotate-12"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1.5 }}
-            >
-              🚀
-            </motion.span>
-            <span className="text-sm font-normal tracking-wide flex">
-              {'Sites Mágicos'.split('').map((char, index) => (
-                <motion.span
-                  key={`${char}-${index}`}
-                  className="inline-block text-white"
-                  initial={{ 
-                    opacity: 0.4, 
-                    filter: 'brightness(0.5)',
-                    textShadow: '0 0 0px rgba(255, 255, 255, 0)'
-                  }}
-                  animate={{ 
-                    opacity: 1, 
-                    filter: 'brightness(1)',
-                    textShadow: '0 0 8px rgba(255, 255, 255, 0.5)'
-                  }}
-                  transition={{
-                    duration: 0.6,
-                    delay: 1.6 + (index * 0.06),
-                    ease: [0.25, 0.1, 0.25, 1]
-                  }}
-                  style={{
-                    color: 'white'
-                  }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </motion.span>
-              ))}
-            </span>
-          </ConfettiButton>
-          
-          {/* Mensagem engraçada */}
-          {showMessage && (
-            <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.8 }}
-              animate={{ opacity: 1, y: -40, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-zinc-900/90 border border-zinc-700/50 text-zinc-300 text-xs px-6 py-3 rounded-lg backdrop-blur-sm select-none pointer-events-none shadow-lg whitespace-nowrap"
-              style={{ userSelect: 'none', padding: '16px 32px' }}
-            >
-              <span className="inline-flex items-center gap-1.5">
-                <span>🎉</span>
-                <span>Confete acabou, mas a mágica dos nossos sites é real!</span>
-                <a 
-                  href="#contato" 
-                  className="underline hover:text-white transition-colors pointer-events-auto"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Vamos conversar?
-                </a>
-              </span>
-            </motion.div>
-          )}
-        </div>
-          
           <motion.h1 
-            className="py-4 sm:py-6 md:py-8 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-medium leading-[1.1] tracking-tight font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent drop-shadow-2xl" 
-            aria-label={`Desenvolvemos sites que ${rotatingTexts[currentTextIndex]}`}
+            className="py-4 sm:py-6 md:py-8 text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-medium leading-[1.1] tracking-tight font-figtree text-white drop-shadow-2xl" 
             style={titleTextStyle}
-            variants={titleVariants}
-            initial="hidden"
-            animate={isTransitionComplete ? "visible" : "hidden"}
+            initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+            animate={isTransitionComplete ? { 
+              opacity: 1, 
+              y: 0,
+              filter: "blur(0px)",
+              transition: {
+                duration: 1,
+                ease: "easeOut",
+                delay: 0.6,
+                filter: { duration: 0.8 }
+              }
+            } : { opacity: 0, y: 20, filter: "blur(10px)" }}
           >
-              {/* Primeira linha com animação suave e elegante */}
-              <motion.span className="block" variants={titleVariants}>
-                {"Desenvolvemos sites".split("").map((char, index) => (
-                  <motion.span
-                    key={`char-${index}`}
-                    className="inline-block"
-                    variants={letterVariants}
-                    style={{
-                      display: char === " " ? "inline" : "inline-block",
-                      width: char === " " ? "0.3em" : "auto"
-                    }}
-                  >
-                    {char === " " ? "\u00A0" : char}
-                  </motion.span>
-                ))}
-              </motion.span>
-              
-              {/* Segunda linha com texto rotativo */}
-              <motion.span 
-                className="block -mt-1 sm:-mt-2 md:-mt-3 lg:-mt-4 xl:-mt-6 -translate-y-3 sm:-translate-y-4 md:-translate-y-5 text-center font-figtree bg-gradient-to-br from-white via-white/95 to-purple-300/60 bg-clip-text text-transparent"
-                style={titleTextStyle}
-              >
-                <motion.span
-                  className="inline-block"
-                  initial={{ opacity: 0 }}
-                  animate={isTransitionComplete ? { opacity: 1 } : { opacity: 0 }}
-                  transition={{ duration: 0.6, delay: 2.0 }}
-                >
-                  que{' '}
-                  <TypewriterText
-                    text={rotatingTexts[currentTextIndex]}
-                    isExiting={isTextExiting}
-                    className=""
-                    style={{}}
-                  />
-                </motion.span>
-              </motion.span>
-            </motion.h1>
+            <span className="block">O próximo nível da sua empresa</span>
+            <span className="block mt-4">é o digital.</span>
+          </motion.h1>
+            
+            {/* Espaçamento antes do subtítulo */}
+            <div className="h-5 sm:h-7 md:h-9" />
             
             {/* Subtítulo */}
             <motion.p
-              className="text-lg sm:text-xl md:text-2xl text-gray-300 font-normal tracking-wide font-figtree"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isTransitionComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 2.4 }}
+              className="text-lg sm:text-xl md:text-2xl text-white font-normal tracking-wide font-figtree"
+              initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+              animate={isTransitionComplete ? { 
+                opacity: 1, 
+                y: 0,
+                filter: "blur(0px)",
+                transition: {
+                  duration: 1,
+                  ease: [0.25, 0.1, 0.25, 1],
+                  delay: 0.9,
+                  y: {
+                    type: "spring",
+                    damping: 20,
+                    stiffness: 80
+                  }
+                }
+              } : { opacity: 0, y: 30, filter: "blur(8px)" }}
             >
-              Seu negócio merece estar bem representado na internet.
+              Criamos sites profissionais com foco em resultado, autoridade e crescimento.
             </motion.p>
             
             {/* Espaçador */}
-            <div className="h-4 sm:h-6 md:h-8" />
+            <div className="h-6 sm:h-8 md:h-10" />
             
             {/* Botões CTA */}
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-10 justify-center items-center"
               variants={ctaContainerVariants}
               initial="hidden"
               animate={isTransitionComplete ? "visible" : "hidden"}
@@ -330,8 +192,8 @@ const Hero = memo(function Hero() {
               >
                 <InteractiveHoverButton
                   onClick={() => window.location.href = '#contato'}
-                  className="bg-gradient-to-r from-purple-600 to-purple-700 border-purple-500/50 text-white text-base font-medium tracking-wide [&>div>div]:bg-white [&>div:last-child]:text-purple-600"
-                  style={{ padding: '10px 40px' }}
+                  className="!bg-white !border-0 !border-none !outline-none text-purple-600 hover:!bg-purple-600 hover:!text-white hover:scale-105 text-base font-medium tracking-wide transition-all duration-500 ease-in-out transform [&>div>div]:bg-purple-600 [&>div:last-child]:text-white [&>div]:transition-all [&>div]:duration-500"
+                  style={{ padding: '10px 40px', border: 'none', outline: 'none', background: 'white' }}
                 >
                   Começar Projeto
                 </InteractiveHoverButton>
@@ -343,7 +205,7 @@ const Hero = memo(function Hero() {
               >
                 <motion.a
                   href="#projetos"
-                  className="group relative inline-flex items-center gap-2 text-white transition-all duration-300 hover:text-purple-300"
+                  className="group relative inline-flex items-center gap-2 text-white transition-all duration-300 hover:text-white/80"
                 >
                   <span className="text-base font-medium tracking-wide underline underline-offset-8 decoration-1">
                     Ver Nossos Projetos
@@ -356,6 +218,171 @@ const Hero = memo(function Hero() {
             </motion.div>
         </motion.div>
       </div>
+      
+      {/* Botão Sites Mágicos no canto inferior direito */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={isTransitionComplete ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+        transition={{ duration: 0.6, delay: 2.0, type: "spring" }}
+        className="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 z-30"
+      >
+        <ConfettiButton 
+          className={`inline-flex items-center justify-center bg-zinc-800/80 backdrop-blur-sm border border-purple-400/30 text-white transition-all duration-300 h-auto relative overflow-visible ${
+            isBlocked 
+              ? 'cursor-not-allowed opacity-50' 
+              : 'cursor-pointer hover:scale-105 hover:border-purple-400/50'
+          }`} 
+          style={{ 
+            padding: '12px 64px',
+            borderRadius: '9999px',
+          }}
+          variant="ghost"
+          onClickCapture={handleConfettiClick}
+          disabled={isBlocked}
+          options={{
+            particleCount: 100,
+            spread: 70,
+            colors: ['#8B5CF6', '#EC4899', '#10B981', '#F59E0B'],
+            startVelocity: 30,
+            gravity: 0.5,
+            scalar: 0.8,
+          }}
+        >
+          {/* Sparkles nas bordas */}
+          <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
+            {/* Top sparkles */}
+            <motion.div
+              className="absolute top-2 left-1/3 w-1.5 h-1.5 bg-white rounded-full"
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 0.5,
+              }}
+            />
+            <motion.div
+              className="absolute top-2 right-1/3 w-1.5 h-1.5 bg-gradient-to-r from-white to-purple-400 rounded-full"
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 0.5,
+                delay: 0.3,
+              }}
+            />
+            {/* Right sparkles */}
+            <motion.div
+              className="absolute top-1/3 right-3 w-1.5 h-1.5 bg-purple-400 rounded-full"
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 0.5,
+                delay: 0.6,
+              }}
+            />
+            <motion.div
+              className="absolute bottom-1/3 right-3 w-1 h-1 bg-white rounded-full"
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 0.5,
+                delay: 0.9,
+              }}
+            />
+            {/* Bottom sparkles */}
+            <motion.div
+              className="absolute bottom-2 left-1/3 w-1.5 h-1.5 bg-gradient-to-r from-purple-400 to-white rounded-full"
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 0.5,
+                delay: 1.2,
+              }}
+            />
+            <motion.div
+              className="absolute bottom-2 right-1/3 w-1 h-1 bg-purple-500 rounded-full"
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 0.5,
+                delay: 1.5,
+              }}
+            />
+            {/* Left sparkles */}
+            <motion.div
+              className="absolute top-1/2 left-3 w-1.5 h-1.5 bg-white rounded-full"
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 0.5,
+                delay: 1.8,
+              }}
+            />
+            <motion.div
+              className="absolute top-1/3 left-3 w-1 h-1 bg-gradient-to-b from-white to-purple-400 rounded-full"
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 0.5,
+                delay: 2.1,
+              }}
+            />
+          </div>
+        </ConfettiButton>
+        
+        {/* Mensagem engraçada */}
+        {showMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="absolute -bottom-2 -right-2 bg-zinc-900 border border-zinc-700/50 text-zinc-300 text-xs px-6 py-3 rounded-lg backdrop-blur-md shadow-2xl shadow-black/50 whitespace-nowrap z-50"
+            style={{ userSelect: 'none', padding: '16px 32px' }}
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <span>🎉</span>
+              <span>Confete acabou, mas a mágica dos nossos sites é real!</span>
+              <a 
+                href="#contato" 
+                className="underline hover:text-white transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Vamos conversar?
+              </a>
+            </span>
+          </motion.div>
+        )}
+      </motion.div>
     </section>
   )
 })
