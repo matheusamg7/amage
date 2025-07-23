@@ -107,7 +107,7 @@ export default function Development() {
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <TestimonialsCarousel testimonials={testimonials} duration={40} />
+          <TestimonialsCarousel testimonials={testimonials} duration={25} />
         </motion.div>
         
         {/* CTA Emocional */}
