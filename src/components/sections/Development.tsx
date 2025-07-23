@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { TestimonialsCarousel } from '@/components/TestimonialsCarousel'
+import { Cta4 } from '@/components/ui/cta-4'
 
 const testimonials = [
   {
@@ -47,14 +48,15 @@ export default function Development() {
       id="development" 
       ref={ref}
       style={{
-        padding: '120px 20px',
+        paddingTop: '120px',
+        paddingRight: '20px',
+        paddingBottom: '120px',
+        paddingLeft: '20px',
         background: '#fafafa',
-        position: 'relative',
-        overflow: 'hidden',
-        borderTopLeftRadius: '60px',
-        borderTopRightRadius: '60px',
-        marginTop: '-60px',
-        paddingTop: '180px'
+        borderTopLeftRadius: '40px',
+        borderTopRightRadius: '40px',
+        marginTop: '-40px',
+        position: 'relative'
       }}
     >
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
@@ -62,7 +64,8 @@ export default function Development() {
         <motion.div
           style={{
             textAlign: 'center',
-            marginBottom: '80px'
+            marginBottom: '60px',
+            marginTop: '-40px'
           }}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -85,36 +88,49 @@ export default function Development() {
               height: '1px',
               background: 'linear-gradient(to right, transparent, rgba(111, 39, 139, 0.3), transparent)',
               width: '300px',
-              margin: '0 auto 40px auto'
+              margin: '0 auto 20px auto'
             }}
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
           />
           
-          <p style={{
-            fontSize: 'clamp(1rem, 1.5vw, 1.1rem)',
-            lineHeight: '1.6',
-            color: '#666',
-            fontWeight: 300,
-            fontFamily: 'Nugros, sans-serif',
-            maxWidth: '800px',
-            margin: '0 auto'
-          }}>
-            Veja o que nossos clientes têm a dizer sobre nossa parceria e os resultados alcançados.
-          </p>
         </motion.div>
         
         {/* Testimonials Carousel */}
         <motion.div
           style={{
-            marginTop: '80px'
+            marginTop: '80px',
+            marginBottom: '120px'
           }}
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           <TestimonialsCarousel testimonials={testimonials} duration={40} />
+        </motion.div>
+        
+        {/* CTA Emocional */}
+        <motion.div
+          style={{
+            marginTop: '120px'
+          }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.7 }}
+        >
+          <div style={{
+            borderRadius: '20px',
+            overflow: 'hidden'
+          }}>
+            <Cta4 
+              title="Seu próximo cliente está te procurando online."
+              description="Vamos garantir que ele te encontre?"
+              buttonText="Solicitar orçamento"
+              buttonUrl="#contact"
+              items={[]}
+            />
+          </div>
         </motion.div>
       </div>
     </section>

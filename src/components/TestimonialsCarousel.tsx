@@ -19,11 +19,11 @@ export const TestimonialsCarousel = ({ testimonials, duration = 30 }: Testimonia
     <div style={{
       width: '100%',
       overflow: 'hidden',
-      maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'
+      maskImage: 'linear-gradient(to right, transparent, black 20%, black 80%, transparent)'
     }}>
       <motion.div
         animate={{
-          x: [0, -100 + '%']
+          x: ['0%', '-50%']
         }}
         transition={{
           duration: duration,
@@ -46,7 +46,11 @@ export const TestimonialsCarousel = ({ testimonials, duration = 30 }: Testimonia
               borderRadius: '16px',
               border: '1px solid rgba(111, 39, 139, 0.2)',
               background: 'rgba(255, 255, 255, 0.02)',
-              boxShadow: '0 10px 30px rgba(111, 39, 139, 0.1)'
+              boxShadow: '0 10px 30px rgba(111, 39, 139, 0.1)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              height: '280px'
             }}
           >
             <p style={{
@@ -54,13 +58,15 @@ export const TestimonialsCarousel = ({ testimonials, duration = 30 }: Testimonia
               lineHeight: '1.7',
               color: '#666',
               fontFamily: 'Nugros, sans-serif',
-              marginBottom: '30px',
-              fontWeight: 300
+              fontWeight: 300,
+              flexGrow: 1
             }}>
               "{testimonial.text}"
             </p>
             
-            <div>
+            <div style={{
+              marginTop: '30px'
+            }}>
               <div style={{
                 fontSize: '1rem',
                 fontWeight: '500',

@@ -190,13 +190,31 @@ const Hero = memo(function Hero() {
                 variants={ctaButtonsVariants}
                 className="inline-flex"
               >
-                <InteractiveHoverButton
+                <motion.button
                   onClick={() => window.location.href = '#contato'}
-                  className="!bg-white !border-0 !border-none !outline-none text-purple-600 hover:!bg-purple-600 hover:!text-white hover:scale-105 text-base font-medium tracking-wide transition-all duration-500 ease-in-out transform [&>div>div]:bg-purple-600 [&>div:last-child]:text-white [&>div]:transition-all [&>div]:duration-500"
-                  style={{ padding: '10px 40px', border: 'none', outline: 'none', background: 'white' }}
+                  style={{
+                    background: '#ffffff',
+                    color: '#6F278B',
+                    border: 'none',
+                    padding: '14px 40px',
+                    fontSize: '1rem',
+                    fontWeight: '500',
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    fontFamily: 'Nugros, sans-serif',
+                    letterSpacing: '0.02em',
+                    transition: 'all 0.3s ease',
+                    display: 'inline-flex',
+                    alignItems: 'center'
+                  }}
+                  whileHover={{ 
+                    scale: 1.03,
+                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
+                  }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   Começar Projeto
-                </InteractiveHoverButton>
+                </motion.button>
               </motion.div>
               
               <motion.div

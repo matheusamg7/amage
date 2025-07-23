@@ -155,18 +155,20 @@ export default function Portfolio() {
                 background: '#6F278B',
                 color: '#ffffff',
                 border: 'none',
-                padding: '14px 56px',
+                padding: '14px 40px',
                 fontSize: '1rem',
-                fontWeight: '400',
-                borderRadius: '9999px',
+                fontWeight: '500',
+                borderRadius: '12px',
                 cursor: 'pointer',
                 fontFamily: 'Nugros, sans-serif',
                 letterSpacing: '0.02em',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                display: 'inline-flex',
+                alignItems: 'center'
               }}
               whileHover={{ 
-                scale: 1.02,
-                background: '#5a1f70'
+                scale: 1.03,
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
               }}
               whileTap={{ scale: 0.98 }}
             >

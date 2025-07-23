@@ -53,18 +53,18 @@ export default function Footer() {
   ]
 
   return (
-    <footer style={{ position: 'relative', marginTop: '100px' }}>
-      {/* Wave Divider */}
+    <footer style={{ position: 'relative', marginTop: '-100px', zIndex: 10 }}>
+      {/* Wave Divider - Novo formato */}
       <div style={{ 
         position: 'absolute',
-        top: '-60px',
+        top: '-120px',
         left: 0,
         right: 0,
-        height: '60px',
+        height: '120px',
         overflow: 'hidden'
       }}>
         <svg 
-          viewBox="0 0 1440 60" 
+          viewBox="0 0 1440 120" 
           preserveAspectRatio="none"
           style={{ 
             position: 'absolute',
@@ -74,16 +74,16 @@ export default function Footer() {
           }}
         >
           <path 
-            d="M0,60 L0,30 C240,0 480,0 720,15 C960,30 1200,30 1440,20 L1440,60 Z" 
-            fill="#0a0a0a"
+            d="M0,120 L0,60 C360,90 720,30 1080,60 C1260,75 1440,90 1440,90 L1440,120 Z" 
+            fill="#000000"
           />
         </svg>
       </div>
 
       {/* Footer Content */}
       <div style={{
-        background: '#0a0a0a',
-        padding: '60px 20px 30px 20px',
+        background: '#000000',
+        padding: '40px 20px 20px 20px',
         position: 'relative'
       }}>
         <div style={{ 
@@ -359,7 +359,7 @@ export default function Footer() {
           style={{
             height: '1px',
             background: 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent)',
-            margin: '60px 0 30px 0'
+            margin: '40px 0 20px 0'
           }}
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
