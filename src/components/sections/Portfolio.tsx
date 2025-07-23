@@ -23,7 +23,7 @@ export default function Portfolio() {
       id="portfolio" 
       ref={ref}
       style={{
-        padding: '120px 20px',
+        padding: '60px 20px 120px 20px',
         background: '#000000',
         position: 'relative',
         overflow: 'hidden'
@@ -46,9 +46,33 @@ export default function Portfolio() {
               marginBottom: '20px',
               letterSpacing: '-0.03em',
               color: '#ffffff',
-              fontFamily: 'Nugros, sans-serif'
+              fontFamily: 'Nugros, sans-serif',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '15px'
             }}>
-              Portfólio <span style={{ color: '#6F278B' }}>Amage</span>
+              Portfólio 
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.2 }}
+                style={{
+                  display: 'inline-block',
+                  marginTop: '16px',
+                  cursor: 'pointer'
+                }}
+              >
+                <Image 
+                  src="/logos/logoWhite.svg"
+                  alt="Amage"
+                  width={160}
+                  height={40}
+                  style={{
+                    opacity: 0.9,
+                    display: 'block'
+                  }}
+                />
+              </motion.div>
             </h2>
             
             {/* Divisória minimalista */}

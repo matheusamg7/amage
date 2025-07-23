@@ -23,6 +23,7 @@ export default function Header() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [activeSection, setActiveSection] = useState('home')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isDarkBackground, setIsDarkBackground] = useState(true)
   const { isTransitionComplete } = usePageTransition()
   
   const { scrollY } = useScroll()
@@ -32,7 +33,7 @@ export default function Header() {
     setIsScrolled(latest > 50)
   })
 
-  // Detecta seção ativa
+  // Detecta seção ativa e cor de fundo
   useEffect(() => {
     const handleScroll = () => {
       const sections = navItems.map(item => item.href.replace('#', ''))
@@ -48,6 +49,24 @@ export default function Header() {
       if (currentSection) {
         setActiveSection(currentSection)
       }
+      
+      // Detecta se está em seção clara (about, faq)
+      const lightSections = ['about', 'faq']
+      const headerY = 100
+      
+      let isOnLightBg = false
+      for (const sectionId of lightSections) {
+        const element = document.getElementById(sectionId)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          if (rect.top <= headerY && rect.bottom >= headerY) {
+            isOnLightBg = true
+            break
+          }
+        }
+      }
+      
+      setIsDarkBackground(!isOnLightBg)
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -160,13 +179,12 @@ export default function Header() {
                     <motion.span
                       className="relative z-10"
                       animate={{
-                        color: isActive ? 'rgba(255, 255, 255, 1)' : isHovered ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.7)',
+                        color: isDarkBackground 
+                          ? (isActive ? '#ffffff' : isHovered ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.8)')
+                          : (isActive ? '#151515' : isHovered ? 'rgba(21, 21, 21, 0.9)' : 'rgba(21, 21, 21, 0.8)'),
                         y: isHovered ? -1 : 0,
                       }}
                       transition={{ duration: 0.2 }}
-                      style={{
-                        textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.9)'
-                      }}
                     >
                       {item.label}
                     </motion.span>
@@ -180,12 +198,14 @@ export default function Header() {
           {/* Mobile Hamburger Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden flex flex-col items-center justify-center w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 cursor-pointer gap-1"
+            className="md:hidden flex flex-col items-center justify-center w-10 h-10 cursor-pointer gap-1"
             aria-label="Toggle mobile menu"
           >
             <motion.span
-              className="w-5 h-0.5 bg-white/80 rounded-full"
-              style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
+              className="w-5 h-0.5 rounded-full"
+              style={{
+                backgroundColor: isDarkBackground ? 'rgba(255, 255, 255, 0.8)' : 'rgba(21, 21, 21, 0.8)'
+              }}
               animate={{
                 rotate: isMobileMenuOpen ? 45 : 0,
                 y: isMobileMenuOpen ? 6 : 0,
@@ -193,16 +213,20 @@ export default function Header() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
             <motion.span
-              className="w-5 h-0.5 bg-white/80 rounded-full"
-              style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
+              className="w-5 h-0.5 rounded-full"
+              style={{
+                backgroundColor: isDarkBackground ? 'rgba(255, 255, 255, 0.8)' : 'rgba(21, 21, 21, 0.8)'
+              }}
               animate={{
                 opacity: isMobileMenuOpen ? 0 : 1,
               }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
             <motion.span
-              className="w-5 h-0.5 bg-white/80 rounded-full"
-              style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
+              className="w-5 h-0.5 rounded-full"
+              style={{
+                backgroundColor: isDarkBackground ? 'rgba(255, 255, 255, 0.8)' : 'rgba(21, 21, 21, 0.8)'
+              }}
               animate={{
                 rotate: isMobileMenuOpen ? -45 : 0,
                 y: isMobileMenuOpen ? -6 : 0,

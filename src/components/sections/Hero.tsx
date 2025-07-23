@@ -8,6 +8,7 @@ import Noise from '@/blocks/Animations/Noise/Noise'
 import { usePageTransition } from '@/contexts/PageTransitionContext'
 import { ConfettiButton } from '@/components/magicui/confetti'
 import { InteractiveHoverButton } from '@/components/magicui/interactive-hover-button'
+import { LiquidGlassButton } from '@/components/ui/liquid-glass-button'
 
 
 
@@ -190,21 +191,11 @@ const Hero = memo(function Hero() {
                 variants={ctaButtonsVariants}
                 className="inline-flex"
               >
-                <InteractiveHoverButton
+                <LiquidGlassButton
                   onClick={() => window.location.href = '#contato'}
-                  className="!bg-white !rounded-xl hover:!text-white !text-base !font-medium !tracking-wide [&_span]:!text-[#6F278B] [&>div:last-child_span]:!text-white [&_div.bg-primary]:!bg-[#6F278B]"
-                  style={{ 
-                    padding: '14px 40px',
-                    borderRadius: '12px',
-                    fontFamily: 'Nugros, sans-serif',
-                    letterSpacing: '0.02em',
-                    width: 'auto',
-                    minWidth: '180px',
-                    border: '1px solid rgba(111, 39, 139, 0.2)'
-                  }}
                 >
-                  Começar Projeto
-                </InteractiveHoverButton>
+                  Solicitar Orçamento
+                </LiquidGlassButton>
               </motion.div>
               
               <motion.div
@@ -235,14 +226,16 @@ const Hero = memo(function Hero() {
         className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30"
       >
         <ConfettiButton 
-          className={`inline-flex items-center justify-center bg-zinc-800/80 backdrop-blur-sm border border-purple-400/30 text-white transition-all duration-300 h-auto relative overflow-visible ${
+          className={`inline-flex items-center justify-center backdrop-blur-sm border text-white transition-all duration-300 h-auto relative overflow-visible ${
             isBlocked 
               ? 'cursor-not-allowed opacity-50' 
-              : 'cursor-pointer hover:scale-105 hover:border-purple-400/50'
+              : 'cursor-pointer hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25'
           }`} 
           style={{ 
             padding: '12px 64px',
             borderRadius: '9999px',
+            background: 'linear-gradient(135deg, #9F7AEA 0%, #B794F4 100%)',
+            borderColor: 'rgba(255, 255, 255, 0.2)',
           }}
           variant="ghost"
           onClickCapture={handleConfettiClick}
@@ -365,6 +358,87 @@ const Hero = memo(function Hero() {
                 delay: 2.1,
               }}
             />
+            
+            {/* Extra sparkles for more magic */}
+            <motion.div
+              className="absolute top-1/4 right-1/4 w-2 h-2 bg-gradient-to-br from-purple-300 to-white rounded-full"
+              animate={{
+                scale: [0, 1.2, 0],
+                opacity: [0, 0.7, 0],
+              }}
+              transition={{
+                duration: 1.8,
+                repeat: Infinity,
+                repeatDelay: 0.3,
+                delay: 0.4,
+              }}
+            />
+            <motion.div
+              className="absolute bottom-1/4 left-1/4 w-1.5 h-1.5 bg-purple-300 rounded-full"
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.8, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatDelay: 0.4,
+                delay: 0.8,
+              }}
+            />
+            <motion.div
+              className="absolute top-1/2 right-1/4 w-1 h-1 bg-white rounded-full"
+              animate={{
+                scale: [0, 1.5, 0],
+                opacity: [0, 0.5, 0],
+              }}
+              transition={{
+                duration: 2.2,
+                repeat: Infinity,
+                repeatDelay: 0.6,
+                delay: 1.3,
+              }}
+            />
+            <motion.div
+              className="absolute bottom-1/2 left-1/4 w-1.5 h-1.5 bg-gradient-to-tr from-white to-purple-500 rounded-full"
+              animate={{
+                scale: [0, 1.3, 0],
+                opacity: [0, 0.6, 0],
+              }}
+              transition={{
+                duration: 1.7,
+                repeat: Infinity,
+                repeatDelay: 0.5,
+                delay: 1.7,
+              }}
+            />
+            <motion.div
+              className="absolute top-5 center w-2 h-2 bg-purple-400 rounded-full"
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.4, 0],
+                x: [-10, 10, -10],
+              }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                repeatDelay: 0.3,
+                delay: 0.2,
+              }}
+            />
+            <motion.div
+              className="absolute bottom-5 right-1/2 w-1 h-1 bg-white rounded-full"
+              animate={{
+                scale: [0, 2, 0],
+                opacity: [0, 0.3, 0],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                repeatDelay: 0.7,
+                delay: 2.3,
+              }}
+            />
           </div>
         </ConfettiButton>
         
@@ -379,7 +453,7 @@ const Hero = memo(function Hero() {
           >
             <span className="inline-flex items-center gap-1.5">
               <span>🎉</span>
-              <span>Confete acabou, mas a mágica dos nossos sites é real!</span>
+              <span>Confete acabou, mas o impacto de um bom site é duradouro!</span>
               <a 
                 href="#contato" 
                 className="underline hover:text-white transition-colors"
