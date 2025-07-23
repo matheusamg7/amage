@@ -13,11 +13,9 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Início', href: '#home' },
+  { label: 'Serviços', href: '#services' },
   { label: 'Sobre', href: '#about' },
-  { label: 'Trabalhos', href: '#works' },
-  { label: 'Equipe', href: '#team' },
-  { label: 'Contato', href: '#contact' },
-  { label: 'Blog', href: '/blog' },
+  { label: 'Portfólio', href: '#portfolio' },
 ]
 
 export default function Header() {
@@ -36,16 +34,9 @@ export default function Header() {
 
   // Detecta seção ativa
   useEffect(() => {
-    // Se estiver no blog, marca blog como ativo
-    if (window.location.pathname === '/blog') {
-      setActiveSection('blog')
-      return
-    }
-    
     const handleScroll = () => {
       const sections = navItems.map(item => item.href.replace('#', ''))
       const currentSection = sections.find(section => {
-        if (section === 'blog') return false
         const element = document.getElementById(section)
         if (element) {
           const rect = element.getBoundingClientRect()
@@ -97,11 +88,6 @@ export default function Header() {
     // Fecha o menu mobile se estiver aberto
     setIsMobileMenuOpen(false)
     
-    // Se for link externo (blog), navega normalmente
-    if (href.startsWith('/') && !href.startsWith('/#')) {
-      window.location.href = href
-      return
-    }
     
     // Se estiver em outra página e for uma âncora, volta para home
     if (window.location.pathname !== '/' && href.startsWith('#')) {
@@ -131,7 +117,7 @@ export default function Header() {
   return (
     <>
       <motion.header
-        className="fixed top-3 right-6 z-50"
+        className="fixed top-8 right-10 z-50"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ 
@@ -143,9 +129,7 @@ export default function Header() {
           {/* Desktop Navigation */}
           <ul className="hidden md:flex flex-row items-center gap-6 font-mono tracking-wider">
             {navItems.map((item, index) => {
-              const isActive = item.href === '/blog' 
-                ? activeSection === 'blog' 
-                : activeSection === item.href.replace('#', '')
+              const isActive = activeSection === item.href.replace('#', '')
               const isHovered = hoveredIndex === index
               
               return (
@@ -171,24 +155,18 @@ export default function Header() {
                       )}
                     </AnimatePresence>
                     
-                    {/* Active indicator - small dot below */}
-                    {isActive && (
-                      <motion.div
-                        className="absolute bottom-[-8px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full"
-                        style={{ backgroundColor: 'magenta' }}
-                        layoutId="activeIndicator"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
                     
                     {/* Text with hover effect */}
                     <motion.span
                       className="relative z-10"
                       animate={{
-                        color: isActive ? '#FF00FF' : isHovered ? '#E952E9' : '#FFFFFF',
+                        color: isActive ? 'rgba(255, 255, 255, 1)' : isHovered ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.7)',
                         y: isHovered ? -1 : 0,
                       }}
                       transition={{ duration: 0.2 }}
+                      style={{
+                        textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 1px 2px rgba(0,0,0,0.9)'
+                      }}
                     >
                       {item.label}
                     </motion.span>
@@ -202,11 +180,12 @@ export default function Header() {
           {/* Mobile Hamburger Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden flex flex-col items-center justify-center w-8 h-8 bg-transparent border-none cursor-pointer gap-1"
+            className="md:hidden flex flex-col items-center justify-center w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 cursor-pointer gap-1"
             aria-label="Toggle mobile menu"
           >
             <motion.span
-              className="w-5 h-0.5 bg-white rounded-full"
+              className="w-5 h-0.5 bg-white/80 rounded-full"
+              style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
               animate={{
                 rotate: isMobileMenuOpen ? 45 : 0,
                 y: isMobileMenuOpen ? 6 : 0,
@@ -214,14 +193,16 @@ export default function Header() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
             <motion.span
-              className="w-5 h-0.5 bg-white rounded-full"
+              className="w-5 h-0.5 bg-white/80 rounded-full"
+              style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
               animate={{
                 opacity: isMobileMenuOpen ? 0 : 1,
               }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
             <motion.span
-              className="w-5 h-0.5 bg-white rounded-full"
+              className="w-5 h-0.5 bg-white/80 rounded-full"
+              style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
               animate={{
                 rotate: isMobileMenuOpen ? -45 : 0,
                 y: isMobileMenuOpen ? -6 : 0,
@@ -278,9 +259,7 @@ export default function Header() {
               />
               <div className="flex flex-col items-center justify-center h-full space-y-8">
                 {navItems.map((item, index) => {
-                  const isActive = item.href === '/blog' 
-                    ? activeSection === 'blog' 
-                    : activeSection === item.href.replace('#', '')
+                  const isActive = activeSection === item.href.replace('#', '')
                   
                   return (
                     <motion.div

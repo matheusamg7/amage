@@ -11,6 +11,7 @@ import Portfolio from '@/components/sections/Portfolio'
 import Development from '@/components/sections/Development'
 import FAQ from '@/components/sections/FAQ'
 import Footer from '@/components/sections/Footer'
+import FloatingButtons from '@/components/FloatingButtons'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -74,6 +75,7 @@ export default function Home() {
           <Development />
           <FAQ />
           <Footer />
+          <FloatingButtons />
         </motion.main>
       )}
     </AnimatePresence>

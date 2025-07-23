@@ -190,7 +190,7 @@ export default function Services() {
 
       {/* Container que define a altura do scroll */}
       <section 
-        id="servicos"
+        id="services"
         ref={containerRef}
         className="services-section"
         style={{

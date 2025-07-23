@@ -190,31 +190,21 @@ const Hero = memo(function Hero() {
                 variants={ctaButtonsVariants}
                 className="inline-flex"
               >
-                <motion.button
+                <InteractiveHoverButton
                   onClick={() => window.location.href = '#contato'}
-                  style={{
-                    background: '#ffffff',
-                    color: '#6F278B',
-                    border: 'none',
+                  className="!bg-white !rounded-xl hover:!text-white !text-base !font-medium !tracking-wide [&_span]:!text-[#6F278B] [&>div:last-child_span]:!text-white [&_div.bg-primary]:!bg-[#6F278B]"
+                  style={{ 
                     padding: '14px 40px',
-                    fontSize: '1rem',
-                    fontWeight: '500',
                     borderRadius: '12px',
-                    cursor: 'pointer',
                     fontFamily: 'Nugros, sans-serif',
                     letterSpacing: '0.02em',
-                    transition: 'all 0.3s ease',
-                    display: 'inline-flex',
-                    alignItems: 'center'
+                    width: 'auto',
+                    minWidth: '180px',
+                    border: '1px solid rgba(111, 39, 139, 0.2)'
                   }}
-                  whileHover={{ 
-                    scale: 1.03,
-                    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
-                  }}
-                  whileTap={{ scale: 0.98 }}
                 >
                   Começar Projeto
-                </motion.button>
+                </InteractiveHoverButton>
               </motion.div>
               
               <motion.div
@@ -237,12 +227,12 @@ const Hero = memo(function Hero() {
         </motion.div>
       </div>
       
-      {/* Botão Sites Mágicos no canto inferior direito */}
+      {/* Botão Sites Mágicos centralizado na parte inferior */}
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={isTransitionComplete ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
         transition={{ duration: 0.6, delay: 2.0, type: "spring" }}
-        className="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 z-30"
+        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30"
       >
         <ConfettiButton 
           className={`inline-flex items-center justify-center bg-zinc-800/80 backdrop-blur-sm border border-purple-400/30 text-white transition-all duration-300 h-auto relative overflow-visible ${
@@ -384,7 +374,7 @@ const Hero = memo(function Hero() {
             initial={{ opacity: 0, y: 10, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className="absolute -bottom-2 -right-2 bg-zinc-900 border border-zinc-700/50 text-zinc-300 text-xs px-6 py-3 rounded-lg backdrop-blur-md shadow-2xl shadow-black/50 whitespace-nowrap z-50"
+            className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-zinc-900 border border-zinc-700/50 text-zinc-300 text-xs px-6 py-3 rounded-lg backdrop-blur-md shadow-2xl shadow-black/50 whitespace-nowrap z-50"
             style={{ userSelect: 'none', padding: '16px 32px' }}
           >
             <span className="inline-flex items-center gap-1.5">
