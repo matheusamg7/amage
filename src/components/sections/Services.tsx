@@ -208,28 +208,27 @@ export default function Services() {
           justifyContent: 'center'
         }}>
 
-          {/* Floating Dots - Reduzido para melhor performance */}
+          {/* Floating Dots - Otimizado para performance */}
           <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-            {[...Array(8)].map((_, i) => (
+            {[...Array(4)].map((_, i) => (
               <motion.div
                 key={i}
                 style={{
                   position: 'absolute',
-                  width: '3px',
-                  height: '3px',
+                  width: '2px',
+                  height: '2px',
                   borderRadius: '50%',
-                  background: i % 2 === 0 ? 'rgba(111, 39, 139, 0.4)' : 'rgba(0, 180, 216, 0.3)',
-                  left: `${(i * 12) + 5}%`
+                  background: i % 2 === 0 ? 'rgba(111, 39, 139, 0.3)' : 'rgba(0, 180, 216, 0.2)',
+                  left: `${(i * 25) + 5}%`,
+                  willChange: 'transform'
                 }}
                 animate={{
-                  y: ['100vh', '-100vh'],
-                  x: [0, 50],
-                  opacity: [0, 0.8, 0.8, 0]
+                  y: ['100vh', '-100vh']
                 }}
                 transition={{
-                  duration: 25 + (i * 1),
+                  duration: 30 + (i * 3),
                   repeat: Infinity,
-                  delay: i * 2,
+                  delay: i * 4,
                   ease: "linear"
                 }}
               />

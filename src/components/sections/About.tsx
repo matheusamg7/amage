@@ -64,7 +64,7 @@ export default function About() {
           gap: '100px',
           alignItems: 'center',
           marginBottom: '40px',
-          marginTop: '-80px'
+          marginTop: '-40px'
         }}>
           {/* Text Content */}
           <motion.div
@@ -94,10 +94,23 @@ export default function About() {
                 <span style={{ 
                   color: '#6F278B'
                 }}>
-                  trabalho diferente.
+                  trabalho diferente?
                 </span>
               </span>
             </h1>
+            
+            <p style={{ 
+              fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
+              lineHeight: '1.8',
+              color: '#666',
+              fontWeight: 300,
+              marginBottom: '20px',
+              letterSpacing: '0.02em',
+              fontFamily: 'Nugros, sans-serif'
+            }}>
+              Na Amage, acreditamos que grandes resultados começam com escuta e parceria.
+              Mais do que desenvolver sites, entendemos o seu negócio e criamos soluções digitais que comunicam com clareza, transmitem autoridade e geram resultado.
+            </p>
             
             <p style={{ 
               fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
@@ -108,11 +121,7 @@ export default function About() {
               letterSpacing: '0.02em',
               fontFamily: 'Nugros, sans-serif'
             }}>
-              Combinamos estratégia, design e tecnologia para criar 
-              experiências digitais que não apenas impressionam, mas 
-              geram resultados mensuráveis. Cada projeto é uma 
-              oportunidade de superar expectativas e estabelecer 
-              novos padrões no mercado.
+              Combinamos estratégia, design e tecnologia para entregar projetos rápidos, eficazes e prontos para crescer junto com a sua empresa.
             </p>
           </motion.div>
           
@@ -138,7 +147,7 @@ export default function About() {
                 opacity: 1,
                 pointerEvents: 'none',
                 userSelect: 'none',
-                marginTop: '-170px'
+                marginTop: '-50px'
               }}
             />
           </motion.div>
@@ -149,7 +158,7 @@ export default function About() {
           style={{
             height: '1px',
             background: 'linear-gradient(to right, transparent, rgba(111, 39, 139, 0.2), transparent)',
-            margin: '-80px 0 40px 0'
+            margin: '-20px 0 60px 0'
           }}
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}

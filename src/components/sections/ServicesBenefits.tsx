@@ -64,28 +64,27 @@ export default function ServicesBenefits() {
       }}
     >
 
-      {/* Floating Dots */}
+      {/* Floating Dots - Otimizado */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-        {[...Array(8)].map((_, i) => (
+        {[...Array(4)].map((_, i) => (
           <motion.div
             key={i}
             style={{
               position: 'absolute',
-              width: '3px',
-              height: '3px',
+              width: '2px',
+              height: '2px',
               borderRadius: '50%',
-              background: i % 2 === 0 ? 'rgba(111, 39, 139, 0.4)' : 'rgba(0, 180, 216, 0.3)',
-              left: `${(i * 12) + 5}%`
+              background: i % 2 === 0 ? 'rgba(111, 39, 139, 0.3)' : 'rgba(0, 180, 216, 0.2)',
+              left: `${(i * 25) + 5}%`,
+              willChange: 'transform'
             }}
             animate={{
-              y: ['100vh', '-100vh'],
-              x: [0, 50],
-              opacity: [0, 0.8, 0.8, 0]
+              y: ['100vh', '-100vh']
             }}
             transition={{
-              duration: 25 + (i * 1),
+              duration: 30 + (i * 3),
               repeat: Infinity,
-              delay: i * 2,
+              delay: i * 4,
               ease: "linear"
             }}
           />
@@ -117,7 +116,7 @@ export default function ServicesBenefits() {
               style={{
                 textAlign: 'left',
                 padding: '25px',
-                border: '1px solid rgba(111, 39, 139, 0.1)',
+                border: '1px solid rgba(111, 39, 139, 0.4)',
                 position: 'relative',
                 overflow: 'hidden',
                 borderRadius: '16px'
@@ -134,15 +133,15 @@ export default function ServicesBenefits() {
               viewport={{ once: true }}
               whileHover={{
                 x: 10,
-                borderColor: 'rgba(111, 39, 139, 0.3)',
+                borderColor: '#6F278B',
                 scale: 1.02,
-                transition: { duration: 0.3 }
+                transition: { duration: 0.1 }
               }}
             >
               <motion.span
                 initial={{ x: '-100%' }}
                 whileHover={{ x: 0 }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: 0.2 }}
                 style={{
                   position: 'absolute',
                   top: 0,
