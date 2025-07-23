@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
+import Image from 'next/image'
 
 export default function Process() {
   const containerRef = useRef(null)
@@ -254,7 +255,7 @@ export default function Process() {
         {/* Progress Line */}
         <div style={{
           position: 'absolute',
-          bottom: '10%',
+          bottom: '15%',
           left: '50%',
           transform: 'translateX(-50%)',
           width: '400px',
@@ -280,6 +281,53 @@ export default function Process() {
 
       {/* Increased Scroll Space for slower movement */}
       <div style={{ height: `${steps.length * 150}vh` }} />
+      
+      {/* Divisória especial com logo */}
+      <div style={{
+        position: 'absolute',
+        bottom: '-55px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '40px',
+        zIndex: 20
+      }}>
+        {/* Linha esquerda */}
+        <div style={{
+          height: '1px',
+          flex: 1,
+          background: 'linear-gradient(to left, rgba(111, 39, 139, 0.3), transparent)',
+          maxWidth: '600px'
+        }} />
+        
+        {/* Logo Amage */}
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Image 
+            src="/logos/logoWhite.svg"
+            alt="Amage Logo"
+            width={120}
+            height={30}
+            style={{
+              opacity: 0.7,
+              cursor: 'pointer'
+            }}
+          />
+        </motion.div>
+        
+        {/* Linha direita */}
+        <div style={{
+          height: '1px',
+          flex: 1,
+          background: 'linear-gradient(to right, rgba(111, 39, 139, 0.3), transparent)',
+          maxWidth: '600px'
+        }} />
+      </div>
     </section>
   )
 }
