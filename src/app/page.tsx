@@ -9,6 +9,7 @@ import About from '@/components/sections/About'
 import Process from '@/components/sections/Process'
 import Portfolio from '@/components/sections/Portfolio'
 import Development from '@/components/sections/Development'
+import WhyWebsite from '@/components/sections/WhyWebsite'
 import FAQ from '@/components/sections/FAQ'
 import Footer from '@/components/sections/Footer'
 import FloatingButtons from '@/components/FloatingButtons'
@@ -71,6 +72,7 @@ export default function Home() {
           <ServicesBenefits />
           <About />
           <Process />
+          <WhyWebsite />
           <Portfolio />
           <Development />
           <FAQ />
