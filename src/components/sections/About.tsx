@@ -7,7 +7,7 @@ import Image from 'next/image'
 
 export default function About() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: "-100px", amount: 0.3 })
   
   // Animação baseada no scroll
   const { scrollYProgress } = useScroll({
@@ -71,9 +71,9 @@ export default function About() {
             style={{ 
               maxWidth: '600px'
             }}
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
             <h1 style={{ 
               fontSize: 'clamp(2rem, 4vw, 3rem)',
@@ -135,13 +135,17 @@ export default function About() {
               position: 'relative',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              willChange: 'transform, opacity',
+              transform: 'translateZ(0)' // Hardware acceleration
             }}
           >
             <Image
               src="/assets/backgrounds/2.svg"
               alt="Background Pattern"
               width={700}
+              loading="lazy"
+              priority={false}
               height={600}
               style={{
                 opacity: 1,

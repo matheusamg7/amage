@@ -8,6 +8,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Configure ScrollTrigger for better performance
+ScrollTrigger.config({
+  limitCallbacks: true,
+  syncInterval: 40
+});
+
 interface ScrollRevealProps {
   children: ReactNode;
   scrollContainerRef?: RefObject<HTMLElement>;
@@ -67,7 +73,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
           scroller,
           start: "top bottom",
           end: rotationEnd,
-          scrub: true,
+          scrub: 0.5,
         },
       }
     );
@@ -76,7 +82,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
 
     gsap.fromTo(
       wordElements,
-      { opacity: baseOpacity, willChange: "opacity" },
+      { opacity: baseOpacity, willChange: "opacity", transform: "translateZ(0)" },
       {
         ease: "none",
         opacity: 1,
@@ -86,7 +92,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
           scroller,
           start: "top bottom-=20%",
           end: wordAnimationEnd,
-          scrub: true,
+          scrub: 0.5,
         },
       }
     );
@@ -94,7 +100,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
     if (enableBlur) {
       gsap.fromTo(
         wordElements,
-        { filter: `blur(${blurStrength}px)` },
+        { filter: `blur(${blurStrength}px)`, willChange: "filter" },
         {
           ease: "none",
           filter: "blur(0px)",
@@ -104,14 +110,31 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
             scroller,
             start: "top bottom-=20%",
             end: wordAnimationEnd,
-            scrub: true,
+            scrub: 0.5,
           },
         }
       );
     }
 
+    // Update on resize with debounce
+    let resizeTimer: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 250);
+    };
+    
+    window.addEventListener('resize', handleResize, { passive: true });
+    
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      window.removeEventListener('resize', handleResize);
+      // Kill only triggers associated with this component
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.vars.trigger === el) {
+          trigger.kill();
+        }
+      });
     };
   }, [
     scrollContainerRef,

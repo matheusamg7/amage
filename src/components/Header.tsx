@@ -50,9 +50,9 @@ export default function Header() {
         setActiveSection(currentSection)
       }
       
-      // Detecta se está em seção clara (about, faq)
-      const lightSections = ['about', 'faq']
-      const headerY = 100
+      // Detecta se está em seção clara (about, faq, why-website)
+      const lightSections = ['about', 'faq', 'why-website']
+      const headerY = 50
       
       let isOnLightBg = false
       for (const sectionId of lightSections) {

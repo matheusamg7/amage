@@ -57,6 +57,17 @@
   padding: 0;
 }
 
+/* Performance optimizations */
+section {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+[data-framer-component-type] {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
 html {
   scroll-behavior: smooth;
 }

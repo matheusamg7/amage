@@ -85,8 +85,8 @@ export default function Services() {
   // Pausa o scroll quando todos os cards estiverem visíveis
   useEffect(() => {
     const unsubscribe = scrollYProgress.on("change", (latest) => {
-      // Quando o terceiro card estiver completamente visível (45%)
-      if (latest >= 0.45 && latest <= 0.48 && !hasTriggeredPause) {
+      // Quando o terceiro card estiver quase visível (42%)
+      if (latest >= 0.42 && latest <= 0.44 && !hasTriggeredPause) {
         setHasTriggeredPause(true)
         
         setTimeout(() => {

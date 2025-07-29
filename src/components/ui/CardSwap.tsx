@@ -56,7 +56,9 @@ const CardSwap: React.FC<CardSwapProps> = ({
         y: `calc(-50% - ${y}px)`,
         z: z,
         rotationY: -angle,
-        transformOrigin: '50% 50%'
+        transformOrigin: '50% 50%',
+        force3D: true,
+        willChange: 'transform'
       })
     })
 
@@ -72,7 +74,8 @@ const CardSwap: React.FC<CardSwapProps> = ({
           y: 'calc(-50% + 0px)',
           z: cardDistance,
           rotationY: 0,
-          ease: 'power2.inOut'
+          ease: 'power2.inOut',
+          force3D: true
         })
 
         // Move other cards
@@ -91,7 +94,8 @@ const CardSwap: React.FC<CardSwapProps> = ({
               y: `calc(-50% - ${y}px)`,
               z: z,
               rotationY: -angle,
-              ease: 'power2.inOut'
+              ease: 'power2.inOut',
+              force3D: true
             })
           }
         })

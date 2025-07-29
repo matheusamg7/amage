@@ -23,7 +23,7 @@ export const Cta4 = ({
     <section style={{ 
       position: 'relative',
       overflow: 'hidden',
-      background: 'linear-gradient(135deg, #6F278B 0%, #9F7AEA 100%)',
+      background: 'linear-gradient(135deg, #4A1960 0%, #6F278B 100%)',
       borderRadius: '24px',
       padding: '40px 20px'
     }}>
@@ -32,9 +32,9 @@ export const Cta4 = ({
       <div style={{
         position: 'absolute',
         inset: 0,
-        opacity: 0.04,
+        opacity: 0.12,
         mixBlendMode: 'overlay',
-        background: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`
+        background: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E")`
       }} />
       
       <div style={{ maxWidth: '800px', margin: '0 auto', position: 'relative' }}>
@@ -75,7 +75,7 @@ export const Cta4 = ({
                 onClick={() => window.location.href = buttonUrl}
                 style={{
                   background: '#ffffff',
-                  color: '#6F278B',
+                  color: '#4A1960',
                   border: 'none',
                   padding: '14px 40px',
                   fontSize: '1rem',
