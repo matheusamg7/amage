@@ -1,11 +1,20 @@
 'use client'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
-import Image from 'next/image'
+import { useRef, useState, useEffect } from 'react'
 
 export default function Process() {
   const containerRef = useRef(null)
+  const [isMobile, setIsMobile] = useState(true) // Começa como true para evitar problemas de SSR
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -39,70 +48,44 @@ export default function Process() {
     }
   ]
 
-  // Slower horizontal scroll - first step starts at center, last step ends at center
+  // Slower horizontal scroll
   const globalX = useTransform(scrollYProgress, [0, 1], ['0vw', '-300vw'])
 
-  // Create all transforms outside of render
-  const stepTransforms = steps.map((_, index) => {
-    // Calculate when each step is in the center of the screen
-    // Each step moves 100vw, so we need to track when it's centered
-    const stepWidth = 100 // vw
-    const totalMovement = 300 // 0vw to -300vw = 300vw total
-    
-    // When is this step in the center? 
-    // Step 0 starts at 0vw, already centered = 0vw movement
-    // Step 1 starts at 100vw, needs to move to 0vw to be centered = 100vw movement
-    // Step 2 starts at 200vw, needs to move to 0vw to be centered = 200vw movement
-    // Step 3 starts at 300vw, needs to move to 0vw to be centered = 300vw movement
-    
-    const distanceToCenter = index * 100 // vw
-    const progressWhenCentered = distanceToCenter / totalMovement
-    
-    // Define ranges for fade in/out based on screen position
-    const isFirstStep = index === 0
-    const isLastStep = index === steps.length - 1
-    
-    // First step starts visible, others fade in
-    const fadeInStart = isFirstStep ? 0 : Math.max(0, progressWhenCentered - 0.125)
-    const fadeInEnd = isFirstStep ? 0 : progressWhenCentered - 0.025
-    
-    // Last step stays visible
-    const fadeOutStart = isLastStep ? 1 : progressWhenCentered + 0.025
-    const fadeOutEnd = isLastStep ? 1 : Math.min(1, progressWhenCentered + 0.125)
+  // Step 1 transforms
+  const opacity1 = useTransform(scrollYProgress, [0, 0.325, 0.425], [1, 1, 0.2])
+  const scale1 = useTransform(scrollYProgress, [0, 0.325, 0.425], [1, 1, 0.9])
+  const blur1 = useTransform(scrollYProgress, [0, 0.325, 0.425], [0, 0, 8])
 
-    return {
-      opacity: useTransform(
-        scrollYProgress,
-        isFirstStep ? [0, fadeOutStart, fadeOutEnd] : [fadeInStart, fadeInEnd, fadeOutStart, fadeOutEnd],
-        isFirstStep ? [1, 1, 0.2] : [0.2, 1, 1, isLastStep ? 1 : 0.2]
-      ),
-      scale: useTransform(
-        scrollYProgress,
-        isFirstStep ? [0, fadeOutStart, fadeOutEnd] : [fadeInStart, fadeInEnd, fadeOutStart, fadeOutEnd],
-        isFirstStep ? [1, 1, 0.9] : [0.9, 1, 1, isLastStep ? 1 : 0.9]
-      ),
-      blur: useTransform(
-        scrollYProgress,
-        isFirstStep ? [0, fadeOutStart, fadeOutEnd] : [fadeInStart, fadeInEnd, fadeOutStart, fadeOutEnd],
-        isFirstStep ? [0, 0, 8] : [8, 0, 0, isLastStep ? 0 : 8]
-      )
-    }
-  })
+  // Step 2 transforms
+  const opacity2 = useTransform(scrollYProgress, [0.208, 0.308, 0.358, 0.458], [0.2, 1, 1, 0.2])
+  const scale2 = useTransform(scrollYProgress, [0.208, 0.308, 0.358, 0.458], [0.9, 1, 1, 0.9])
+  const blur2 = useTransform(scrollYProgress, [0.208, 0.308, 0.358, 0.458], [8, 0, 0, 8])
 
-  const dotTransforms = steps.map((_, index) => {
-    const distanceToCenter = index * 100
-    const progressWhenCentered = distanceToCenter / 300
-    
-    return useTransform(
-      scrollYProgress,
-      [
-        Math.max(0, progressWhenCentered - 0.05), 
-        progressWhenCentered, 
-        Math.min(1, progressWhenCentered + 0.05)
-      ],
-      [0, 1, 0]
-    )
-  })
+  // Step 3 transforms
+  const opacity3 = useTransform(scrollYProgress, [0.541, 0.641, 0.691, 0.791], [0.2, 1, 1, 0.2])
+  const scale3 = useTransform(scrollYProgress, [0.541, 0.641, 0.691, 0.791], [0.9, 1, 1, 0.9])
+  const blur3 = useTransform(scrollYProgress, [0.541, 0.641, 0.691, 0.791], [8, 0, 0, 8])
+
+  // Step 4 transforms
+  const opacity4 = useTransform(scrollYProgress, [0.875, 0.975, 1, 1], [0.2, 1, 1, 1])
+  const scale4 = useTransform(scrollYProgress, [0.875, 0.975, 1, 1], [0.9, 1, 1, 1])
+  const blur4 = useTransform(scrollYProgress, [0.875, 0.975, 1, 1], [8, 0, 0, 0])
+
+  // Create blur filters
+  const blurFilter1 = useTransform(blur1, (v) => `blur(${v}px)`)
+  const blurFilter2 = useTransform(blur2, (v) => `blur(${v}px)`)
+  const blurFilter3 = useTransform(blur3, (v) => `blur(${v}px)`)
+  const blurFilter4 = useTransform(blur4, (v) => `blur(${v}px)`)
+
+  // Progress bar transform
+  const progressScaleX = useTransform(scrollYProgress, [0, 1], [0, 1])
+
+  const stepTransforms = [
+    { opacity: opacity1, scale: scale1, filter: blurFilter1 },
+    { opacity: opacity2, scale: scale2, filter: blurFilter2 },
+    { opacity: opacity3, scale: scale3, filter: blurFilter3 },
+    { opacity: opacity4, scale: scale4, filter: blurFilter4 }
+  ]
 
   return (
     <section 
@@ -110,104 +93,243 @@ export default function Process() {
       ref={containerRef}
       style={{
         background: '#000000',
-        position: 'relative'
+        position: 'relative',
+        minHeight: isMobile ? 'auto' : '100vh'
       }}
     >
-      {/* Sticky Container */}
-      <div style={{
-        position: 'sticky',
-        top: 0,
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden'
-      }}>
-        {/* Background Progress */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '100%',
-            background: 'linear-gradient(180deg, transparent 0%, #6F278B 50%, transparent 100%)',
-            opacity: 0.1
-          }}
-        />
-
-        {/* Title */}
-        <div style={{
-          position: 'absolute',
-          top: '10%',
-          textAlign: 'center',
-          zIndex: 10
-        }}>
-          <motion.h2 style={{ 
-            fontSize: 'clamp(2rem, 4vw, 3rem)',
-            fontWeight: 500,
-            lineHeight: '1.1',
-            marginBottom: '20px',
-            letterSpacing: '-0.03em',
-            color: '#ffffff',
-            fontFamily: 'Nugros, sans-serif',
-            opacity: 1
-          }}>
-            Nosso processo de{' '}
-            <span style={{ color: '#6F278B' }}>
-              desenvolvimento
-            </span>
-          </motion.h2>
-          
-          {/* Divider minimalista */}
-          <motion.div 
+      {isMobile ? (
+        // Mobile Version
+        <div style={{ padding: '60px 20px' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
             style={{
-              height: '1px',
-              background: 'linear-gradient(to right, transparent, rgba(111, 39, 139, 0.3), transparent)',
-              width: '300px',
-              margin: '0 auto'
+              textAlign: 'center',
+              marginBottom: '60px'
             }}
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          />
-        </div>
+          >
+            <h2 style={{ 
+              fontSize: 'clamp(1.75rem, 5vw, 2.5rem)',
+              fontWeight: 700,
+              lineHeight: '1.1',
+              marginBottom: '20px',
+              letterSpacing: '-0.03em',
+              color: '#ffffff',
+              fontFamily: 'Nugros, sans-serif'
+            }}>
+              Nosso processo de{' '}
+              <span style={{ color: '#6F278B' }}>
+                desenvolvimento
+              </span>
+            </h2>
+          </motion.div>
 
-        {/* Horizontal Scrolling Container */}
-        <motion.div 
-          style={{
-            position: 'relative',
-            width: '100%',
-            height: '60vh',
-            display: 'flex',
-            alignItems: 'center',
-            x: globalX
-          }}
-        >
           <div style={{
+            position: 'relative',
+            maxWidth: '400px',
+            margin: '0 auto'
+          }}>
+
+            {steps.map((step, index) => (
+              <motion.div
+                key={step.number}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                style={{
+                  position: 'relative',
+                  marginBottom: index < steps.length - 1 ? '60px' : '0',
+                  paddingLeft: '60px'
+                }}
+              >
+
+
+                {/* Linha conectora apenas entre as bolinhas */}
+                {index < steps.length - 1 && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '20px',
+                      top: '50%',
+                      width: '2px',
+                      height: 'calc(100% + 60px)',
+                      background: 'rgba(111, 39, 139, 0.2)',
+                      zIndex: 0
+                    }}
+                  >
+                    <motion.div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: '#6F278B',
+                        transformOrigin: 'top'
+                      }}
+                      initial={{ scaleY: 0 }}
+                      whileInView={{ scaleY: 1 }}
+                      viewport={{ once: false, amount: 0.2 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    />
+                  </div>
+                )}
+
+                {/* Bolinha */}
+                <motion.div
+                  style={{
+                    position: 'absolute',
+                    left: '12px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '16px',
+                    height: '16px',
+                    borderRadius: '50%',
+                    background: '#000',
+                    border: '2px solid #6F278B',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 2
+                  }}
+                  whileInView={{
+                    scale: [1, 1.2, 1],
+                    borderColor: ['#6F278B', '#ffffff', '#6F278B']
+                  }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                >
+                  <div style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    background: '#6F278B'
+                  }} />
+                </motion.div>
+
+                <motion.div
+                  style={{
+                    background: 'rgba(111, 39, 139, 0.05)',
+                    border: '1px solid rgba(111, 39, 139, 0.2)',
+                    borderRadius: '12px',
+                    padding: '20px'
+                  }}
+                >
+                  <div style={{
+                    fontSize: '0.75rem',
+                    fontWeight: '400',
+                    color: '#9B4FBF',
+                    fontFamily: 'Nugros, sans-serif',
+                    marginBottom: '8px',
+                    letterSpacing: '0.1em'
+                  }}>
+                    ETAPA {step.number}
+                  </div>
+                  
+                  <h3 style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '500',
+                    color: '#ffffff',
+                    fontFamily: 'Nugros, sans-serif',
+                    letterSpacing: '-0.02em',
+                    lineHeight: '1.2'
+                  }}>
+                    {step.title}
+                  </h3>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        // Desktop Version
+        <>
+          <div style={{
+            position: 'sticky',
+            top: 0,
+            height: '100vh',
             display: 'flex',
             alignItems: 'center',
-            gap: '0',
-            width: 'max-content'
+            justifyContent: 'center',
+            overflow: 'hidden'
           }}>
-            {steps.map((step, index) => {
-              const transforms = stepTransforms[index]
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '100%',
+                background: 'linear-gradient(180deg, transparent 0%, #6F278B 50%, transparent 100%)',
+                opacity: 0.1
+              }}
+            />
 
-              return (
+            <div style={{
+              position: 'absolute',
+              top: '10%',
+              textAlign: 'center',
+              zIndex: 10
+            }}>
+              <motion.h2 style={{ 
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                fontWeight: 700,
+                lineHeight: '1.1',
+                marginBottom: '20px',
+                letterSpacing: '-0.03em',
+                color: '#ffffff',
+                fontFamily: 'Nugros, sans-serif',
+                opacity: 1
+              }}>
+                Nosso processo de{' '}
+                <span style={{ color: '#6F278B' }}>
+                  desenvolvimento
+                </span>
+              </motion.h2>
+              
+              <motion.div 
+                style={{
+                  height: '1px',
+                  background: 'linear-gradient(to right, transparent, rgba(111, 39, 139, 0.3), transparent)',
+                  width: '300px',
+                  margin: '0 auto'
+                }}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+              />
+            </div>
+
+            <motion.div 
+              style={{
+                position: 'relative',
+                width: '100%',
+                height: '60vh',
+                display: 'flex',
+                alignItems: 'center',
+                x: globalX
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0',
+                width: 'max-content'
+              }}>
+                {/* Step 1 */}
                 <motion.div
-                  key={step.number}
                   style={{
                     width: '100vw',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    opacity: transforms.opacity,
-                    scale: transforms.scale,
-                    filter: useTransform(transforms.blur, (v) => `blur(${v}px)`)
+                    opacity: opacity1,
+                    scale: scale1,
+                    filter: blurFilter1
                   }}
                 >
-                  {/* Small Number on Top */}
                   <div style={{
                     fontSize: '1.2rem',
                     fontWeight: '400',
@@ -216,10 +338,9 @@ export default function Process() {
                     marginBottom: '20px',
                     letterSpacing: '0.05em'
                   }}>
-                    ETAPA {step.number}
+                    ETAPA 01
                   </div>
                   
-                  {/* Title */}
                   <h3 style={{
                     fontSize: '4rem',
                     fontWeight: '200',
@@ -230,10 +351,9 @@ export default function Process() {
                     lineHeight: '1',
                     textAlign: 'center'
                   }}>
-                    {step.title}
+                    Imersão e Planejamento
                   </h3>
                   
-                  {/* Description */}
                   <p style={{
                     fontSize: '1.4rem',
                     lineHeight: '1.6',
@@ -244,44 +364,194 @@ export default function Process() {
                     textAlign: 'center',
                     padding: '0 20px'
                   }}>
-                    {step.description}
+                    {steps[0].description}
                   </p>
                 </motion.div>
-              )
-            })}
-          </div>
-        </motion.div>
 
-        {/* Progress Line */}
-        <div style={{
-          position: 'absolute',
-          bottom: '15%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '400px',
-          height: '2px',
-          background: 'rgba(111, 39, 139, 0.2)',
-          borderRadius: '1px',
-          overflow: 'hidden'
-        }}>
-          <motion.div
-            style={{
+                {/* Step 2 */}
+                <motion.div
+                  style={{
+                    width: '100vw',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    opacity: opacity2,
+                    scale: scale2,
+                    filter: blurFilter2
+                  }}
+                >
+                  <div style={{
+                    fontSize: '1.2rem',
+                    fontWeight: '400',
+                    color: '#9B4FBF',
+                    fontFamily: 'Nugros, sans-serif',
+                    marginBottom: '20px',
+                    letterSpacing: '0.05em'
+                  }}>
+                    ETAPA 02
+                  </div>
+                  
+                  <h3 style={{
+                    fontSize: '4rem',
+                    fontWeight: '200',
+                    marginBottom: '40px',
+                    color: '#ffffff',
+                    fontFamily: 'Nugros, sans-serif',
+                    letterSpacing: '-0.02em',
+                    lineHeight: '1',
+                    textAlign: 'center'
+                  }}>
+                    Design e Protótipo
+                  </h3>
+                  
+                  <p style={{
+                    fontSize: '1.4rem',
+                    lineHeight: '1.6',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontWeight: '300',
+                    fontFamily: 'Nugros, sans-serif',
+                    maxWidth: '800px',
+                    textAlign: 'center',
+                    padding: '0 20px'
+                  }}>
+                    {steps[1].description}
+                  </p>
+                </motion.div>
+
+                {/* Step 3 */}
+                <motion.div
+                  style={{
+                    width: '100vw',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    opacity: opacity3,
+                    scale: scale3,
+                    filter: blurFilter3
+                  }}
+                >
+                  <div style={{
+                    fontSize: '1.2rem',
+                    fontWeight: '400',
+                    color: '#9B4FBF',
+                    fontFamily: 'Nugros, sans-serif',
+                    marginBottom: '20px',
+                    letterSpacing: '0.05em'
+                  }}>
+                    ETAPA 03
+                  </div>
+                  
+                  <h3 style={{
+                    fontSize: '4rem',
+                    fontWeight: '200',
+                    marginBottom: '40px',
+                    color: '#ffffff',
+                    fontFamily: 'Nugros, sans-serif',
+                    letterSpacing: '-0.02em',
+                    lineHeight: '1',
+                    textAlign: 'center'
+                  }}>
+                    Desenvolvimento
+                  </h3>
+                  
+                  <p style={{
+                    fontSize: '1.4rem',
+                    lineHeight: '1.6',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontWeight: '300',
+                    fontFamily: 'Nugros, sans-serif',
+                    maxWidth: '800px',
+                    textAlign: 'center',
+                    padding: '0 20px'
+                  }}>
+                    {steps[2].description}
+                  </p>
+                </motion.div>
+
+                {/* Step 4 */}
+                <motion.div
+                  style={{
+                    width: '100vw',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    opacity: opacity4,
+                    scale: scale4,
+                    filter: blurFilter4
+                  }}
+                >
+                  <div style={{
+                    fontSize: '1.2rem',
+                    fontWeight: '400',
+                    color: '#9B4FBF',
+                    fontFamily: 'Nugros, sans-serif',
+                    marginBottom: '20px',
+                    letterSpacing: '0.05em'
+                  }}>
+                    ETAPA 04
+                  </div>
+                  
+                  <h3 style={{
+                    fontSize: '4rem',
+                    fontWeight: '200',
+                    marginBottom: '40px',
+                    color: '#ffffff',
+                    fontFamily: 'Nugros, sans-serif',
+                    letterSpacing: '-0.02em',
+                    lineHeight: '1',
+                    textAlign: 'center'
+                  }}>
+                    Entrega e Publicação
+                  </h3>
+                  
+                  <p style={{
+                    fontSize: '1.4rem',
+                    lineHeight: '1.6',
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontWeight: '300',
+                    fontFamily: 'Nugros, sans-serif',
+                    maxWidth: '800px',
+                    textAlign: 'center',
+                    padding: '0 20px'
+                  }}>
+                    {steps[3].description}
+                  </p>
+                </motion.div>
+              </div>
+            </motion.div>
+
+            <div style={{
               position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'linear-gradient(90deg, #6F278B 0%, #9B4FBF 50%, #ffffff 100%)',
-              scaleX: useTransform(scrollYProgress, [0, 1], [0, 1]),
-              transformOrigin: 'left'
-            }}
-          />
-        </div>
-      </div>
+              bottom: '15%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '400px',
+              height: '2px',
+              background: 'rgba(111, 39, 139, 0.2)',
+              borderRadius: '1px',
+              overflow: 'hidden'
+            }}>
+              <motion.div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, #6F278B 0%, #9B4FBF 50%, #ffffff 100%)',
+                  scaleX: progressScaleX,
+                  transformOrigin: 'left'
+                }}
+              />
+            </div>
+          </div>
 
-      {/* Increased Scroll Space for slower movement */}
-      <div style={{ height: `${steps.length * 150}vh` }} />
-      
+          <div style={{ height: `${steps.length * 150}vh` }} />
+        </>
+      )}
     </section>
   )
 }

@@ -27,8 +27,8 @@ export default function WhyWebsite() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: isMobile ? '40px 16px' : '80px 20px',
-        background: 'linear-gradient(180deg, #F7F7F8 0%, #E8E8EA 100%)',
+        padding: isMobile ? '0 10px' : '80px 20px',
+        background: '#E3E3E5',
         borderRadius: isMobile ? '0' : '24px',
         margin: isMobile ? '0' : '20px auto',
         overflow: 'hidden'
@@ -37,20 +37,23 @@ export default function WhyWebsite() {
       {/* Tablet Container */}
       <div style={{
         width: '100%',
-        maxWidth: isMobile ? '100%' : '1000px',
-        aspectRatio: isMobile ? '9/16' : '16/10',
+        maxWidth: isMobile ? 'calc(100% - 20px)' : '1000px',
+        aspectRatio: isMobile ? 'auto' : '16/10',
+        height: isMobile ? 'calc(100vh - 40px)' : 'auto',
         position: 'relative',
-        background: '#000',
-        borderRadius: isMobile ? '12px' : '20px',
-        padding: isMobile ? '8px' : '16px',
-        boxShadow: '0 30px 60px -12px rgba(0, 0, 0, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3)'
+        background: isMobile ? 'transparent' : '#000',
+        borderRadius: isMobile ? '16px' : '20px',
+        padding: isMobile ? '0' : '16px',
+        boxShadow: isMobile ? 'none' : '0 30px 60px -12px rgba(0, 0, 0, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3)',
+        overflow: 'hidden',
+        margin: '0 auto'
       }}>
         {/* Tablet Screen */}
         <div style={{
           width: '100%',
           height: '100%',
           background: '#111b21',
-          borderRadius: '12px',
+          borderRadius: isMobile ? '16px' : '12px',
           overflow: 'hidden',
           position: 'relative'
         }}>

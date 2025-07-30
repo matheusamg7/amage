@@ -2,20 +2,79 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 
 export default function Portfolio() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [isMobile, setIsMobile] = useState(false)
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
+  // Projetos em destaque primeiro, depois os demais
   const projects = [
-    { id: 1, name: 'Projeto 1', category: 'E-commerce' },
-    { id: 2, name: 'Projeto 2', category: 'Institucional' },
-    { id: 3, name: 'Projeto 3', category: 'Landing Page' },
-    { id: 4, name: 'Projeto 4', category: 'E-commerce' },
-    { id: 5, name: 'Projeto 5', category: 'Dashboard' },
-    { id: 6, name: 'Projeto 6', category: 'Institucional' }
+    { 
+      id: 1, 
+      name: 'Capital Million', 
+      category: 'Plataforma de Investimentos',
+      image: '/portfolios./million-site.png',
+      url: 'https://capitalmillion.com',
+      featured: true,
+      description: 'Plataforma moderna para investimentos e educação financeira'
+    },
+    { 
+      id: 2, 
+      name: 'Lorena Jacob', 
+      category: 'E-commerce & Terapia Infantil',
+      image: '/portfolios./lorena-site.jpeg',
+      url: 'https://lorenajacob.com.br',
+      featured: true,
+      description: 'Loja online e portal de serviços terapêuticos especializados'
+    },
+    { 
+      id: 3, 
+      name: 'DB Representações', 
+      category: 'Site Institucional',
+      image: '/portfolios./db-site.png',
+      url: 'https://deboff.com.br',
+      featured: true,
+      description: 'Portal corporativo para empresa de representações comerciais'
+    },
+    { 
+      id: 4, 
+      name: 'Renata Volpatto', 
+      category: 'Advocacia Especializada',
+      image: '/portfolios./renata-site.png',
+      url: 'https://www.renatavolpatto.com',
+      featured: false,
+      description: 'Site institucional para escritório de advocacia'
+    },
+    {
+      id: 5,
+      name: 'Em breve',
+      category: 'Novo projeto',
+      image: null,
+      url: null,
+      featured: false,
+      description: 'Novo projeto em desenvolvimento'
+    },
+    {
+      id: 6,
+      name: 'Em breve',
+      category: 'Novo projeto',
+      image: null,
+      url: null,
+      featured: false,
+      description: 'Novo projeto em desenvolvimento'
+    }
   ]
 
   return (
@@ -23,7 +82,7 @@ export default function Portfolio() {
       id="portfolio" 
       ref={ref}
       style={{
-        padding: '60px 20px 120px 20px',
+        padding: isMobile ? '40px 20px 60px 20px' : '60px 20px 120px 20px',
         background: '#000000',
         position: 'relative',
         overflow: 'hidden'
@@ -34,14 +93,14 @@ export default function Portfolio() {
           <motion.div
             style={{
               textAlign: 'center',
-              marginBottom: '80px'
+              marginBottom: isMobile ? '40px' : '80px'
             }}
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
           >
             <h2 style={{
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
+              fontSize: isMobile ? '2rem' : 'clamp(2.5rem, 5vw, 4rem)',
               fontWeight: 500,
               marginBottom: '20px',
               letterSpacing: '-0.03em',
@@ -50,7 +109,8 @@ export default function Portfolio() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '15px'
+              gap: isMobile ? '5px' : '8px',
+              flexDirection: isMobile ? 'column' : 'row'
             }}>
               Portfólio 
               <motion.div
@@ -58,15 +118,15 @@ export default function Portfolio() {
                 transition={{ duration: 0.2 }}
                 style={{
                   display: 'inline-block',
-                  marginTop: '16px',
+                  marginTop: isMobile ? '0' : '8px',
                   cursor: 'pointer'
                 }}
               >
                 <Image 
                   src="/logos/logoWhite.svg"
                   alt="Amage"
-                  width={160}
-                  height={40}
+                  width={isMobile ? 120 : 160}
+                  height={isMobile ? 30 : 40}
                   style={{
                     opacity: 0.9,
                     display: 'block'
@@ -75,47 +135,27 @@ export default function Portfolio() {
               </motion.div>
             </h2>
             
-            {/* Divisória minimalista */}
-            <motion.div 
-              style={{
-                height: '1px',
-                background: 'linear-gradient(to right, transparent, rgba(111, 39, 139, 0.3), transparent)',
-                width: '300px',
-                margin: '0 auto 20px auto'
-              }}
-              initial={{ scaleX: 0 }}
-              animate={isInView ? { scaleX: 1 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            />
-            
-            <p style={{
-              fontSize: 'clamp(1rem, 1.5vw, 1.1rem)',
-              lineHeight: '1.6',
-              color: 'rgba(255, 255, 255, 0.6)',
-              fontWeight: 300,
-              fontFamily: 'Nugros, sans-serif',
-              maxWidth: '800px',
-              margin: '0 auto'
-            }}>
-              Veja na prática como transformamos ideias em sites que representam sua empresa com clareza, estratégia e identidade.
-            </p>
           </motion.div>
 
           {/* Grid de projetos */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-            gap: '30px',
-            marginBottom: '80px'
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: isMobile ? '20px' : '24px',
+            maxWidth: '1200px',
+            marginTop: '0',
+            marginRight: 'auto',
+            marginBottom: isMobile ? '60px' : '100px',
+            marginLeft: 'auto'
           }}>
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
                 style={{
                   background: 'rgba(255, 255, 255, 0.02)',
-                  borderRadius: '16px',
+                  borderRadius: '12px',
                   overflow: 'hidden',
-                  border: '1px solid rgba(111, 39, 139, 0.2)',
+                  border: 'none',
                   cursor: 'pointer',
                   position: 'relative'
                 }}
@@ -124,39 +164,114 @@ export default function Portfolio() {
                 transition={{ duration: 0.6, delay: 0.1 * index }}
                 whileHover={{
                   scale: 1.02,
-                  borderColor: 'rgba(111, 39, 139, 0.5)',
-                  transition: { duration: 0.2 }
+                  transition: { duration: 0.3 }
                 }}
+                onClick={() => project.url && window.open(project.url, '_blank')}
               >
-                {/* Placeholder para imagem do projeto */}
+                {/* Imagem do projeto - tela completa */}
                 <div style={{
                   width: '100%',
-                  height: '250px',
-                  background: 'linear-gradient(135deg, rgba(111, 39, 139, 0.1), rgba(111, 39, 139, 0.05))',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                  height: isMobile ? '180px' : '200px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  background: project.image ? '#000' : 'linear-gradient(135deg, rgba(111, 39, 139, 0.1), rgba(111, 39, 139, 0.05))'
                 }}>
-                  <span style={{
-                    color: 'rgba(255, 255, 255, 0.3)',
-                    fontSize: '1rem',
+                  {project.image ? (
+                    <>
+                      <Image
+                        src={project.image}
+                        alt={project.name}
+                        fill
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'top center'
+                        }}
+                      />
+                      
+                      {/* Overlay on hover */}
+                      <motion.div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'rgba(111, 39, 139, 0.85)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          opacity: 0
+                        }}
+                        whileHover={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '10px',
+                          color: '#fff',
+                          fontSize: '1rem',
+                          fontWeight: '600',
+                          fontFamily: 'Nugros, sans-serif'
+                        }}>
+                          <span>Ver projeto</span>
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <path d="M7 17L17 7M17 7H7M17 7V17" />
+                          </svg>
+                        </div>
+                      </motion.div>
+                    </>
+                  ) : (
+                    <div style={{
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '10px'
+                    }}>
+                      <div style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '50%',
+                        background: 'rgba(111, 39, 139, 0.1)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6F278B" strokeWidth="2">
+                          <path d="M12 5v14M5 12h14" />
+                        </svg>
+                      </div>
+                      <span style={{
+                        color: 'rgba(255, 255, 255, 0.5)',
+                        fontSize: '0.9rem',
+                        fontFamily: 'Nugros, sans-serif'
+                      }}>
+                        Em breve
+                      </span>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Informações do projeto */}
+                <div style={{
+                  padding: '16px 20px',
+                  background: 'rgba(255, 255, 255, 0.02)'
+                }}>
+                  <h3 style={{
+                    color: '#fff',
+                    fontSize: '1.1rem',
+                    fontWeight: '600',
+                    marginBottom: '4px',
                     fontFamily: 'Nugros, sans-serif'
                   }}>
                     {project.name}
-                  </span>
-                </div>
-                
-                {/* Categoria */}
-                <div style={{
-                  padding: '20px',
-                  borderTop: '1px solid rgba(111, 39, 139, 0.1)'
-                }}>
+                  </h3>
                   <p style={{
                     color: '#6F278B',
-                    fontSize: '0.9rem',
+                    fontSize: '0.85rem',
                     fontWeight: '400',
                     fontFamily: 'Nugros, sans-serif',
-                    letterSpacing: '0.05em'
+                    letterSpacing: '0.02em'
                   }}>
                     {project.category}
                   </p>
@@ -168,7 +283,8 @@ export default function Portfolio() {
           {/* CTA Button */}
           <motion.div
             style={{
-              textAlign: 'center'
+              textAlign: 'center',
+              marginTop: isMobile ? '40px' : '0'
             }}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}

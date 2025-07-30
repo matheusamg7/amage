@@ -263,7 +263,7 @@ export default function Services() {
               <h1
                 style={{
                   fontSize: 'clamp(2rem, 4vw, 3rem)',
-                  fontWeight: 500,
+                  fontWeight: 700,
                   letterSpacing: '-0.03em',
                   lineHeight: 1.1,
                   fontFamily: 'Nugros, sans-serif',

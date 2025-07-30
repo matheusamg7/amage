@@ -24,7 +24,9 @@
       "Bash(cat:*)",
       "Bash(npm run dev:*)",
       "Bash(touch:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { TestimonialsCarousel } from '@/components/TestimonialsCarousel'
 import { Cta4 } from '@/components/ui/cta-4'
 
@@ -42,20 +42,30 @@ const testimonials = [
 export default function Development() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [isMobile, setIsMobile] = useState(false)
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   return (
     <section 
       id="development" 
       ref={ref}
       style={{
-        paddingTop: '120px',
+        paddingTop: isMobile ? '60px' : '120px',
         paddingRight: '20px',
-        paddingBottom: '120px',
+        paddingBottom: isMobile ? '60px' : '120px',
         paddingLeft: '20px',
-        background: '#fafafa',
-        borderTopLeftRadius: '40px',
-        borderTopRightRadius: '40px',
-        marginTop: '-40px',
+        background: '#E3E3E5',
+        borderTopLeftRadius: isMobile ? '20px' : '40px',
+        borderTopRightRadius: isMobile ? '20px' : '40px',
+        marginTop: isMobile ? '-20px' : '-40px',
         position: 'relative'
       }}
     >
@@ -64,56 +74,53 @@ export default function Development() {
         <motion.div
           style={{
             textAlign: 'center',
-            marginBottom: '60px',
-            marginTop: '-40px'
+            marginBottom: isMobile ? '40px' : '60px',
+            marginTop: isMobile ? '-20px' : '-40px'
           }}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
           <h2 style={{
-            fontSize: 'clamp(2rem, 4vw, 3rem)',
-            fontWeight: 500,
+            fontSize: isMobile ? '1.75rem' : 'clamp(2rem, 4vw, 3rem)',
+            fontWeight: 700,
             marginBottom: '20px',
             letterSpacing: '-0.03em',
             color: '#151515',
-            fontFamily: 'Nugros, sans-serif'
+            fontFamily: 'Nugros, sans-serif',
+            lineHeight: '1.2'
           }}>
-            O que nossos <span style={{ color: '#6F278B' }}>clientes dizem</span>
+            {isMobile ? (
+              <>
+                O que nossos<br />
+                <span style={{ color: '#6F278B' }}>clientes dizem</span>
+              </>
+            ) : (
+              <>
+                O que nossos <span style={{ color: '#6F278B' }}>clientes dizem</span>
+              </>
+            )}
           </h2>
-          
-          {/* Divisória minimalista */}
-          <motion.div 
-            style={{
-              height: '1px',
-              background: 'linear-gradient(to right, transparent, rgba(111, 39, 139, 0.3), transparent)',
-              width: '300px',
-              margin: '0 auto 20px auto'
-            }}
-            initial={{ scaleX: 0 }}
-            animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          />
           
         </motion.div>
         
         {/* Testimonials Carousel */}
         <motion.div
           style={{
-            marginTop: '80px',
-            marginBottom: '120px'
+            marginTop: isMobile ? '40px' : '80px',
+            marginBottom: isMobile ? '60px' : '120px'
           }}
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <TestimonialsCarousel testimonials={testimonials} duration={25} />
+          <TestimonialsCarousel testimonials={testimonials} duration={15} />
         </motion.div>
         
         {/* CTA Emocional */}
         <motion.div
           style={{
-            marginTop: '120px'
+            marginTop: isMobile ? '60px' : '120px'
           }}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

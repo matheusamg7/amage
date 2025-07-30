@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 const faqs = [
   {
@@ -31,6 +31,16 @@ export default function FAQ() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   return (
     <section 
@@ -39,9 +49,9 @@ export default function FAQ() {
       style={{
         paddingTop: '0px',
         paddingRight: '20px',
-        paddingBottom: '250px',
+        paddingBottom: isMobile ? '180px' : '300px',
         paddingLeft: '20px',
-        background: '#fafafa',
+        background: '#E3E3E5',
         position: 'relative'
       }}
     >
@@ -50,21 +60,21 @@ export default function FAQ() {
         <motion.div
           style={{
             textAlign: 'center',
-            marginBottom: '60px'
+            marginBottom: isMobile ? '40px' : '60px'
           }}
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
           <h2 style={{
-            fontSize: 'clamp(2rem, 4vw, 3rem)',
-            fontWeight: 500,
+            fontSize: isMobile ? '1.75rem' : 'clamp(2rem, 4vw, 3rem)',
+            fontWeight: 700,
             marginBottom: '20px',
             letterSpacing: '-0.03em',
             color: '#151515',
             fontFamily: 'Nugros, sans-serif'
           }}>
-            Dúvidas <span style={{ color: '#6F278B' }}>frequentes</span>
+            Dúvidas<span style={{ color: '#6F278B' }}>?</span>
           </h2>
           
           {/* Divisória minimalista */}
@@ -72,7 +82,7 @@ export default function FAQ() {
             style={{
               height: '1px',
               background: 'linear-gradient(to right, transparent, rgba(111, 39, 139, 0.3), transparent)',
-              width: '300px',
+              width: isMobile ? '200px' : '300px',
               margin: '0 auto 20px auto'
             }}
             initial={{ scaleX: 0 }}
@@ -100,13 +110,13 @@ export default function FAQ() {
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
             >
               <div style={{
-                padding: '30px',
+                padding: isMobile ? '20px' : '30px',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center'
               }}>
                 <h3 style={{
-                  fontSize: '1.2rem',
+                  fontSize: isMobile ? '1.1rem' : '1.2rem',
                   fontWeight: '500',
                   color: '#151515',
                   fontFamily: 'Nugros, sans-serif',
@@ -143,8 +153,8 @@ export default function FAQ() {
                 style={{ overflow: 'hidden' }}
               >
                 <p style={{
-                  padding: '0 30px 30px 30px',
-                  fontSize: '1rem',
+                  padding: isMobile ? '0 20px 20px 20px' : '0 30px 30px 30px',
+                  fontSize: isMobile ? '0.9rem' : '1rem',
                   lineHeight: '1.7',
                   color: '#666',
                   fontFamily: 'Nugros, sans-serif',

@@ -15,27 +15,27 @@ interface Message {
 const initialMessages = [
   {
     text: "**Vou ser direto com você:** enquanto você lê isso, alguém está procurando exatamente o que você vende.",
-    delay: 100
+    delay: 50
   },
   {
     text: "Mas adivinha quem eles vão encontrar? **Não é você.** 😕",
-    delay: 2000
+    delay: 1200
   },
   {
     text: "Sabe por quê? Porque no mundo de hoje, se você não está no Google, **você simplesmente não existe.**",
-    delay: 3500
+    delay: 2200
   },
   {
     text: "97% dos consumidores procuram negócios locais online. **Noventa e sete por cento!**",
-    delay: 5000
+    delay: 3200
   },
   {
     text: "Ter um site hoje não é mais sobre 'estar na internet'. É sobre:\n\n💰 Faturar enquanto você dorme;\n🎯 Ser a primeira opção do cliente;\n🚀 Automatizar vendas e agendamentos;\n📱 Atender clientes 24 horas por dia;\n🏆 Deixar a concorrência para trás.",
-    delay: 6500
+    delay: 4500
   },
   {
     text: "Quer saber como podemos ajudar seu negócio a crescer online? **Digite 'quero um orçamento' abaixo** 👇",
-    delay: 8500
+    delay: 6000
   }
 ]
 
@@ -311,7 +311,7 @@ export default function WhatsAppWeb() {
                 Amage Web
               </h4>
               <p style={{ margin: 0, fontSize: '13px', color: '#8696a0' }}>
-                online
+                {isMobile ? 'digitando...' : 'online'}
               </p>
             </div>
           </div>
@@ -338,7 +338,7 @@ export default function WhatsAppWeb() {
           position: 'relative',
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='pattern' x='0' y='0' width='40' height='40' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='20' cy='20' r='0.5' fill='%23182229' opacity='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23pattern)'/%3E%3C/svg%3E")`,
           backgroundSize: '100px 100px',
-          height: 'calc(100% - 59px - 60px)'
+          height: isMobile ? 'calc(100% - 59px - 50px)' : 'calc(100% - 59px - 60px)'
         }}>
           <div style={{ 
             minHeight: '100%', 
@@ -455,19 +455,20 @@ export default function WhatsAppWeb() {
 
         {/* Input Area */}
         <div style={{
-          padding: '5px 10px',
+          padding: isMobile ? '3px 6px' : '5px 10px',
           background: '#202c33',
           display: 'flex',
           alignItems: 'center',
-          gap: '10px'
+          gap: isMobile ? '8px' : '10px',
+          height: isMobile ? '50px' : '60px'
         }}>
-          <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px' }}>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="#8696a0">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM12 9.5c2.33 0 4.32 1.45 5.12 3.5h-1.67c-.7-1.19-1.97-2-3.45-2s-2.75.81-3.45 2H6.88C7.68 10.95 9.67 9.5 12 9.5z"/>
+          <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: isMobile ? '6px' : '8px' }}>
+            <svg width={isMobile ? "22" : "26"} height={isMobile ? "22" : "26"} viewBox="0 0 24 24" fill="#8696a0">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm1-6.5H9c-.55 0-1-.45-1-1s.45-1 1-1h6c.55 0 1 .45 1 1s-.45 1-1 1z"/>
             </svg>
           </button>
-          <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '8px' }}>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="#8696a0" style={{ transform: 'rotate(45deg)' }}>
+          <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: isMobile ? '6px' : '8px' }}>
+            <svg width={isMobile ? "22" : "26"} height={isMobile ? "22" : "26"} viewBox="0 0 24 24" fill="#8696a0" style={{ transform: 'rotate(45deg)' }}>
               <path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5a2.5 2.5 0 0 1 5 0v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5a2.5 2.5 0 0 0 5 0V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/>
             </svg>
           </button>
@@ -480,11 +481,11 @@ export default function WhatsAppWeb() {
             disabled={!isInputEnabled}
             style={{
               flex: 1,
-              padding: '9px 12px',
+              padding: isMobile ? '7px 10px' : '9px 12px',
               borderRadius: '8px',
               border: 'none',
               background: '#2a3942',
-              fontSize: '15px',
+              fontSize: isMobile ? '14px' : '15px',
               outline: 'none',
               color: '#e9edef',
               opacity: isInputEnabled ? 1 : 0.5,
@@ -506,7 +507,7 @@ export default function WhatsAppWeb() {
                 opacity: isInputEnabled ? 1 : 0.5
               }}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="#8696a0">
+              <svg width={isMobile ? "20" : "24"} height={isMobile ? "20" : "24"} viewBox="0 0 24 24" fill="#8696a0">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
               </svg>
             </button>
@@ -525,7 +526,7 @@ export default function WhatsAppWeb() {
                 opacity: isInputEnabled ? 1 : 0.5
               }}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="#8696a0">
+              <svg width={isMobile ? "20" : "24"} height={isMobile ? "20" : "24"} viewBox="0 0 24 24" fill="#8696a0">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
               </svg>
             </button>

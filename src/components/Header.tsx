@@ -137,7 +137,7 @@ export default function Header() {
   if (!isTransitionComplete) return null
 
   return (
-    <>
+    <React.Fragment>
       <motion.header
         className="fixed top-8 right-6 sm:right-10 z-50"
         initial={{ y: -20, opacity: 0 }}
@@ -291,9 +291,8 @@ export default function Header() {
                   const isActive = activeSection === item.href.replace('#', '')
                   
                   return (
-                    <>
+                    <React.Fragment key={item.href}>
                       <motion.div
-                        key={item.href}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ 
@@ -334,7 +333,7 @@ export default function Header() {
                           >
                             <motion.span
                               style={{
-                                color: isActive ? '#ec4899' : '#FFFFFF',
+                                color: isActive ? '#6F278B' : '#FFFFFF',
                                 padding: '25px 0',
                               }}
                             >
@@ -361,7 +360,7 @@ export default function Header() {
                           }}
                         />
                       )}
-                    </>
+                    </React.Fragment>
                   )
                 })}
               </div>
@@ -369,6 +368,6 @@ export default function Header() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </React.Fragment>
   )
 }

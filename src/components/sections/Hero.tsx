@@ -242,7 +242,7 @@ const Hero = memo(function Hero() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={isTransitionComplete ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
         transition={{ duration: 0.6, delay: 2.0, type: "spring" }}
-        className="absolute bottom-10 sm:bottom-6 left-1/2 transform -translate-x-1/2 z-30"
+        className={`absolute ${isMobile ? 'bottom-20' : 'bottom-10 sm:bottom-6'} left-1/2 transform -translate-x-1/2 z-30`}
       >
         <ConfettiButton 
           className={`inline-flex items-center justify-center backdrop-blur-sm border text-white transition-all duration-300 h-auto relative overflow-visible ${
@@ -467,20 +467,40 @@ const Hero = memo(function Hero() {
             initial={{ opacity: 0, y: 10, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-zinc-900 border border-zinc-700/50 text-zinc-300 text-xs px-6 py-3 rounded-lg backdrop-blur-md shadow-2xl shadow-black/50 whitespace-nowrap z-50"
-            style={{ userSelect: 'none', padding: '16px 32px' }}
+            className={`absolute ${isMobile ? '-bottom-24' : '-bottom-2'} left-1/2 transform -translate-x-1/2 bg-zinc-900 border border-zinc-700/50 text-zinc-300 ${isMobile ? 'text-[11px]' : 'text-xs'} rounded-lg backdrop-blur-md shadow-2xl shadow-black/50 z-50`}
+            style={{ 
+              userSelect: 'none', 
+              padding: isMobile ? '12px 16px' : '16px 32px',
+              maxWidth: isMobile ? 'calc(100vw - 32px)' : 'none'
+            }}
           >
-            <span className="inline-flex items-center gap-1.5">
+            <div className="inline-flex items-center gap-1.5">
               <span>🎉</span>
-              <span>Confete acabou, mas o impacto de um bom site é duradouro!</span>
-              <a 
-                href="#contato" 
-                className="underline hover:text-white transition-colors"
-                onClick={(e) => e.stopPropagation()}
-              >
-                Vamos conversar?
-              </a>
-            </span>
+              {isMobile ? (
+                <span style={{ textAlign: 'left' }}>
+                  Confete acabou, mas o impacto de<br />
+                  um bom site é duradouro!{' '}
+                  <a 
+                    href="#contato" 
+                    className="underline hover:text-white transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Vamos conversar?
+                  </a>
+                </span>
+              ) : (
+                <span>
+                  Confete acabou, mas o impacto de um bom site é duradouro!{' '}
+                  <a 
+                    href="#contato" 
+                    className="underline hover:text-white transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Vamos conversar?
+                  </a>
+                </span>
+              )}
+            </div>
           </motion.div>
         )}
       </motion.div>
