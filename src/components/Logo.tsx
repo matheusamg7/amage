@@ -7,8 +7,35 @@ import { usePageTransition } from '@/contexts/PageTransitionContext'
 
 export default function Logo() {
   const [isVisible, setIsVisible] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { isTransitionComplete } = usePageTransition()
   const { scrollY } = useScroll()
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+  
+  // Detecta quando o menu mobile está aberto
+  useEffect(() => {
+    const checkMenuState = () => {
+      setIsMenuOpen(document.body.classList.contains('mobile-menu-open'))
+    }
+    
+    // Observer para mudanças na classe do body
+    const observer = new MutationObserver(checkMenuState)
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] })
+    
+    // Check inicial
+    checkMenuState()
+    
+    return () => observer.disconnect()
+  }, [])
 
   // Mostra o logo quando a transição completar
   useEffect(() => {
@@ -77,13 +104,13 @@ export default function Logo() {
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {isVisible && !(isMobile && isMenuOpen) && (
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           exit="exit"
-          className="fixed top-4 left-6 z-50"
+          className={`fixed ${isMobile ? 'top-10 left-8' : 'top-4 left-6'} z-50`}
         >
           <Link href="/">
             <motion.svg 
@@ -92,7 +119,7 @@ export default function Logo() {
               viewBox="0 0 1557 385" 
               fill="none" 
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-auto opacity-80"
+              className={`${isMobile ? 'h-10' : 'h-8'} w-auto opacity-80`}
             >
               {/* A */}
               <motion.path 

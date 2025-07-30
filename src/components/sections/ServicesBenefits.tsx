@@ -58,7 +58,7 @@ export default function ServicesBenefits() {
       className="services-benefits-section"
       style={{
         background: '#000',
-        padding: '80px 40px 140px 40px',
+        padding: isMobile ? '0px 20px 80px 20px' : '80px 40px 140px 40px',
         position: 'relative',
         fontFamily: 'Nugros, sans-serif'
       }}
@@ -102,10 +102,28 @@ export default function ServicesBenefits() {
           position: 'relative'
         }}
       >
+        {/* Título apenas no mobile */}
+        {isMobile && (
+          <h2
+            style={{
+              fontSize: '1.5rem',
+              fontWeight: 500,
+              letterSpacing: '-0.02em',
+              lineHeight: 1.2,
+              fontFamily: 'Nugros, sans-serif',
+              color: '#fff',
+              marginBottom: '40px',
+              textAlign: 'center'
+            }}
+          >
+            Nossos sites possuem:
+          </h2>
+        )}
+        
         <div style={{
           display: 'grid',
           gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-          gap: '60px',
+          gap: isMobile ? '20px' : '60px',
           maxWidth: '1400px',
           margin: '0 auto'
         }}>

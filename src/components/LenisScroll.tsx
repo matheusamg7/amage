@@ -5,6 +5,12 @@ import Lenis from 'lenis'
 
 export default function LenisScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    // Desabilitar Lenis no mobile
+    const isMobile = window.innerWidth < 768
+    if (isMobile) {
+      return
+    }
+    
     const lenis = new Lenis({
       duration: 1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -12,12 +18,7 @@ export default function LenisScroll({ children }: { children: React.ReactNode })
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 0.8,
-      smoothTouch: false,
-      touchMultiplier: 2,
       infinite: false,
-      syncTouch: true,
-      syncTouchLerp: 0.075,
-      touchInertiaMultiplier: 35,
     })
 
     let rafId: number
@@ -29,8 +30,12 @@ export default function LenisScroll({ children }: { children: React.ReactNode })
     requestAnimationFrame(raf)
 
     return () => {
-      cancelAnimationFrame(rafId)
-      lenis.destroy()
+      if (rafId) {
+        cancelAnimationFrame(rafId)
+      }
+      if (lenis) {
+        lenis.destroy()
+      }
     }
   }, [])
 

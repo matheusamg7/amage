@@ -82,8 +82,10 @@ export default function Services() {
     return () => window.removeEventListener('resize', checkSize)
   }, [])
 
-  // Pausa o scroll quando todos os cards estiverem visíveis
+  // Pausa o scroll quando todos os cards estiverem visíveis (somente desktop)
   useEffect(() => {
+    if (isMobile) return // Desabilitar no mobile
+    
     const unsubscribe = scrollYProgress.on("change", (latest) => {
       // Quando o terceiro card estiver quase visível (42%)
       if (latest >= 0.42 && latest <= 0.44 && !hasTriggeredPause) {
@@ -111,7 +113,7 @@ export default function Services() {
     })
     
     return () => unsubscribe()
-  }, [scrollYProgress, hasTriggeredPause])
+  }, [scrollYProgress, hasTriggeredPause, isMobile])
 
 
   return (
@@ -195,20 +197,22 @@ export default function Services() {
         className="services-section"
         style={{
           position: 'relative',
-          height: '250vh',
+          height: isMobile ? 'auto' : '250vh',
           background: '#000'
         }}
       >
         <div style={{
-          position: 'sticky',
-          top: 0,
-          height: '100vh',
+          position: isMobile ? 'relative' : 'sticky',
+          top: isMobile ? 'auto' : 0,
+          height: isMobile ? 'auto' : '100vh',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          padding: isMobile ? '60px 0' : 0
         }}>
 
           {/* Floating Dots - Otimizado para performance */}
+          {!isMobile && (
           <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
             {[...Array(4)].map((_, i) => (
               <motion.div
@@ -234,6 +238,7 @@ export default function Services() {
               />
             ))}
           </div>
+          )}
 
           {/* Conteúdo dos cards */}
           <div style={{ 
@@ -252,7 +257,7 @@ export default function Services() {
               style={{ 
                 textAlign: 'center', 
                 marginBottom: '80px',
-                marginTop: isMobile ? '60px' : '120px'
+                marginTop: isMobile ? '20px' : '120px'
               }}
             >
               <h1
@@ -311,11 +316,11 @@ export default function Services() {
                   style={{
                     padding: isMobile ? '40px 20px' : !isDesktop ? '60px 40px' : '80px 60px',
                     borderRight: isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.2)' : 'none',
-                    borderBottom: !isDesktop && index < services.length - 1 ? '1px solid rgba(111, 39, 139, 0.1)' : 'none',
+                    borderBottom: 'none',
                     position: 'relative',
                     cursor: 'pointer',
-                    opacity: index === 0 ? card1Opacity : index === 1 ? card2Opacity : card3Opacity,
-                    y: index === 0 ? card1Y : index === 1 ? card2Y : card3Y
+                    opacity: isMobile ? 1 : (index === 0 ? card1Opacity : index === 1 ? card2Opacity : card3Opacity),
+                    y: isMobile ? 0 : (index === 0 ? card1Y : index === 1 ? card2Y : card3Y)
                   }}
                   whileHover={{ 
                     scale: 1.02,
@@ -355,7 +360,7 @@ export default function Services() {
                     
                     <h3
                       style={{
-                        fontSize: '2rem',
+                        fontSize: isMobile ? '1.5rem' : '2rem',
                         fontWeight: 400,
                         marginBottom: '15px',
                         letterSpacing: '-0.02em'
@@ -365,27 +370,28 @@ export default function Services() {
                     </h3>
                     
                     <p style={{
-                      fontSize: '0.875rem',
+                      fontSize: isMobile ? '0' : '0.875rem',
                       fontWeight: 300,
                       color: 'rgba(255, 255, 255, 0.4)',
-                      marginBottom: '20px',
+                      marginBottom: isMobile ? '0' : '20px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.08em'
+                      letterSpacing: '0.08em',
+                      display: isMobile ? 'none' : 'block'
                     }}>
                       {service.subtitle}
                     </p>
                     
                     <p style={{
-                      fontSize: '1rem',
+                      fontSize: isMobile ? '0.875rem' : '1rem',
                       lineHeight: 1.8,
                       color: 'rgba(255, 255, 255, 0.6)',
-                      marginBottom: '30px',
+                      marginBottom: isMobile ? '20px' : '30px',
                       fontWeight: 300
                     }}>
                       {service.description}
                     </p>
                     
-                    <ul style={{ listStyle: 'none' }}>
+                    <ul style={{ listStyle: 'none', display: isMobile ? 'none' : 'block' }}>
                       {service.features.map((feature) => (
                         <motion.li 
                           key={feature}
@@ -421,6 +427,23 @@ export default function Services() {
                       ))}
                     </ul>
                   </div>
+                  
+                  {/* Divisor com gradiente no mobile */}
+                  {!isDesktop && index < services.length - 1 && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: '10%',
+                        right: '10%',
+                        height: isMobile ? '2px' : '1px',
+                        background: isMobile 
+                          ? 'linear-gradient(90deg, transparent 0%, rgba(111, 39, 139, 0.3) 20%, rgba(111, 39, 139, 0.3) 80%, transparent 100%)'
+                          : 'linear-gradient(90deg, transparent 0%, rgba(111, 39, 139, 0.1) 20%, rgba(111, 39, 139, 0.1) 80%, transparent 100%)',
+                        pointerEvents: 'none'
+                      }}
+                    />
+                  )}
                 </motion.div>
               ))}
             </div>

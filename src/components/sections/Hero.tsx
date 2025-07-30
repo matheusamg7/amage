@@ -46,6 +46,16 @@ const Hero = memo(function Hero() {
   const [clickCount, setClickCount] = useState(0)
   const [isBlocked, setIsBlocked] = useState(false)
   const [showMessage, setShowMessage] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
   
   // Estilos comuns para o título
   const titleTextStyle = {
@@ -129,10 +139,10 @@ const Hero = memo(function Hero() {
               }
             }
           } : { opacity: 0, y: 40, scale: 0.9 }}
-          className="text-center max-w-7xl mx-auto -translate-y-14"
+          className="text-center max-w-7xl mx-auto -translate-y-6 sm:-translate-y-14"
         >
           <motion.h1 
-            className="py-4 sm:py-6 md:py-8 text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-medium leading-[1.1] tracking-tight font-figtree text-white drop-shadow-2xl" 
+            className="py-4 sm:py-6 md:py-8 text-4xl xs:text-5xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-medium leading-[1.1] tracking-tight font-figtree text-white drop-shadow-2xl" 
             style={titleTextStyle}
             initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
             animate={isTransitionComplete ? { 
@@ -147,16 +157,16 @@ const Hero = memo(function Hero() {
               }
             } : { opacity: 0, y: 20, filter: "blur(10px)" }}
           >
-            <span className="block">O próximo nível da sua empresa</span>
-            <span className="block mt-4">é o digital.</span>
+            <span className="block">{isMobile ? 'O próximo nível da sua' : 'O próximo nível da sua empresa'}</span>
+            <span className="block mt-2 sm:mt-4">{isMobile ? 'empresa é o digital.' : 'é o digital.'}</span>
           </motion.h1>
             
             {/* Espaçamento antes do subtítulo */}
             <div className="h-5 sm:h-7 md:h-9" />
             
             {/* Subtítulo */}
-            <motion.p
-              className="text-lg sm:text-xl md:text-2xl text-white font-normal tracking-wide font-figtree"
+            <motion.div 
+              className="flex justify-center"
               initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
               animate={isTransitionComplete ? { 
                 opacity: 1, 
@@ -174,15 +184,17 @@ const Hero = memo(function Hero() {
                 }
               } : { opacity: 0, y: 30, filter: "blur(8px)" }}
             >
-              Criamos sites profissionais com foco em resultado, autoridade e crescimento.
-            </motion.p>
+              <p className={`text-base xs:text-lg sm:text-xl md:text-2xl text-white font-normal tracking-wide font-figtree px-4 sm:px-0 ${isMobile ? 'max-w-[280px]' : 'max-w-[600px]'}`}>
+                Criamos sites profissionais com foco em resultado, autoridade e crescimento.
+              </p>
+            </motion.div>
             
             {/* Espaçador */}
-            <div className="h-6 sm:h-8 md:h-10" />
+            <div className="h-8 sm:h-8 md:h-10" />
             
             {/* Botões CTA */}
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 sm:gap-10 justify-center items-center"
+              className="flex flex-col sm:flex-row gap-6 sm:gap-10 justify-center items-center px-4 sm:px-0"
               variants={ctaContainerVariants}
               initial="hidden"
               animate={isTransitionComplete ? "visible" : "hidden"}
@@ -192,7 +204,12 @@ const Hero = memo(function Hero() {
                 className="inline-flex"
               >
                 <LiquidGlassButton
-                  onClick={() => window.location.href = '#contato'}
+                  onClick={() => {
+                    const contatoSection = document.getElementById('contato')
+                    if (contatoSection) {
+                      contatoSection.scrollIntoView({ behavior: 'smooth' })
+                    }
+                  }}
                 >
                   Solicitar Orçamento
                 </LiquidGlassButton>
@@ -209,9 +226,11 @@ const Hero = memo(function Hero() {
                   <span className="text-base font-medium tracking-wide underline underline-offset-8 decoration-1">
                     Ver Nossos Projetos
                   </span>
-                  <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+                  {!isMobile && (
+                    <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  )}
                 </motion.a>
               </motion.div>
             </motion.div>
@@ -223,7 +242,7 @@ const Hero = memo(function Hero() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={isTransitionComplete ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
         transition={{ duration: 0.6, delay: 2.0, type: "spring" }}
-        className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-30"
+        className="absolute bottom-10 sm:bottom-6 left-1/2 transform -translate-x-1/2 z-30"
       >
         <ConfettiButton 
           className={`inline-flex items-center justify-center backdrop-blur-sm border text-white transition-all duration-300 h-auto relative overflow-visible ${

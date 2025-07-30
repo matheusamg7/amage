@@ -2,12 +2,22 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'framer-motion'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 
 export default function About() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px", amount: 0.3 })
+  const [isMobile, setIsMobile] = useState(false)
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
   
   // Animação baseada no scroll
   const { scrollYProgress } = useScroll({
@@ -48,11 +58,11 @@ export default function About() {
       id="about" 
       ref={ref} 
       style={{
-        padding: '120px 20px',
+        padding: isMobile ? '60px 20px' : '120px 20px',
         background: '#fafafa',
-        borderTopLeftRadius: '40px',
-        borderTopRightRadius: '40px',
-        marginTop: '-40px',
+        borderTopLeftRadius: isMobile ? '20px' : '40px',
+        borderTopRightRadius: isMobile ? '20px' : '40px',
+        marginTop: isMobile ? '-20px' : '-40px',
         position: 'relative'
       }}
     >
@@ -61,7 +71,7 @@ export default function About() {
         <div style={{ 
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '100px',
+          gap: isMobile ? '40px' : '100px',
           alignItems: 'center',
           marginBottom: '40px',
           marginTop: '-40px'
@@ -79,7 +89,7 @@ export default function About() {
               fontSize: 'clamp(2rem, 4vw, 3rem)',
               fontWeight: 500,
               lineHeight: '1.1',
-              marginBottom: '40px',
+              marginBottom: isMobile ? '20px' : '40px',
               letterSpacing: '-0.03em',
               color: '#151515',
               fontFamily: 'Nugros, sans-serif'
@@ -174,7 +184,7 @@ export default function About() {
           {/* Title left aligned */}
           <motion.div 
             style={{ 
-              marginBottom: '50px'
+              marginBottom: isMobile ? '30px' : '50px'
             }}
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -193,8 +203,8 @@ export default function About() {
           {/* Cards grid */}
           <div style={{ 
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '40px 50px'
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+            gap: isMobile ? '30px' : '40px 50px'
           }}>
             {differentials.map((item, index) => (
               <motion.div
@@ -213,7 +223,7 @@ export default function About() {
               >
                 <motion.h3 
                   style={{
-                    fontSize: '1.4rem',
+                    fontSize: isMobile ? '1.2rem' : '1.4rem',
                     fontWeight: '500',
                     marginBottom: '12px',
                     color: '#151515',
@@ -230,7 +240,7 @@ export default function About() {
                   {item.title}
                 </motion.h3>
                 <p style={{
-                  fontSize: '1rem',
+                  fontSize: isMobile ? '0.9rem' : '1rem',
                   lineHeight: '1.7',
                   color: '#666',
                   fontWeight: '300',
@@ -273,6 +283,12 @@ export default function About() {
                 boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
               }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                const contatoSection = document.getElementById('contato')
+                if (contatoSection) {
+                  contatoSection.scrollIntoView({ behavior: 'smooth' })
+                }
+              }}
             >
               Começar projeto conosco
             </motion.button>

@@ -46,6 +46,7 @@ export default function WhatsAppWeb() {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
   const [hasStarted, setHasStarted] = useState(false)
   const [isInputEnabled, setIsInputEnabled] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const chatEndRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -58,6 +59,16 @@ export default function WhatsAppWeb() {
       }
     }
   }, [messages])
+  
+  // Detectar mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Detectar quando a seção está visível
   useEffect(() => {
@@ -155,6 +166,7 @@ export default function WhatsAppWeb() {
       left: 0
     }}>
       {/* Sidebar */}
+      {!isMobile && (
       <div style={{
         width: '30%',
         minWidth: '340px',
@@ -252,6 +264,7 @@ export default function WhatsAppWeb() {
           </div>
         </div>
       </div>
+      )}
 
       {/* Chat Area */}
       <div style={{
@@ -332,7 +345,7 @@ export default function WhatsAppWeb() {
             display: 'flex', 
             flexDirection: 'column', 
             justifyContent: 'flex-end', 
-            padding: '20px 60px'
+            padding: isMobile ? '10px 20px' : '20px 60px'
           }}>
             {messages.map((message) => (
               <motion.div
@@ -355,7 +368,7 @@ export default function WhatsAppWeb() {
                 }}>
                   <p style={{
                     margin: 0,
-                    fontSize: '17px',
+                    fontSize: isMobile ? '15px' : '17px',
                     color: '#ffffff',
                     whiteSpace: 'pre-wrap',
                     lineHeight: '22px',

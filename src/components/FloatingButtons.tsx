@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 
 export default function FloatingButtons() {
   const [showScrollTop, setShowScrollTop] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,13 +15,22 @@ export default function FloatingButtons() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col gap-2 sm:gap-3">
       {/* Botão Voltar ao Topo */}
       <AnimatePresence>
         {showScrollTop && (
@@ -30,12 +40,13 @@ export default function FloatingButtons() {
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.3 }}
             onClick={scrollToTop}
-            className="w-12 h-12 flex items-center justify-center hover:scale-110 transition-transform duration-200 cursor-pointer"
+            className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center hover:scale-110 transition-transform duration-200 cursor-pointer"
             aria-label="Voltar ao topo"
           >
             <svg
-              width="32"
-              height="32"
+              width="28"
+              height="28"
+              className="w-7 h-7 sm:w-8 sm:h-8"
               viewBox="0 0 24 24"
               fill="none"
               stroke="#6F278B"
@@ -72,8 +83,8 @@ export default function FloatingButtons() {
         whileTap={{ scale: 0.95 }}
         className="whatsapp-button"
         style={{
-          width: '56px',
-          height: '56px',
+          width: isMobile ? '48px' : '56px',
+          height: isMobile ? '48px' : '56px',
           borderRadius: '50%',
           display: 'flex',
           alignItems: 'center',
@@ -86,8 +97,9 @@ export default function FloatingButtons() {
         aria-label="Contato via WhatsApp"
       >
         <svg
-          width="28"
-          height="28"
+          width="24"
+          height="24"
+          className="w-6 h-6 sm:w-7 sm:h-7"
           viewBox="0 0 24 24"
           fill="white"
         >

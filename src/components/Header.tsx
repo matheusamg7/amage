@@ -81,12 +81,14 @@ export default function Header() {
       document.body.style.position = 'fixed'
       document.body.style.top = `-${window.scrollY}px`
       document.body.style.width = '100%'
+      document.body.classList.add('mobile-menu-open')
     } else {
       const scrollY = document.body.style.top
       document.body.style.overflow = ''
       document.body.style.position = ''
       document.body.style.top = ''
       document.body.style.width = ''
+      document.body.classList.remove('mobile-menu-open')
       if (scrollY) {
         window.scrollTo(0, parseInt(scrollY || '0') * -1)
       }
@@ -98,6 +100,7 @@ export default function Header() {
       document.body.style.position = ''
       document.body.style.top = ''
       document.body.style.width = ''
+      document.body.classList.remove('mobile-menu-open')
     }
   }, [isMobileMenuOpen])
 
@@ -136,7 +139,7 @@ export default function Header() {
   return (
     <>
       <motion.header
-        className="fixed top-8 right-10 z-50"
+        className="fixed top-8 right-6 sm:right-10 z-50"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ 
@@ -198,11 +201,11 @@ export default function Header() {
           {/* Mobile Hamburger Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden flex flex-col items-center justify-center w-10 h-10 cursor-pointer gap-1"
+            className="md:hidden flex flex-col items-center justify-center w-10 h-10 cursor-pointer gap-1.5"
             aria-label="Toggle mobile menu"
           >
             <motion.span
-              className="w-5 h-0.5 rounded-full"
+              className="w-6 h-[3px] rounded-full"
               style={{
                 backgroundColor: isDarkBackground ? 'rgba(255, 255, 255, 0.8)' : 'rgba(21, 21, 21, 0.8)'
               }}
@@ -213,7 +216,7 @@ export default function Header() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
             <motion.span
-              className="w-5 h-0.5 rounded-full"
+              className="w-6 h-[3px] rounded-full"
               style={{
                 backgroundColor: isDarkBackground ? 'rgba(255, 255, 255, 0.8)' : 'rgba(21, 21, 21, 0.8)'
               }}
@@ -223,7 +226,7 @@ export default function Header() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
             <motion.span
-              className="w-5 h-0.5 rounded-full"
+              className="w-6 h-[3px] rounded-full"
               style={{
                 backgroundColor: isDarkBackground ? 'rgba(255, 255, 255, 0.8)' : 'rgba(21, 21, 21, 0.8)'
               }}
@@ -249,7 +252,8 @@ export default function Header() {
           >
             {/* Backdrop */}
             <motion.div
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+              className="absolute inset-0 backdrop-blur-sm"
+              style={{ backgroundColor: 'rgba(21, 21, 21, 0.8)' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -258,7 +262,8 @@ export default function Header() {
             
             {/* Menu Content */}
             <motion.div
-              className="absolute top-0 right-0 h-full w-72 bg-black/95 backdrop-blur-md border-l border-white/10 overflow-hidden"
+              className="absolute top-0 right-0 h-full w-[80vw] max-w-sm backdrop-blur-md border-l border-white/10 overflow-hidden"
+              style={{ backgroundColor: 'rgba(21, 21, 21, 0.95)' }}
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -281,53 +286,82 @@ export default function Header() {
                   repeatDelay: 0.3,
                 }}
               />
-              <div className="flex flex-col items-center justify-center h-full space-y-8">
+              <div className="flex flex-col items-center justify-center h-full">
                 {navItems.map((item, index) => {
                   const isActive = activeSection === item.href.replace('#', '')
                   
                   return (
-                    <motion.div
-                      key={item.href}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ 
-                        delay: index * 0.1,
-                        duration: 0.5,
-                        ease: "easeOut"
-                      }}
-                    >
-                      <Link
-                        href={item.href}
-                        onClick={(e) => handleNavClick(e, item.href)}
-                        className="relative block px-6 py-4 text-2xl font-medium transition-all duration-300 uppercase font-mono tracking-wider"
+                    <>
+                      <motion.div
+                        key={item.href}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ 
+                          delay: index * 0.1,
+                          duration: 0.5,
+                          ease: "easeOut"
+                        }}
                       >
-                        <motion.span
-                          className="relative z-10"
-                          animate={{
-                            background: isActive ? 'linear-gradient(45deg, #9333ea, #ec4899)' : 'transparent',
-                            backgroundClip: isActive ? 'text' : 'unset',
-                            WebkitBackgroundClip: isActive ? 'text' : 'unset',
-                            color: isActive ? 'transparent' : '#FFFFFF',
-                          }}
-                          transition={{ duration: 0.2 }}
-                          whileHover={{ 
-                            background: 'linear-gradient(45deg, #9333ea, #ec4899)',
-                            backgroundClip: 'text',
-                            WebkitBackgroundClip: 'text',
-                            color: 'transparent',
-                            transition: { duration: 0.2 }
+                        <Link
+                          href={item.href}
+                          onClick={(e) => handleNavClick(e, item.href)}
+                          className="relative block"
+                        >
+                          <motion.div
+                            style={{
+                              // Reset all styles
+                              all: 'unset',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              width: '100%',
+                              // Typography
+                              fontSize: '20px',
+                              fontWeight: '400',
+                              textTransform: 'uppercase',
+                              fontFamily: 'var(--font-geist-mono), monospace',
+                              letterSpacing: '0.15em',
+                              // Interaction
+                              cursor: 'pointer',
+                              userSelect: 'none',
+                              transition: 'all 0.2s ease'
+                            }}
+                            whileHover={{ 
+                              scale: 1.02,
+                              transition: { duration: 0.2 }
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                          >
+                            <motion.span
+                              style={{
+                                color: isActive ? '#ec4899' : '#FFFFFF',
+                                padding: '25px 0',
+                              }}
+                            >
+                              {item.label}
+                            </motion.span>
+                          </motion.div>
+                        </Link>
+                      </motion.div>
+                      
+                      {/* Divisória roxa entre os itens */}
+                      {index < navItems.length - 1 && (
+                        <motion.div
+                          initial={{ opacity: 0, scaleX: 0 }}
+                          animate={{ opacity: 1, scaleX: 1 }}
+                          transition={{ 
+                            delay: index * 0.1 + 0.2,
+                            duration: 0.5
                           }}
                           style={{
-                            background: isActive ? 'linear-gradient(45deg, #9333ea, #ec4899)' : 'transparent',
-                            backgroundClip: isActive ? 'text' : 'unset',
-                            WebkitBackgroundClip: isActive ? 'text' : 'unset',
-                            color: isActive ? 'transparent' : '#FFFFFF',
+                            width: '80px',
+                            height: '1px',
+                            background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                            margin: '0',
                           }}
-                        >
-                          {item.label}
-                        </motion.span>
-                      </Link>
-                    </motion.div>
+                        />
+                      )}
+                    </>
                   )
                 })}
               </div>
